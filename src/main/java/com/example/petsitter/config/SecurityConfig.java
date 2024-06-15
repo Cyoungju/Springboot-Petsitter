@@ -1,5 +1,6 @@
 package com.example.petsitter.config;
 
+import com.example.petsitter.api.kakao.KakaoAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final KakaoAuthenticationProvider kakaoAuthenticationProvider;
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -28,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests((auth)-> auth
-                        .requestMatchers("/","/login","/loginProc","/join","/joinProc","/images/**","/css/**", "/idcheck").permitAll()
+                        .requestMatchers("/","/login","/loginProc","/join","/joinProc","/images/**","/css/**", "/idcheck","/api/**", "/api/kakao/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/my/**").hasAnyRole("ADMIN","USER","MANAGER") // ** 와일드카드
                         .anyRequest().authenticated() //나머지 로그인한 사용자만 접근
@@ -54,6 +57,7 @@ public class SecurityConfig {
                         .sessionFixation().changeSessionId());
         //changeSessionId : 로그인 시 동일한 세션에 대한 id 변경
 
+        http.authenticationProvider(kakaoAuthenticationProvider);
 
         return http.build();
     }

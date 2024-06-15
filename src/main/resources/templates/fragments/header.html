@@ -11,7 +11,12 @@
                 <li><a th:href="@{/board/list}">문의하기</a></li>
             </ul>
             <a th:if="${username == 'anonymousUser'}" th:href="@{/login}" class="login font18 btn">Login</a>
-            <a th:if="${username != 'anonymousUser'}" th:href="@{/logout}" class="login font18 btn">logout</a>
+            <a th:if="${username != 'anonymousUser'}" th:unless="${isSocial}" th:href="@{/logout}" class="login font18 btn">logout</a>
+
+            <a th:if="${isSocial}"  th:href="@{/api/kakao/logout}" class="login font18 btn">
+                <!-- 소셜로그아웃 -->
+                logout
+            </a>
         </div>
     </header>
 </html>
