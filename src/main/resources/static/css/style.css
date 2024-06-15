@@ -1,0 +1,167 @@
+/* 초기화 */
+:root{
+    --layoutwidth:1200px;
+    --pointcolor:#15a8d4; 
+    --pointcolor2:#edce69; 
+    --grcolor:#c1c1c1;
+    --wtcolor:#ffffff
+}
+
+*{outline:none;}
+*, :after, :before {box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;}
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
+pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary, time, mark, audio, video {margin: 0;padding: 0;border: 0;font: inherit;/*vertical-align: baseline;*/}
+
+html, body{font-family: var(--mainfont), sans-serif;font-weight:var(--boldWeight);line-height: 1.7;word-break:break-all;color:#000000;}
+body{-webkit-font-smoothing: antialiased;-font-smoothing: antialiased; letter-spacing: -1px}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {display: block;}
+div,span,p,ul,ol,li,dd,dt,dl,h1,h2,h3,h4,h5,h6{word-break: keep-all;} /* 줄바꿈 속성 (단어기준)*/
+h1, h2, h3, h4, h5, h6{font-size: 1em;margin: 0;padding: 0;font-family: inherit;}
+a{text-decoration:none;color:#000;-webkit-tap-highlight-color: transparent;}
+button{border:none;background-color:transparent;cursor: pointer;}
+ul,li, ol, dl,dt,dd {list-style:none}
+b, strong {font-weight: 600;}
+small{font-size:0.9em;vertical-align: text-bottom;}
+tbody, tfoot, thead, tr, th, td{}
+br{font-family:sans-serif}
+img{
+    image-rendering: -moz-auto;         /* Firefox */
+    image-rendering:   -o-auto;         /* Opera */
+    image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+    image-rendering: auto;
+    -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+    max-width: 100%;
+    display: block;
+    margin: auto;
+}
+
+input, button,textarea, select {margin:0;padding:0;font-family: var(--mainfont), sans-serif;font-size:1em}
+input[type="submit"] {width: auto}
+input[type="button"], input[type="text"], input[type="email"],
+input[type="search"], input[type="password"], textarea, input[type="submit"] {   appearance: none;-webkit-appearance: none; outline: none;}
+
+input[type="button"], input[type="submit"] {border: 0;cursor: pointer;}
+input:focus, textarea:focus{ border-color: #585858; outline: none; }
+input[type="button"]:focus{ outline: none;}
+select::-ms-expand{ display:none;}
+
+
+
+::-webkit-input-placeholder { color: #6f6f6f; text-overflow: ellipsis;}
+::-moz-placeholder { color: #6f6f6f; text-overflow: ellipsis; opacity:1;}
+::-ms-input-placeholder { color: #6f6f6f; text-overflow: ellipsis; opacity:1;}
+
+/* Scroll관련 */
+::-webkit-scrollbar {width: 10px;}
+::-webkit-scrollbar-track {-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);box-shadow: inset 0 0 6px rgba(0,0,0,0.1); border-radius: 5px; background-color: rgba(220, 220, 220, 0.3);}
+::-webkit-scrollbar-thumb {background-clip: padding-box; border-radius: 5px; background: var(--pointcolor); border: 2px solid transparent;}
+
+@media (max-width: 500px) {
+    div,span,p,ul,ol,li,dd,dt,dl,h1,h2,h3,h4,h5,h6{word-break: keep-all;} /* 줄바꿈 속성 (글자기준)*/
+} 
+
+/* common */
+.flex{display: flex;align-items: center;}
+.flexList { --x-gap:1.5rem; --y-gap:1.5rem;   display:flex;  flex-wrap:wrap;  gap:var(--y-gap) var(--x-gap);}
+.flexList > .box{width:calc(100% / var(--count) - (var(--x-gap) * (var(--count) - 1)) / var(--count)); }
+.flexList[layoutStyle="fullbox"] {--x-gap:0; --y-gap:10px; }
+.flexList[layoutStyle="fullbox"] > .box{  width:calc(100% / var(--count)) }
+
+
+.mb-5{margin-bottom: 5px;}
+.mt-10{margin-top: 10px;}
+.mt-20{margin-top: 20px;}
+.mt-30{margin-top: 30px;}
+.mt-50{margin-top: 50px;}
+.mb-30{margin-bottom: 30px;}
+.mb-50{margin-bottom: 50px;}
+
+/* boxCout */
+[boxCount="2"]{ --count:2; }
+[boxCount="3"]{ --count:3; } 
+
+.section{padding:40px 0 80px 0;text-align: center;}
+.container{max-width: var(--layoutwidth); margin: auto;}
+.cont_box{margin-top: 60px;}
+.tit{font-size: 48px;font-weight: 600;}
+.font18{font-size: 18px;}
+.font22{font-size: 22px;font-weight: 600;}
+.font28{font-size: 28px;font-weight: 600;}
+.font30{font-size: 30px;font-weight: 600;}
+.grfont{color:var(--grcolor)}
+.wtfont{color: var(--wtcolor);}
+.btn{transition: .5s all ease;padding: 10px 30px;display: inline-block;border-radius: 50px;background: var(--pointcolor);color: #fff;font-weight: 600;}
+.btn:hover{background: var(--pointcolor2);}
+.icon{padding-top: 80px;}
+.brBox{border-radius: 40px;box-shadow: 3px 3px 20px rgba(0,0,0,0.1);padding: 20px 0;}
+
+.text-left{text-align: left;}
+
+
+/* header */ 
+#header {padding: 15px 0;box-shadow: 0 0 5px 1px rgba(0,0,0,0.1);}
+#header .menu{margin-left: auto;margin-right: 20px;}
+#header .menu a{display: block;padding: 0 15px;}
+#header .menu a:hover{color: var(--pointcolor);}
+
+/* footer */
+#footer{background: #000;padding: 10px 0;text-align: center;}
+#footer .txt{color: var(--wtcolor);opacity:0.3}
+
+/* main */
+main{min-height: 800px;}
+.mainslide{position: relative;top: 0;left:0;overflow: hidden;}
+.mainslide .txt{width: var(--layoutwidth);position: absolute;top: 10%;left:50%;transform: translateX(-50%);text-align: center;}
+
+.iconBox .img{transition: .5s all ease;}
+.iconBox:hover .img{transform: translateY(-20px);}
+.iconBox:hover .txt{color: var(--pointcolor);}
+.banner{background: linear-gradient(0deg, rgba(21,168,212,1) 0%, rgba(21,168,212,1) 50%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%);}
+
+
+/* register */
+.register {max-width: 768px;margin:auto}
+.register .box{margin-top: 30px;}
+
+.register .box:first-child{margin-top: 0;}
+.register .box > label{width: 100%;display: block}
+.register .box input[type="email"], .register .box input[type="text"],.register .box input[type="file"], .register .box input[type="password"]{
+    padding: 10px;border: 0;border-bottom: 1px solid var(--grcolor);width: 100%;margin-top: 5px;
+}
+.register .box select{padding: 10px;width: 320px;border-radius: 5px;border: 1px solid var(--grcolor);}
+.register .box textarea{padding: 10px;width: 100%;border-radius: 5px;height: 100px;border: 1px solid var(--grcolor);}
+.register .brBox{max-width: 680px;padding: 150px 50px;margin-right: auto;margin-left: auto}
+
+.register .radioBox .box{margin-top: 0}
+.register .radioBox .box label{width: auto;display: inline-block;margin-left: 5px;}
+
+/* board */
+.board .cont_box{text-align: right}
+.board table{width: 100%;border-spacing:0;text-align: center}
+.board table th{padding: 10px 5px;border-top:1px solid #ddd;border-bottom: 1px solid #ddd;background: #f5f5f5}
+.board table td{border-bottom: 1px solid #ddd;padding: 10px 5px;}
+.board .paging{text-align: center;margin-top: 30px;display: flex;align-items: center;justify-content: center}
+.board .paging a {display: flex;align-items: center;justify-content: center;}
+
+.petsitterList li {margin-top: 30px;display: flex;align-items: center;justify-content: space-between;width: 100%;flex-wrap: wrap;}
+.petsitterList li.brBox{border-radius: 25px;box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.1);padding: 40px;}
+.petsitterList li .list_icon{width:130px;}
+.petsitterList li .list_icon span{display: block;aspect-ratio: 1/1;padding: 20px;border-radius: 50%;box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);}
+.petsitterList li .list_icon span.dog{background: #f2fbff;}
+.petsitterList li .list_icon span.cat{background: #fffcf1;}
+.petsitterList li .list_txt {width: calc(100% - 160px);text-align: left}
+.petsitterList li .list_txt .list_date{color: var(--grcolor)}
+.petsitterList li .list_txt .marker span{padding: 5px 10px;border-radius: 50px;color: #fff;font-size: 14px;font-weight: bold}
+.petsitterList li .list_txt .marker span.dog{background: var(--pointcolor);}
+.petsitterList li .list_txt .marker span.cat{background: var(--pointcolor2);}
+.searchBox .searchbtn {position: absolute;top: 50%;right: 15px;transform: translateY(-50%);margin-top:2px}
+.searchBox {max-width: 320px;margin-right: auto;margin-left: auto;position: relative;top: 0;left: 0;}
+.searchBox label {display: none;}
+.searchBox input[type="text"] {width: 100%;padding: 10px 15px;padding-right: 50px;display: block;border: 0;background: #efefef;border-radius: 50px;}
+.searchBox button[type="submit"] {color: #9999a1;}
+.searchBox button[type="submit"] span{ font-size:1.3em;}
