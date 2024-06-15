@@ -1,5 +1,6 @@
 package com.example.petsitter.member.service;
 
+import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,6 @@ public class MemberServiceImpl implements MemberService{
     public void joinProcess(MemberDto memberDto) {
         //db에 동일한 username이 존재하는지 확인
         boolean isUser = memberRepository.existsByEmail(memberDto.getEmail());
-
 
         if(isUser){
             return;
@@ -48,5 +48,11 @@ public class MemberServiceImpl implements MemberService{
         }
 
         return msg;
+    }
+
+    @Override
+    public Member findByEmail(String email) {
+        Member member = memberRepository.findByEmail(email);
+        return member;
     }
 }

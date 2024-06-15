@@ -5,9 +5,7 @@ import com.example.petsitter.member.domain.MemberRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
@@ -15,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class MemberDto {
     @NotEmpty(message = "이메일은 필수 입력 값입니다.")
     @Email(message = "이메일 형식으로 입력해주세요.")
@@ -37,6 +36,12 @@ public class MemberDto {
 
     private List<MemberRole> memberRoleList = new ArrayList<>();
 
+    public MemberDto(String email, String password, boolean social) {
+        this.email = email;
+        this.password = password;
+        this.social = social;
+    }
+
     @Builder
     public Member toEntity() {
         Member member = Member.builder()
@@ -54,4 +59,5 @@ public class MemberDto {
 
         return member;
     }
+
 }

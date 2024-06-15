@@ -1,5 +1,6 @@
 package com.example.petsitter.member.service;
 
+import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.dto.MemberDto;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,4 +9,6 @@ public interface MemberService {
     void joinProcess(MemberDto memberDto);
 
     String idCheck(String email);
+
+    Member findByEmail(String username);
 }

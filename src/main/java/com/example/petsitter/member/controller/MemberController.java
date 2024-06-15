@@ -1,5 +1,7 @@
 package com.example.petsitter.member.controller;
 
+import com.example.petsitter.api.kakao.KakaoService;
+import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.service.MemberService;
 import jakarta.validation.Valid;
@@ -17,11 +19,20 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
     private final MemberService memberService;
 
+    private final KakaoService kakaoService;
+
     @ModelAttribute
     public void addCommonModelAttributes(Model model) {
         // 세션 현재 사용자 아이디
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("username", username);
+
+        if (username.equals("anonymousUser")) { //비회원
+            model.addAttribute("isSocial", false);
+        }else {
+            Member member = memberService.findByEmail(username);
+            model.addAttribute("isSocial", member.isSocial());
+        }
 
         log.info("사용자 아이디" + username);
     }
@@ -34,6 +45,9 @@ public class MemberController {
 
     @GetMapping("/login")
     public String loginP(Model model){
+        String kakaoLoginLink = kakaoService.getKakaoLoginLink();
+        model.addAttribute("kakaoLoginLink", kakaoLoginLink);
+        log.info(kakaoLoginLink);
         return "login";
     }
 
