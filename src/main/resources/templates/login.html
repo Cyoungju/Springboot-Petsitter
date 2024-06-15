@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout/layout}"
+>
+<th:block layout:fragment="content">
+    <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
+    <section class="section register">
+        <div class="container">
+            <div class="tit">login</div>
+            <div class="cont_box">
+                <div class="brBox">
+                    <form action="/loginProc" method="post" name="loginForm">
+                        <div class="box">
+                            <input id="username" type="text" name="username" placeholder="email">
+                        </div>
+                        <div class="box">
+                            <input id="password" type="password" name="password" placeholder="password">
+                        </div>
+                        <input type="submit" class="font18 btn mt-30" value="login">
+                    </form>
+                    <a th:href="${kakaoLoginLink}">kakaoLogin</a>
+
+                    <div class="mt-50">
+                        <a th:href="@{/join}" class="font28">Sign Up</a>
+                        <p clas="font-18 grfont">회원이 아니신가요?</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function validateForm() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            if (username.trim() === '' || password.trim() === '') {
+                alert("아이디와 비밀번호를 입력하세요.");
+                return false; // 폼 제출 방지
+            }
+            return true; // 폼 제출 허용
+        }
+    </script>
+
+    <script>
+        // 로그인 실패 시 호출될 함수
+        function showLoginError() {
+            alert("아이디나 비밀번호가 잘못되었습니다. 다시 시도해주세요.");
+        }
+    </script>
+    <script th:if="${param.error}">
+        showLoginError();
+    </script>
+</th:block>
+</html>

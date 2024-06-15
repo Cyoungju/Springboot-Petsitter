@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <header id="header" th:fragment="header">
+        <div class="container flex">
+            <a th:href="@{/}" class="logo">
+                <img th:src="@{/images/logo.png}" alt="">
+            </a>
+            <ul class="menu flex">
+                <li><a th:href="@{/petsitter/paging}">펫시터 둘러보기</a></li>
+                <li><a th:href="@{/}">반려동물 등록</a></li>
+                <li><a th:href="@{/board/list}">문의하기</a></li>
+            </ul>
+            <a th:if="${username == 'anonymousUser'}" th:href="@{/login}" class="login font18 btn">Login</a>
+            <a th:if="${username != 'anonymousUser'}" th:href="@{/logout}" class="login font18 btn">logout</a>
+        </div>
+    </header>
+</html>
