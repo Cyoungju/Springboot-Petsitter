@@ -1,13 +1,20 @@
 package com.example.petsitter.member.service;
 
 import com.example.petsitter.member.domain.Member;
+import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Transactional
 @RequiredArgsConstructor
@@ -17,6 +24,7 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AuthenticationManager authenticationManager;
 
 
     @Override
@@ -51,8 +59,36 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    public void updateMember(MemberDto memberDto) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Member member = memberRepository.findByEmail(username);
+        log.info(member + "member");
+        member.updateFromDTO(memberDto);
+
+        log.info(memberDto + "memberDto");
+
+        memberRepository.save(member);
+    }
+
+    @Override
     public Member findByEmail(String email) {
         Member member = memberRepository.findByEmail(email);
         return member;
     }
+
+    @Override
+    public void loginProcess(MemberDto memberDto) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
+                = new UsernamePasswordAuthenticationToken(memberDto.getEmail(), memberDto.getPassword());
+
+        Authentication authentication = authenticationManager.authenticate(
+                usernamePasswordAuthenticationToken
+        );
+
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        System.out.println(customUserDetails.getUsername());
+    }
+
+
 }

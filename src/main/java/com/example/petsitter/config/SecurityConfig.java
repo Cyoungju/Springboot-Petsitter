@@ -1,6 +1,6 @@
 package com.example.petsitter.config;
 
-import com.example.petsitter.api.kakao.KakaoAuthenticationProvider;
+//import com.example.petsitter.api.kakao.KakaoAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final KakaoAuthenticationProvider kakaoAuthenticationProvider;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -56,8 +55,6 @@ public class SecurityConfig {
                 .sessionManagement((auth) -> auth
                         .sessionFixation().changeSessionId());
         //changeSessionId : 로그인 시 동일한 세션에 대한 id 변경
-
-        http.authenticationProvider(kakaoAuthenticationProvider);
 
         return http.build();
     }

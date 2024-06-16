@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout/layout}"
+>
+<th:block layout:fragment="content">
+    <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
+    <section class="section register">
+        <div class="container">
+            <div class="tit">Mypage</div>
+            <div class="cont_box">
+                <form action="/my/mypage" method="post" name="joinUpdateForm" id="joinUpdateForm" th:object="${memberDto}">
+                    <div class="box text-left">
+                        <label class="font22" th:for="email">이메일주소</label>
+                        <input type="email" th:field="*{email}" id="email" name="email" placeholder="이메일을 입력해주세요" readonly/>
+                    </div>
+
+                    <div class="box text-left" th:unless="${isSocial}">
+                        <label class="font22" th:for="password">비밀번호</label>
+                        <input type="password" id="password" name="password" th:field="*{password}" class="form-control" placeholder="비밀번호 입력" required/>
+                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError" style="color:red">Incorrect data</p>
+                    </div>
+
+                    <div class="box text-left">
+                        <label class="font22" th:for="nickname">이름</label>
+                        <input type="text" id="nickname" name="nickname" th:field="*{nickname}" class="form-control" placeholder="이름을 입력해주세요" th:readonly="${isSocial}"/>
+                        <p th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="fieldError" style="color:red">Incorrect data</p>
+                    </div>
+
+                    <div class="box text-left">
+                        <label class="font22" th:for="userTel">전화번호</label>
+                        <input type="text" id="userTel" name="userTel" oninput="autoHyphen2(this)" th:field="*{userTel}" class="form-control" placeholder="전화번호를 입력해주세요" maxlength="13">
+                    </div>
+
+                    <div class="box text-left">
+                        <label class="font22" for="address_kakao">address</label>
+                        <input type="text" class="form-control" id="address_kakao" name="address"
+                               placeholder="주소(지번 또는 도로명)를 입력하세요. ex) 서울특별시 성북구 종암로 10길" th:field="*{address}" readonly>
+
+                        <input type="text" id="detailAdr" name="detailAdr" th:field="*{detailAdr}" placeholder="상세주소를 입력하세요">
+                    </div>
+
+                    <input type="submit" class="font18 btn mt-20" value="Join">
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Kakao 우편번호 서비스 -->
+    <!-- https://postcode.map.daum.net/guide -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        window.onload = function() {
+            document.getElementById("address_kakao").addEventListener("click", function(){
+
+                new daum.Postcode({
+                    oncomplete: function(data) {
+                        document.getElementById("address_kakao").value = data.address;
+                    }
+                }).open();
+            });
+        }
+
+
+        const autoHyphen2 = (target) => {
+            target.value = target.value
+                .replace(/[^0-9]/g, '')
+                .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+        }
+    </script>
+</th:block>
+</html>
