@@ -51,6 +51,22 @@ public class MemberController {
         return "login";
     }
 
+    @PostMapping("/loginProc")
+    public String loginProcess(@Valid MemberDto memberDto, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "login";
+        }
+
+        try {
+            memberService.loginProcess(memberDto);
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "login";
+        }
+        return "/";
+    }
+
+
     @GetMapping("/join")
     public String joinP(Model model){
         model.addAttribute("memberDto", new MemberDto());
@@ -70,12 +86,34 @@ public class MemberController {
             model.addAttribute("errorMessage", e.getMessage());
             return "join";
         }
-        return "/login";
+        return "redirect:/login";
     }
 
     @GetMapping("/idcheck")
     public @ResponseBody String idcheck(@RequestParam String email){
         String result = memberService.idCheck(email);
         return result;
+    }
+
+
+
+    @GetMapping("/my/mypage")
+    public String updateP(Model model){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Member member = memberService.findByEmail(username);
+
+        log.info(member);
+        model.addAttribute("memberDto", member);
+        return "update";
+    }
+
+    @PostMapping("/my/mypage")
+    public String updateMember(@ModelAttribute("member") MemberDto memberDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return "update";
+        }
+        memberService.updateMember(memberDto);
+        // 회원 정보 업데이트 로직
+        return "redirect:/";
     }
 }

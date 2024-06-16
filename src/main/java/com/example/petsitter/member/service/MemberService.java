@@ -10,5 +10,9 @@ public interface MemberService {
 
     String idCheck(String email);
 
+    void updateMember(MemberDto memberDto);
+
     Member findByEmail(String username);
+
+    void loginProcess(MemberDto memberDto);
 }
