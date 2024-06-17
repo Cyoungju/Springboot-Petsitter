@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout/layout}"
+>
+<th:block layout:fragment="content">
+    <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
+    <section class="section register">
+        <div class="container">
+            <div class="tit">MyPet Card</div>
+            <div class="cont_box">
+                <a th:href="@{/pet/create}" class="font18 btn">반려동물 정보 입력</a>
+
+
+                <ul class="petsitterList mb-50">
+                    <li th:each="pet : ${list}" class="brBox">
+                        <div class="list_icon">
+                            <!-- uploadedFileName의 첫번째 이름만 가져와서 img로 보여주기 -->
+                            <img th:if="${pet.uploadedFileName != null && !pet.uploadedFileName.isEmpty()}" th:src="@{'/pet/view/s_' + ${pet.uploadedFileName[0]}}" alt="Pet Thumbnail">
+
+                        </div>
+                        <div class="list_txt">
+                            <div class="marker mb-5">
+                                <span class="dog" th:if="${pet.petType}">강아지</span>
+                                <span class="cat" th:unless="${pet.petType}">고양이</span>
+                            </div>
+                            <div class="list_tit font22 mb-5" th:text="${pet.petName}"></div>
+                            <div class="list_option">
+                                <span><b th:text="${pet.petGender == 0 ? '수컷' : '암컷'}"></b></span>
+                                <span th:if="${pet.petBirth}"> / <b th:text="${pet.petBirth}"></b></span>
+                                <span> / 중성화 여부 <b th:text="${pet.petNeutering == 0 ? 'X' : 'O'}"></b></span>
+                                <span th:if="${pet.petWeight}"> / <b th:text="${pet.petWeight}"></b> kg</span>
+                            </div>
+                        </div>
+                        <div class="mt-20" style="width:100%;text-center">
+                            <a href="" class="btn">수정</a>
+                            <a href="" class="btn">삭제</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+
+</th:block>
+</html>

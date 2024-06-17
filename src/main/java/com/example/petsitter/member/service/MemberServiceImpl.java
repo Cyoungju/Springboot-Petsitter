@@ -90,5 +90,11 @@ public class MemberServiceImpl implements MemberService{
         System.out.println(customUserDetails.getUsername());
     }
 
+    @Override
+    public String getAuthName() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return username;
+    }
+
 
 }

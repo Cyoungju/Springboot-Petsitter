@@ -24,7 +24,7 @@ public class MemberController {
     @ModelAttribute
     public void addCommonModelAttributes(Model model) {
         // 세션 현재 사용자 아이디
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = memberService.getAuthName();
         model.addAttribute("username", username);
 
         if (username.equals("anonymousUser")) { //비회원
@@ -95,17 +95,6 @@ public class MemberController {
         return result;
     }
 
-
-
-    @GetMapping("/my/mypage")
-    public String updateP(Model model){
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Member member = memberService.findByEmail(username);
-
-        log.info(member);
-        model.addAttribute("memberDto", member);
-        return "update";
-    }
 
     @PostMapping("/my/mypage")
     public String updateMember(@ModelAttribute("member") MemberDto memberDto, BindingResult result) {

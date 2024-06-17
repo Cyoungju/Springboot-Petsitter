@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout/layout}"
+>
+<th:block layout:fragment="content">
+    <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
+    <section class="section register">
+        <div class="container">
+            <div class="tit">MyPet</div>
+            <div class="cont_box">
+                <form action="/pet/" enctype="multipart/form-data" method="post" name="petForm" th:object="${petDto}" id="petForm">
+                    <div class="box text-left">
+                        <div class="box text-left">
+                            <label class="font22" th:for="petName">반려동물 이름</label>
+                            <input type="text" id="petName" name="petName" th:field="*{petName}" class="form-control" required>
+
+                            <p th:if="${#fields.hasErrors('petName')}" th:errors="*{petName}" class="fieldError" style="color:red">Incorrect data</p>
+                            <p th:text="${errorMessage}" style="color:red"></p>
+
+                        </div>
+
+                        <div class="box text-left">
+                            <label class="font22">반려동물 종류</label><br>
+                            <label><input type="radio" name="petType" th:field="*{petType}" th:value="true"/> 강아지</label>
+                            <label><input type="radio" name="petType" th:field="*{petType}" th:value="false"/> 고양이</label>
+                            <p th:if="${#fields.hasErrors('petType')}" th:errors="*{petType}" class="fieldError" style="color:red">Incorrect data</p>
+
+                        </div>
+
+                        <div class="box text-left">
+                            <label class="font22">반려동물 성별</label><br>
+                            <label><input type="radio" name="petGender" th:field="*{petGender}" th:value="true"/> 숫컷</label>
+                            <label><input type="radio" name="petGender" th:field="*{petGender}" th:value="false"/> 암컷</label>
+                        </div>
+
+                        <div class="box text-left">
+                            <label class="font22">반려동물 생일</label><br>
+                            <input type="date" id="petBirth" name="petBirth" th:field="*{petBirth}" class="form-control">
+                        </div>
+
+                        <div class="box text-left">
+                            <label class="font22" th:for="petBreed">반려동물 품종</label>
+                            <input type="text" id="petBreed" name="petBreed" th:field="*{petBreed}" class="form-control">
+                        </div>
+
+                        <div class="box text-left">
+                            <label class="font22">중성화 여부</label><br>
+                            <label><input type="radio" name="petBreed" th:field="*{petNeutering}" th:value="true"/> O</label>
+                            <label><input type="radio" name="petBreed" th:field="*{petNeutering}" th:value="false"/> X</label>
+                        </div>
+
+                        <!-- 반려동물 몸무게 -->
+                        <div class="box text-left">
+                            <label class="font22" th:for="petWeight">반려동물 몸무게 (kg)</label>
+                            <input type="number" step="0.01" id="petWeight" name="petWeight" th:field="*{petWeight}" class="form-control">
+                        </div>
+
+                        <!-- 파일 업로드 부분 -->
+                        <div class="box text-left">
+                            <label class="font22" th:for="files">프로필 사진등록</label>
+                            <input type="file" id="files" name="files" th:field="*{files}" class="form-control" multiple>
+                        </div>
+
+
+                    </div>
+                    <input type="submit" class="font18 btn mt-20" value="등록">
+                </form>
+            </div>
+        </div>
+    </section>
+
+</th:block>
+</html>

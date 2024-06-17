@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth)-> auth
                         .requestMatchers("/","/login","/loginProc","/join","/joinProc","/images/**","/css/**", "/idcheck","/api/**", "/api/kakao/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/my/**").hasAnyRole("ADMIN","USER","MANAGER") // ** 와일드카드
+                        .requestMatchers("/my/**", "/pet/**","/pet/view/**").hasAnyRole("ADMIN","USER","MANAGER") // ** 와일드카드
                         .anyRequest().authenticated() //나머지 로그인한 사용자만 접근
                 );
         http

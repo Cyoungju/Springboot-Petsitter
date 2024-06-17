@@ -15,4 +15,6 @@ public interface MemberService {
     Member findByEmail(String username);
 
     void loginProcess(MemberDto memberDto);
+
+    String getAuthName();
 }
