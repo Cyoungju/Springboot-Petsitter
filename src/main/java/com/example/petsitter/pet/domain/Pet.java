@@ -65,6 +65,9 @@ public class Pet {
         addImage(petImage);
 
     }
+    public void clearList() {
+        this.imageList.clear();
+    }
 
     @Builder
     public Pet(Long id, String petName, boolean petType, boolean petGender, LocalDate petBirth, String petBreed, boolean petNeutering, float petWeight, List<PetImage> imageList, Member member) {

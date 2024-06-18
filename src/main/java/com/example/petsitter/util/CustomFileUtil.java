@@ -110,19 +110,23 @@ public class CustomFileUtil {
     }
 
     public void deleteFiles(List<String> fileNames) {
-        for (String fileName : fileNames) {
+        if(fileNames == null || fileNames.size() == 0){
+            return;
+        }
+
+        fileNames.forEach(fileName -> {
+
+            //썸네일이 있는지 확인하고 삭제
+            String thumbnailFileName = "s_" + fileName;
+            Path thumbnailPath = Paths.get(uploadPath, thumbnailFileName);
             Path filePath = Paths.get(uploadPath, fileName);
-            Path thumbnailPath = Paths.get(uploadPath, "s_" + fileName);
 
             try {
-                Files.deleteIfExists(filePath); // 원본 파일 삭제
-                Files.deleteIfExists(thumbnailPath); // 썸네일 파일 삭제
-
-                log.info("Deleted file: " + fileName);
+                Files.deleteIfExists(filePath);
+                Files.deleteIfExists(thumbnailPath);
             } catch (IOException e) {
-                log.error("Failed to delete file: " + fileName, e);
-                // 파일 삭제 실패 시 처리할 예외 로직 추가
+                throw new RuntimeException(e.getMessage());
             }
-        }
+        });
     }
 }
