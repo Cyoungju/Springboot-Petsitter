@@ -55,6 +55,10 @@ public class CustomFileUtil {
         List<String> uploadNames = new ArrayList<>();
 
         for(MultipartFile file : files){
+            if (file.isEmpty()) {
+                continue; // 비어있는 파일은 무시
+            }
+
             //UUID 32자리 + 원래 파일 이름 file.getOriginalFilename
             String saveName = UUID.randomUUID().toString()+"_"+file.getOriginalFilename();
 
@@ -103,5 +107,22 @@ public class CustomFileUtil {
             return ResponseEntity.internalServerError().build();
         }
         return ResponseEntity.ok().headers(headers).body(resource);
+    }
+
+    public void deleteFiles(List<String> fileNames) {
+        for (String fileName : fileNames) {
+            Path filePath = Paths.get(uploadPath, fileName);
+            Path thumbnailPath = Paths.get(uploadPath, "s_" + fileName);
+
+            try {
+                Files.deleteIfExists(filePath); // 원본 파일 삭제
+                Files.deleteIfExists(thumbnailPath); // 썸네일 파일 삭제
+
+                log.info("Deleted file: " + fileName);
+            } catch (IOException e) {
+                log.error("Failed to delete file: " + fileName, e);
+                // 파일 삭제 실패 시 처리할 예외 로직 추가
+            }
+        }
     }
 }

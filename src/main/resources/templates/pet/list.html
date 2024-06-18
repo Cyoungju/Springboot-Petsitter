@@ -27,22 +27,43 @@
                             </div>
                             <div class="list_tit font22 mb-5" th:text="${pet.petName}"></div>
                             <div class="list_option">
-                                <span><b th:text="${pet.petGender == 0 ? '수컷' : '암컷'}"></b></span>
+                                <span><b th:text="${pet.petGender == true ? '여아' : '남아'}"></b></span>
                                 <span th:if="${pet.petBirth}"> / <b th:text="${pet.petBirth}"></b></span>
-                                <span> / 중성화 여부 <b th:text="${pet.petNeutering == 0 ? 'X' : 'O'}"></b></span>
+                                <span> / 중성화 여부 <b th:text="${pet.petNeutering == true ? 'O' : 'X'}"></b></span>
                                 <span th:if="${pet.petWeight}"> / <b th:text="${pet.petWeight}"></b> kg</span>
                             </div>
                         </div>
                         <div class="mt-20" style="width:100%;text-center">
-                            <a href="" class="btn">수정</a>
-                            <a href="" class="btn">삭제</a>
+                            <a th:href="@{/pet/update/{id}(id=${pet.id})}" class="btn font16">수정</a>
+                            <button type="button" class="btn font16" th:attr="onclick=|deletePet('${pet.id}')|">삭제</button>
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
     </section>
+    <script>
+        function deletePet(id) {
+            if (!confirm('정말 삭제하시겠습니까?')) {
+                return;
+            }
 
-
+            fetch(`/pet/delete/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('삭제되었습니다.');
+                    window.location.reload(); // 또는 다른 처리를 할 수 있음
+                } else {
+                    alert('삭제에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('삭제 중 오류가 발생했습니다.');
+            });
+        }
+    </script>
 </th:block>
 </html>
