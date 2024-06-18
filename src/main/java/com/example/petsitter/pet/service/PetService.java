@@ -12,4 +12,10 @@ public interface PetService {
     void save(PetDto petDto);
 
     List<PetDto> getList();
+
+    void update(PetDto petDto);
+
+    void delete(Long id);
+
+    PetDto findById(Long id);
 }

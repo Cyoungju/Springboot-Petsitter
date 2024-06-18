@@ -10,7 +10,9 @@
         <div class="container">
             <div class="tit">MyPet</div>
             <div class="cont_box">
-                <form action="/pet/" enctype="multipart/form-data" method="post" name="petForm" th:object="${petDto}" id="petForm" onsubmit="return validateFiles()">
+
+                <form action="/pet/update" method="post" enctype="multipart/form-data" th:object="${petDto}" onsubmit="return validateFiles()">
+                    <input type="hidden" name="id" th:value="${petDto.id}">
                     <div class="box text-left">
                         <div class="box text-left">
                             <label class="font22" th:for="petName">반려동물 이름</label>
@@ -46,7 +48,7 @@
 
                         <div class="box text-left">
                             <label class="font22" th:for="petBreed">반려동물 품종</label>
-                            <input type="text" id="petBreed" name="petBreed" th:field="*{petBreed}" class="form-control">
+                            <input type="text" id="petBreed" name="petBreed" th:field="*{petBreed}" class="form-control"/>
                         </div>
 
                         <div class="box text-left">
@@ -63,7 +65,7 @@
 
                         <!-- 파일 업로드 부분 -->
                         <div class="box text-left">
-                            <label class="font22" th:for="files">프로필 사진등록 (이미지 파일만)</label>
+                            <label class="font22" th:for="files">프로필 사진등록</label>
                             <input type="file" id="files" name="files" th:field="*{files}" class="form-control"
                                    accept="image/png, image/jpeg, image/gif" multiple>
                         </div>
@@ -92,10 +94,13 @@
 
             return true;
         }
+
         function updateTextField() {
             var selectedDate = document.getElementById('petBirthDate').value;
             document.getElementById('petBirth').value = selectedDate;
         }
     </script>
+
+
 </th:block>
 </html>

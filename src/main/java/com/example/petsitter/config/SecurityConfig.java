@@ -4,6 +4,7 @@ package com.example.petsitter.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,7 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth)-> auth
                         .requestMatchers("/","/login","/loginProc","/join","/joinProc","/images/**","/css/**", "/idcheck","/api/**", "/api/kakao/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/my/**", "/pet/**","/pet/view/**").hasAnyRole("ADMIN","USER","MANAGER") // ** 와일드카드
+                        .requestMatchers(HttpMethod.DELETE,"/my/**", "/pet/**","/pet/view/**", "/pet/delete/**", "/pet/update/**").hasAnyRole("ADMIN","USER","MANAGER") // ** 와일드카드
                         .anyRequest().authenticated() //나머지 로그인한 사용자만 접근
                 );
         http

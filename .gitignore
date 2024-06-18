@@ -40,4 +40,6 @@ out/
 ### add ###
 img/
 img/**
+upload/
+upload/**
 application.properties

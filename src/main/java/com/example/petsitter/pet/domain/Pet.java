@@ -2,6 +2,7 @@ package com.example.petsitter.pet.domain;
 
 
 import com.example.petsitter.member.domain.Member;
+import com.example.petsitter.pet.dto.PetDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -58,10 +59,10 @@ public class Pet {
 
     public void addImageString(String fileName){
 
-        PetImage productImage = PetImage.builder()
+        PetImage petImage = PetImage.builder()
                 .fileName(fileName)
                 .build();
-        addImage(productImage);
+        addImage(petImage);
 
     }
 
@@ -77,5 +78,16 @@ public class Pet {
         this.petWeight = petWeight;
         this.imageList = imageList;
         this.member = member;
+    }
+
+    public void updateFromDTO(PetDto petDto){
+        // 모든 변경 사항을 셋팅. =>  기존에 있는 데이터에 저장해야하기 때문에 new 객체 생성을 하는 toEntity 사용 불가
+        this.petName = petDto.getPetName();
+        this.petType = petDto.isPetType();
+        this.petGender = petDto.isPetGender();
+        this.petBirth = petDto.getPetBirth();
+        this.petBreed = petDto.getPetBreed();
+        this.petNeutering = petDto.isPetNeutering();
+        this.petWeight = petDto.getPetWeight();
     }
 }

@@ -20,6 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 public class PetDto {
 
+    private Long id;
+
     @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String petName;
 
@@ -36,6 +38,8 @@ public class PetDto {
 
     private float petWeight;
 
+    private Member member;
+
 
     // 데이터베이스에 파일을 저장하면안됨
     // 등록
@@ -51,6 +55,7 @@ public class PetDto {
 
     public Pet toEntity(Member member) {
         Pet pet = Pet.builder()
+                .id(id)
                 .petName(petName)
                 .petType(petType)
                 .petGender(petGender)

@@ -89,13 +89,14 @@ select::-ms-expand{ display:none;}
 .container{max-width: var(--layoutwidth); margin: auto;}
 .cont_box{margin-top: 60px;}
 .tit{font-size: 48px;font-weight: 600;}
+.font16{font-size: 16px;}
 .font18{font-size: 18px;}
 .font22{font-size: 22px;font-weight: 600;}
 .font28{font-size: 28px;font-weight: 600;}
 .font30{font-size: 30px;font-weight: 600;}
 .grfont{color:var(--grcolor)}
 .wtfont{color: var(--wtcolor);}
-.btn{transition: .5s all ease;padding: 10px 30px;display: inline-block;border-radius: 50px;background: var(--pointcolor);color: #fff;font-weight: 600;}
+.btn{line-height: 1.5em;transition: .5s all ease;padding: 10px 30px;display: inline-block;border-radius: 50px;background: var(--pointcolor);color: #fff;font-weight: 600;}
 .btn:hover{background: var(--pointcolor2);}
 .icon{padding-top: 80px;}
 .brBox{border-radius: 40px;box-shadow: 3px 3px 20px rgba(0,0,0,0.1);padding: 20px 0;}

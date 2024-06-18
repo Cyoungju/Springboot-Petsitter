@@ -5,10 +5,12 @@ import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.pet.service.PetService;
 import com.example.petsitter.util.CustomFileUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,5 +51,28 @@ public class PetController {
         return fileUtil.getFile(fileName);
     }
 
+
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable Long id, Model model){
+        PetDto petDto = petService.findById(id);
+        model.addAttribute("petDto", petDto);
+        return "/pet/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute("petDto") PetDto petDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return "/pet/update/"+ petDto.getId();
+        }
+        petService.update(petDto);
+        // 회원 정보 업데이트 로직
+        return "redirect:/my/myPetlist";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        petService.delete(id);
+        return ResponseEntity.ok("success");
+    }
 
 }
