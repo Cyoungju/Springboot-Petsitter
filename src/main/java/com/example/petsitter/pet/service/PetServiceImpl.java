@@ -37,11 +37,6 @@ public class PetServiceImpl implements PetService{
         log.info("register : "+ petDto);
         List<MultipartFile> files = petDto.getFiles();
 
-        // 파일이 없는 경우 처리
-        if (files == null || files.isEmpty()) {
-            throw new IllegalArgumentException("업로드할 파일을 선택해주세요.");
-        }
-
         List<String> uploadedFileNames = fileUtil.saveFiles(files);
         petDto.setUploadedFileName(uploadedFileNames);
         log.info("uploadedFileNames : "+uploadedFileNames);

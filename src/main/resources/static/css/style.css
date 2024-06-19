@@ -170,3 +170,8 @@ main{min-height: 800px;}
 .searchBox input[type="text"] {width: 100%;padding: 10px 15px;padding-right: 50px;display: block;border: 0;background: #efefef;border-radius: 50px;}
 .searchBox button[type="submit"] {color: #9999a1;}
 .searchBox button[type="submit"] span{ font-size:1.3em;}
+
+
+/* paging */
+.paging {display: flex;align-items: center;justify-content: center;}
+.paging > a {display: flex;align-items: center;}

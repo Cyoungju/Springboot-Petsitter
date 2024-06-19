@@ -1,20 +1,26 @@
 package com.example.petsitter.member.service;
 
 import com.example.petsitter.member.domain.Member;
+import com.example.petsitter.member.domain.MemberRole;
 import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.repository.MemberRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @RequiredArgsConstructor
@@ -25,6 +31,8 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
+
 
 
     @Override
@@ -96,5 +104,35 @@ public class MemberServiceImpl implements MemberService{
         return username;
     }
 
+    @Override
+    public void addRole() {
+        String username = getAuthName();
+        Member member = memberRepository.findByEmail(username);
+        member.addRole(MemberRole.MANAGER);
+        refreshAuthentication(member.getEmail());
+    }
 
+    @Override
+    public void clearRole() {
+        String username = getAuthName();
+        Member member = memberRepository.findByEmail(username);
+        member.clearRole();
+        member.addRole(MemberRole.USER);
+        refreshAuthentication(member.getEmail());
+    }
+
+    @Override
+    public void refreshAuthentication(String username) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if (userDetails == null) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
 }

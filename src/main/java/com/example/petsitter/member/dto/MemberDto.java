@@ -7,13 +7,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class MemberDto {
     @NotEmpty(message = "이메일은 필수 입력 값입니다.")
     @Email(message = "이메일 형식으로 입력해주세요.")
@@ -58,6 +61,20 @@ public class MemberDto {
         member.addRole(MemberRole.USER);
 
         return member;
+    }
+
+    //toEntity -> DTO로 변환
+    public static MemberDto tomemberDTO(Member member){
+        return new MemberDto(
+                member.getEmail(),
+                member.getPassword(),
+                member.getNickname(),
+                member.getUserTel(),
+                member.isSocial(),
+                member.getAddress(),
+                member.getDetailAdr(),
+                member.getMemberRoleList()
+        );
     }
 
 }

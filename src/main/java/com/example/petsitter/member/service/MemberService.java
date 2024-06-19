@@ -17,4 +17,9 @@ public interface MemberService {
     void loginProcess(MemberDto memberDto);
 
     String getAuthName();
+
+    void addRole();
+    void clearRole();
+
+    void refreshAuthentication(String username);
 }
