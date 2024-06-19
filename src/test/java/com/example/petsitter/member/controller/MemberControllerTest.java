@@ -1,4 +1,4 @@
-package com.example.petsitter.controller;
+package com.example.petsitter.member.controller;
 
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.repository.MemberRepository;
@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
@@ -20,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MemberControllerTest {
+class MemberControllerTest {
 
     @Autowired
     private MemberService memberService;
@@ -48,7 +49,7 @@ public class MemberControllerTest {
 
     @Test
     public void testLoginWithRegisteredUser() throws Exception {
-        testJoin();
+        //testJoin();
 
         // 로그인 테스트 코드 추가
         mockMvc.perform(post("/loginProc")
@@ -80,4 +81,5 @@ public class MemberControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?error"));
     }
+
 }
