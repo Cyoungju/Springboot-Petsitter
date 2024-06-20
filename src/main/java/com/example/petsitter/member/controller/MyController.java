@@ -7,6 +7,7 @@ import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.service.MemberService;
 import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.pet.service.PetService;
+import com.example.petsitter.petsitter.dto.PetsitterDto;
 import com.example.petsitter.petsitter.service.PetsitterService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -40,43 +41,32 @@ public class MyController {
 
     @GetMapping("/mypage")
     public String mypageP(Model model){
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Member member = memberService.findByEmail(username);
-        List<String> roles = member.getMemberRoleList().stream()
-                .map(role -> role.name())
-                .collect(Collectors.toList());
+        String username = memberService.getAuthName();
+        MemberDto memberDto = memberService.findByDtoEmail(username);
 
-
-        if(member.getMemberRoleList().size() > 1){
-            model.addAttribute("role", roles);
-        }else {
-            model.addAttribute("role", roles);
-        }
-        model.addAttribute("member", member);
-        return "mypage";
+        model.addAttribute("member", memberDto);
+        return "/my/mypage";
     }
-
-    @GetMapping("/mypage/update")
-    public String updateP(Model model){
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Member member = memberService.findByEmail(username);
-
-        log.info(member);
-        model.addAttribute("memberDto", member);
-        return "update";
-    }
-
 
     @GetMapping("/myPetlist")
     public String petlistP(Model model){
         List<PetDto> petDtoList = petService.getList();
         model.addAttribute("list", petDtoList);
-        return "/pet/list";
+        return "/my/myPetlist";
     }
 
     @GetMapping("/myPetsitterList")
     public String petsitterP(Model model){
-        return "/petsitter/list";
+        List<PetsitterDto> petsitterDtoList = petsitterService.getList();
+        model.addAttribute("list", petsitterDtoList);
+        return "/my/petsitterList";
+    }
+
+    @GetMapping("/myPetsitterResList")
+    public String PetsitterResListP(Model model){
+        List<PetsitterDto> petsitterDtoList = petsitterService.getList();
+        model.addAttribute("list", petsitterDtoList);
+        return "/my/myPetsitterResList";
     }
 
     @PostMapping("/sitterRole")
@@ -85,7 +75,7 @@ public class MyController {
         return ResponseEntity.ok("success");
     }
     @PostMapping("/userRole")
-    public ResponseEntity<String> userRole(){
+    public ResponseEntity<String> userRole(@Valid @RequestBody MemberDto memberDto){
         memberService.clearRole();
         return ResponseEntity.ok("success");
     }

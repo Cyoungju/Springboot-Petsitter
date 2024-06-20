@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout/layout}"
+>
+<th:block layout:fragment="content">
+    <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
+    <section class="section">
+        <div class="container">
+            <div class="tit">MyPetSitterList</div>
+            <div class="cont_box">
+                <div class="board list">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>분류</th>
+                            <th>펫시터 이름</th>
+                            <th>주소</th>
+                            <th class="td_date">작성일</th>
+                            <th>관리</th>
+                        </tr>
+
+                        </thead>
+                        <tbody>
+                            <tr th:each="petsitter: ${list}">
+                                <td>
+                                    <span class="marker dog" th:if="${petsitter.isSitterType() == false}">강아지</span>
+                                    <span class="marker cat" th:if="${petsitter.isSitterType() == true}">고양이</span>
+                                </td>
+                                <td class="td_tit">
+                                    <a th:href="@{|/petsitter/${petsitter.getId()}|}" th:text="${petsitter.getSitterName()}"></a>
+                                </td>
+                                <td th:text="${petsitter.getSitterWorkAdr()}"></td>
+                                <td class="td_date" th:text="*{#temporals.format(petsitter.getCreateTime, 'yyyy-MM-dd')}"></td>
+                                <td>
+                                    <span th:if="${petsitter.isStatus}">예약 확정</span>
+                                    <span th:unless="${petsitter.isStatus}">예약 대기</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</th:block>
+</html>

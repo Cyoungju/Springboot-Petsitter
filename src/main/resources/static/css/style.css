@@ -88,7 +88,7 @@ select::-ms-expand{ display:none;}
 .section{padding:40px 0 80px 0;text-align: center;}
 .container{max-width: var(--layoutwidth); margin: auto;}
 .cont_box{margin-top: 60px;}
-.tit{font-size: 48px;font-weight: 600;}
+.tit{font-size: 48px;font-weight: 700;font-family: "Montserrat", sans-serif;}
 .font16{font-size: 16px;}
 .font18{font-size: 18px;}
 .font22{font-size: 22px;font-weight: 600;}

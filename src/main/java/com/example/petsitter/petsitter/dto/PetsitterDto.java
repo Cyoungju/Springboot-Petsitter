@@ -43,6 +43,8 @@ public class PetsitterDto {
 
     private LocalDateTime updateTime;
 
+    private boolean status;
+
     // 업로드시 사용
     @Builder.Default
     private List<MultipartFile> files = new ArrayList<>();
@@ -50,6 +52,34 @@ public class PetsitterDto {
     //이미 업로드 되어있는 파일들의 이름
     @Builder.Default
     private List<String> uploadedFileName = new ArrayList<>();
+
+    public PetsitterDto(Long id, String sitterName, String sitterContent, boolean sitterType, Long sitterPrice, String sitterWorkAdr, LocalDateTime createTime, LocalDateTime updateTime, List<String> uploadedFileName) {
+        this.id = id;
+        this.sitterName = sitterName;
+        this.sitterContent = sitterContent;
+        this.sitterType = sitterType;
+        this.sitterPrice = sitterPrice;
+        this.sitterWorkAdr = sitterWorkAdr;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.uploadedFileName = uploadedFileName;
+    }
+
+    public static PetsitterDto topetsitterDTO(Petsitter petsitter) {
+        return new PetsitterDto(
+                petsitter.getId(),
+                petsitter.getSitterName(),
+                petsitter.getSitterContent(),
+                petsitter.isSitterType(),
+                petsitter.getSitterPrice(),
+                petsitter.getSitterWorkAdr(),
+                petsitter.getCreateTime(),
+                petsitter.getUpdateTime(),
+                petsitter.getImageList().stream().map(
+                        images-> images.getFileName()
+                ).collect(Collectors.toList())
+        );
+    }
 
 
     public Petsitter toEntity(Member member){

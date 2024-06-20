@@ -10,7 +10,7 @@
         <div class="container">
             <div class="tit">Sign Up</div>
             <div class="cont_box">
-                <form action="/joinProc" method="post" name="joinForm" id="joinForm" th:object="${memberDto}" onsubmit="return validateForm()">
+                <form action="/joinProc" enctype="multipart/form-data" method="post" name="joinForm" id="joinForm" th:object="${memberDto}" onsubmit="return validateForm()">
                     <div class="box text-left">
                         <label class="font22" th:for="email">이메일주소</label>
                         <input type="email" th:field="*{email}" id="email" name="email" placeholder="이메일을 입력해주세요" required/>
@@ -47,6 +47,14 @@
 
                         <input type="text" id="detailAdr" name="detailAdr" th:field="*{detailAdr}" placeholder="상세주소를 입력하세요">
                     </div>
+
+                    <!-- 파일 업로드 부분 -->
+                    <div class="box text-left">
+                        <label class="font22" th:for="files">프로필 사진등록 (이미지 파일만)</label>
+                        <input type="file" id="files" name="files" th:field="*{files}" class="form-control"
+                               accept="image/png, image/jpeg, image/gif" multiple>
+                    </div>
+
 
                     <input type="submit" class="font18 btn mt-20" value="Join">
                 </form>

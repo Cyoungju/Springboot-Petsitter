@@ -11,11 +11,5 @@ import java.util.Optional;
 
 public interface PetRepository extends JpaRepository<Pet, Long>{
 
-    @EntityGraph(attributePaths = "imageList")
-    @Query("SELECT p FROM Pet p WHERE p.id = :id")
-    Optional<Pet> selectOne(@Param("id") Long id);
-
-    List<Pet> findByMemberEmail(String username);
-
     List<Pet> findByMemberId(Long id);
 }

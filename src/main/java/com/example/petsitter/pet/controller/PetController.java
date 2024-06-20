@@ -1,24 +1,18 @@
 package com.example.petsitter.pet.controller;
 
 
-import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.pet.service.PetService;
-import com.example.petsitter.util.CustomFileUtil;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.petsitter.core.util.CustomFileUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Controller
 @Log4j2

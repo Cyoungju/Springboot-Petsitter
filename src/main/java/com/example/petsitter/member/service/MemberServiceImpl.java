@@ -5,7 +5,7 @@ import com.example.petsitter.member.domain.MemberRole;
 import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.repository.MemberRepository;
-import jakarta.servlet.http.HttpSession;
+import com.example.petsitter.core.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,8 +18,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -32,8 +33,7 @@ public class MemberServiceImpl implements MemberService{
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
-
-
+    private final CustomFileUtil fileUtil;
 
     @Override
     public void joinProcess(MemberDto memberDto) {
@@ -47,6 +47,13 @@ public class MemberServiceImpl implements MemberService{
         //비밀번호 인코딩
         String encodedPassword = bCryptPasswordEncoder.encode(memberDto.getPassword());
         memberDto.setPassword(encodedPassword);
+
+        // 파일 업로드
+        List<MultipartFile> files = memberDto.getFiles();
+        List<String> uploadedFileNames = fileUtil.saveFiles(files);
+        memberDto.setUploadedFileName(uploadedFileNames);
+
+        // 저장
         memberRepository.save(memberDto.toEntity());
     }
 
@@ -69,13 +76,54 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public void updateMember(MemberDto memberDto) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        MemberDto oldDto = findByDtoEmail(username);
         Member member = memberRepository.findByEmail(username);
-        log.info(member + "member");
+
+        //기존의 파일들
+        List<String> oldFileNames = oldDto.getUploadedFileName();
+
+        //새로 업로드할 파일
+        List<MultipartFile> files = memberDto.getFiles();
+
+        //새로 업로드 해야하는 파일들
+        List<String> currentUploadFileNames = fileUtil.saveFiles(files);
+
+
+        // 화면에서 변화 없이 유지 되어야할 파일들
+        List<String> uploadedFileNames = memberDto.getUploadedFileName();
+
+        //유지되는 파일들  + 새로 업로드된 파일 이름들이 저장해야 하는 파일 목록이 됨
+        if(currentUploadFileNames != null && currentUploadFileNames.size() > 0) {
+            uploadedFileNames.addAll(currentUploadFileNames);
+        }
+
         member.updateFromDTO(memberDto);
+        if(member.isSocial() != true){
+            member.clearList();
+            List<String> uploadFileNames = memberDto.getUploadedFileName();
 
-        log.info(memberDto + "memberDto");
-
+            if(uploadFileNames != null && uploadFileNames.size() > 0 ){
+                uploadFileNames.stream().forEach(uploadName -> {
+                    member.addImageString(uploadName);
+                });
+            }
+        }
         memberRepository.save(member);
+
+        if(oldFileNames != null && oldFileNames.size() > 0){
+            if(member.isSocial() != true) {
+            // 지워져야하는 파일 목록 찾기
+            // 예전 파일들 중에 지워져야하는 파일 이름들
+            List<String> removeFiles = oldFileNames
+                    .stream()
+                    .filter(fileNeme -> uploadedFileNames.indexOf(fileNeme) == -1).collect(Collectors.toList());
+
+
+                // 실제 파일 삭제
+                fileUtil.deleteFiles(removeFiles);
+            }
+        }
     }
 
     @Override
@@ -85,17 +133,14 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public void loginProcess(MemberDto memberDto) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
-                = new UsernamePasswordAuthenticationToken(memberDto.getEmail(), memberDto.getPassword());
+    public MemberDto findByDtoEmail(String email) {
+        Member member = memberRepository.findByEmail(email);
+        if (member == null) {
+            return null; // or handle the case where member is not found
+        }
+        MemberDto memberDto = MemberDto.tomemberDto(member);
 
-        Authentication authentication = authenticationManager.authenticate(
-                usernamePasswordAuthenticationToken
-        );
-
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-
-        System.out.println(customUserDetails.getUsername());
+        return memberDto;
     }
 
     @Override

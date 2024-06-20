@@ -6,8 +6,8 @@
                 <img th:src="@{/images/logo.png}" alt="">
             </a>
             <ul class="menu flex depth1">
-                <li><a th:href="@{/petsitter/paging}">펫시터 둘러보기</a></li>
-                <li><a th:href="@{/}">반려동물 등록</a></li>
+                <li><a th:href="@{/about}">펫시터 소개</a></li>
+                <li><a th:href="@{/petsitter/list}">펫시터 둘러보기</a></li>
                 <li><a th:href="@{/board/list}">문의하기</a></li>
                 <li th:if="${username != 'anonymousUser'}" class="has-submenu">
                     <a href="">마이페이지</a>
@@ -15,7 +15,8 @@
                         <li><a th:href="@{/my/mypage}">회원 정보</a></li>
                         <li><a th:href="@{/my/myWishList}">찜 리스트</a></li>
                         <li><a th:href="@{/my/myPetlist}">반려 동물 정보</a></li>
-                        <li><a th:href="@{/my/myPetsitterList}">예약 상품 목록</a></li>
+                        <li><a th:href="@{/my/myPetsitterResList}">예약 상품 목록</a></li>
+                        <li th:if="${#lists.size(role) > 1}"><a th:href="@{/my/myPetsitterList}">나의 펫시터</a></li>
                     </ul>
                 </li>
             </ul>
