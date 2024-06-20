@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout/layout}"
+>
+<th:block layout:fragment="content">
+    <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
+    <section class="section register">
+        <div class="container">
+            <div class="tit">Mypage</div>
+            <div class="cont_box">
+                <div th:if="${#lists.size(role) == 1}">
+                    <button type="button" th:attr="onclick=|RoleChange()|" class="btn mb-20 font18">펫시터 모드 전환</button>
+                </div>
+                <div th:if="${#lists.size(role) > 1}">
+                    <button type="button" th:attr="onclick=|RoleClear()|" class="btn mb-20 font18">사용자 모드 전환</button>
+                </div>
+
+                <ul class="petsitterList">
+                    <li class="brBox">
+                        <div>
+                            <div th:if="${member.social}">
+                                <!-- 소셜 프로필 이미지 추가 -->
+                                <div th:unless="${member.uploadedFileName != null && !member.uploadedFileName.isEmpty()}" class="list_icon">
+                                    <img th:src="@{/member/view/default.jpg}" alt="Pet Thumbnail">
+                                </div>
+                                <div th:if="${member.uploadedFileName != null && !member.uploadedFileName.isEmpty()}" class="list_icon">
+                                    <img th:src="${member.uploadedFileName[0]}" alt="Social Thumbnail">
+                                </div>
+
+                            </div>
+                            <div th:unless="${member.social}">
+                                <!-- 프로필 이미지 추가 -->
+                                <div th:unless="${member.uploadedFileName != null && !member.uploadedFileName.isEmpty()}" class="list_icon">
+                                    <img th:src="@{/member/view/default.jpg}" alt="Pet Thumbnail">
+                                </div>
+                                <div th:if="${member.uploadedFileName != null && !member.uploadedFileName.isEmpty()}" class="list_icon">
+                                    <img th:src="@{'/member/view/s_' + ${member.uploadedFileName[0]}}" alt="Pet Thumbnail">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list_txt">
+                            <div class="list_tit font22 mb-5">
+                                기본정보
+                            </div>
+                            <b th:text="${member.getEmail()}"></b>
+                            <input type="hidden" id="email" th:value="${member.getEmail()}"/>
+
+                            <div th:text="${member.getNickname()}"></div>
+                            <input type="hidden" id="nickname" th:value="${member.getNickname()}"/>
+                            <input type="hidden" id="password" th:value="12345678"/>
+                        </div>
+                        <div class="box text-left" style="width:100%">
+                            <div class="font22">전화번호</div>
+                            <div th:if="${member.getUserTel() != null or member.getUserTel() != ''}" th:text="${member.getUserTel()}"></div>
+                            <div class="list_date" th:if="${member.getUserTel() == null or member.getUserTel() == ''}">전화번호를 등록해주세요</div>
+
+                        </div>
+                        <div class="box text-left" style="width:100%">
+                            <div class="font22">주소</div>
+                            <div th:if="${member.getAddress() != '' or member.getAddress() != null}" th:text="${member.getAddress()}"></div>
+                            <div th:if="${member.getDetailAdr() != '' or member.getDetailAdr() != null}" th:text="${member.getDetailAdr()}"></div>
+                            <div th:if="${(member.address == null or member.address == '') and (member.detailAdr == null or member.detailAdr == '')}" class="list_date">주소를 등록해주세요</div>
+                        </div>
+                        <div class="mt-20" style="width:100%;text-align:center">
+                            <a th:href="@{/update}" class="btn font16">회원정보 수정</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <script>
+        function RoleChange() {
+            const data = {
+                email: document.querySelector("#email").value ,
+                nickname: document.querySelector("#nickname").value,
+                password: document.querySelector("#password").value
+            };
+
+            fetch(`/my/sitterRole`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('펫시터 모드로 전환되었습니다!.');
+                    window.location.reload(); // 또는 다른 처리를 할 수 있음
+                } else {
+                    alert('실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다.');
+            });
+        }
+
+
+
+        function RoleClear() {
+            const data = {
+                email: document.querySelector("#email").value ,
+                nickname: document.querySelector("#nickname").value,
+                password: document.querySelector("#password").value
+            };
+
+
+            fetch(`/my/userRole`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('사용자 모드로 전환되었습니다!.');
+                    window.location.reload(); // 또는 다른 처리를 할 수 있음
+                } else {
+                    alert('실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('오류가 발생했습니다.');
+            });
+        }
+    </script>
+</th:block>
+</html>

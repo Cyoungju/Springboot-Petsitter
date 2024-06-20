@@ -24,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Log4j2
@@ -110,16 +111,19 @@ public class KakaoService {
         //카카오 연동 - 이메일 받아오기
         String email = String.valueOf(kakaoAcount.get("email"));
 
+
         LinkedHashMap<String, LinkedHashMap> profileMap = kakaoAcount.get("profile");
         String nickname = String.valueOf(profileMap.get("nickname"));
+        String thumbUrl = String.valueOf(profileMap.get("thumbnail_image_url"));
 
         log.info("nickname"+nickname);
         log.info("email"+email);
+        log.info("thumbUrl" + thumbUrl);
 
         // 현재 데이터에서 확인후 처리
         Member result = memberRepository.findByEmail(email);
 
-        if(result != null){
+        if(result != null){ // 회원일 경우
             MemberDto user = entityToDTO(result);
             log.info("existed........" + user);
 
@@ -127,7 +131,7 @@ public class KakaoService {
         }
 
         //만약 일치하는 아이디가 없을경우 - 소셜 아이디로 만들어줌
-        Member socialUserEntity = makeSocialUser(email, nickname);
+        Member socialUserEntity = makeSocialUser(email, nickname, thumbUrl);
         memberRepository.save(socialUserEntity);
 
 
@@ -156,10 +160,10 @@ public class KakaoService {
 
 
     // 사용자 정보 만들기
-    private Member makeSocialUser(String email, String nickname){
+    private Member makeSocialUser(String email, String nickname, String thumbUrl){
         String tempPassword = makeSocialPassword();
         log.info("tempPassword"+ tempPassword);
-        List<MemberRole> memberRoleList = new ArrayList<>();
+        //List<MemberRole> memberRoleList = new ArrayList<>();
 
         Member member = Member.builder()
                 .email(email)
@@ -169,6 +173,13 @@ public class KakaoService {
                 .build();
 
         member.addRole(MemberRole.USER);
+
+        if(thumbUrl == null){
+            return member;
+        }
+
+        member.addImageString(thumbUrl);
+
 
         return member;
     }

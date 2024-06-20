@@ -11,14 +11,16 @@
             <div class="tit">Pet Sitter</div>
             <div class="cont_box">
                 <div class="searchBox mb-30">
-                    <form class="" th:action="@{/petsitter/paging}" type="get">
+                    <form class="" th:action="@{/petsitter/list}" type="get">
                         <label for="searchKeyword" class="">검색</label>
                         <input type="text" class="" id="searchKeyword" name="searchKeyword"
                                th:value="${param.searchKeyword}" placeholder="지역을 입력하세요">
                         <button type="submit" class="searchbtn"><span class="material-symbols-outlined">search</span></button>
                     </form>
                 </div>
-                <div class="view-btn"><button onclick="create()" class="btn">글작성</button></div>
+                <div class="view-btn" th:if="${#lists.size(role) > 1}">
+                    <button onclick="create()" class="btn">글작성</button>
+                </div>
                 <ul class="petsitterList mb-50">
                     <li th:each="petsitter: ${petsitterList}" class="brBox">
                         <div class="list_icon">
@@ -30,7 +32,7 @@
                                 <span class="dog" th:if="${petsitter.isSitterType() == false}">강아지</span>
                                 <span class="cat" th:if="${petsitter.isSitterType() == true}">고양이</span>
                             </div>
-                            <div class="list_tit font22 mb-5"><a th:href="@{${petsitter.getId()}|(page = ${petsitterList.number + 1})}" th:text="${petsitter.getSitterName()}"></a></div>
+                            <div class="list_tit font22 mb-5"><a th:href="@{'/petsitter/' + ${petsitter.getId()}|(page = ${petsitterList.number + 1})}" th:text="${petsitter.getSitterName()}"></a></div>
                             <div th:text="${petsitter.getSitterWorkAdr()}"></div>
                             <div class="list_date" th:text="*{#temporals.format(petsitter.getCreateTime, 'yyyy-MM-dd HH:mm:ss')}"></div>
                         </div>

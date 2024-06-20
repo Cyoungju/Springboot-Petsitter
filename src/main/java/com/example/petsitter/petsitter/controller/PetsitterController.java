@@ -1,19 +1,21 @@
 package com.example.petsitter.petsitter.controller;
 
 
+import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
 import com.example.petsitter.petsitter.service.PetsitterService;
+import com.example.petsitter.core.util.CustomFileUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PetsitterController {
 
     private final PetsitterService petsitterService;
+    private final CustomFileUtil fileUtil;
 
     @GetMapping("/sitterRole/create")
     public String create(Model model){
@@ -65,5 +68,40 @@ public class PetsitterController {
 
         return "/petsitter/list";
     }
+
+    //하나만 불러오게 - 상세페이지
+    @GetMapping("/{id}")
+    public String paging(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable){
+        PetsitterDto petsitterDto = petsitterService.findById(id);
+
+        //모델에 데이터 추가
+        model.addAttribute("petsitter", petsitterDto);
+        model.addAttribute("page", pageable.getPageNumber());
+
+        return "/petsitter/detail";
+    }
+
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable Long id, Model model){
+        PetsitterDto petsitterDto = petsitterService.findById(id);
+        model.addAttribute("petsitterDto", petsitterDto);
+        return "/petsitter/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute("petsitterDto") PetsitterDto petsitterDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return "/petsitter/update/"+ petsitterDto.getId();
+        }
+        petsitterService.update(petsitterDto);
+        // 회원 정보 업데이트 로직
+        return "redirect:/my/myPetsitterList";
+    }
+
+    @GetMapping("/view/{fileName}")
+    public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName){
+        return fileUtil.getFile(fileName);
+    }
+
 
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout/layout}"
+>
+<th:block layout:fragment="content">
+    <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
+    <section class="section register">
+        <div class="container">
+            <div class="tit"><span th:text="${errorStatus}"></span> ERROR</div>
+            <div class="cont_box">
+                <ul class="petsitterList">
+                    <li class="brBox" style="display:block">
+                        <p>
+                            죄송합니다. <span th:text="${errorMsg}"></span><br>
+                        </p>
+                        <div class="mt-30" style="width:100%;text-center">
+                            <a th:href="@{/}" class="btn font16">메인으로</a>
+                        </div>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</th:block>
+</html>

@@ -14,7 +14,7 @@
             <p class="font18 grfont">
                 나와 내 반려동물을 위한 펫시터 서비스!
             </p>
-            <a href="" class="font18 btn mt-20">View More</a>
+            <a th:href="@{/petsitter/list}" class="font18 btn mt-20">View More</a>
         </div>
     </div>
 
@@ -25,23 +25,23 @@
             <div class="font18 grfont">펫시터를 이용해보세요!</div>
 
             <div class="cont_box flexList" boxCount="3">
-                <a href="" class="iconBox box">
+                <a th:href="@{/petsitter/list}" class="iconBox box">
                     <div class="img brBox">
                         <img th:src="@{/images/icon01.png}" alt="">
                     </div>
-                    <p class="font28 mt-20 txt">펫시터 등록</p>
+                    <p class="font28 mt-20 txt">펫시터 둘러보기</p>
                     <p class="font18 grfont">펫시터등록후 이용가능합니다!</p>
                 </a>
 
-                <a href="" class="iconBox box">
+                <a th:href="@{/my/myPetlist}" class="iconBox box">
                     <div class="img brBox">
                         <img th:src="@{/images/icon02.png}" alt="">
                     </div>
-                    <p class="font28 mt-20 txt">반려동물 등록</p>
+                    <p class="font28 mt-20 txt">나의 반려동물</p>
                     <p class="font18 grfont">나의 반려동물을 등록해보세요!</p>
                 </a>
 
-                <a href="" class="iconBox box">
+                <a th:href="@{/board/list}" class="iconBox box">
                     <div class="img brBox">
                         <img th:src="@{/images/icon03.png}" alt="">
                     </div>

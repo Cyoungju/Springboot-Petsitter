@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout/layout}"
+>
+<th:block layout:fragment="content">
+    <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
+    <section class="section register">
+        <div class="container">
+            <div class="tit">MyPet</div>
+            <div class="cont_box">
+                <form action="/petsitter/update" enctype="multipart/form-data" method="post" name="petsitterForm" th:object="${petsitterDto}" id="petsitterForm" onsubmit="return validateFiles()">
+                    <input type="hidden" name="id" th:value="${petsitterDto.id}">
+                    <div class="box text-left">
+                        <div class="box text-left">
+                            <div class="font22 mb-5">돌봄 종류를 선택하세요!</div>
+                            <div class="flexList radioBox" boxCount="2">
+                                <div class="box">
+                                    <input type="radio" id="sitterType1" name="sitterType" th:value="false" th:field="*{sitterType}"><label th:for="sitterType1">강아지</label>
+                                </div>
+                                <div class="box">
+                                    <input type="radio" id="sitterType2" name="sitterType" th:value="true" th:field="*{sitterType}"><label th:for="sitterType2">고양이</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box text-left">
+                            <label class="font22" th:for="sitterName">펫시터 등록 이름</label>
+                            <input type="text" id="sitterName" name="sitterName" th:field="*{sitterName}" class="form-control" required>
+
+                            <p th:if="${#fields.hasErrors('sitterName')}" th:errors="*{sitterName}" class="fieldError" style="color:red">Incorrect data</p>
+                            <p th:text="${errorMessage}" style="color:red"></p>
+
+                        </div>
+                        <div class="box text-left">
+                            <label class="font22 mb-5" th:for="sitterPrice">가격</label>
+                            <select name="sitterPrice" id="sitterPrice" th:field="*{sitterPrice}" class="mb-5">
+                                <option value="12000">12,000</option>
+                                <option value="13000">13,000</option>
+                                <option value="14000">14,000</option>
+                                <option value="15000">15,000</option>
+                                <option value="16000">16,000</option>
+                                <option value="17000">17,000</option>
+                                <option value="18000">18,000</option>
+                            </select>
+                            <p class="info">30분 기준 가격을 체크 해주세요!</p>
+                        </div>
+                        <div class="box text-left">
+                            <label class="font22" for="address_kakao">work address</label>
+                            <input type="text" class="form-control" id="address_kakao" name="sitterWorkAdr"
+                                   placeholder="주소(지번 또는 도로명)를 입력하세요. ex) 서울특별시 성북구 종암로 10길" th:field="*{sitterWorkAdr}" readonly required>
+                        </div>
+                        <div class="box text-left">
+                            <label class="font22" th:for="sitterContent">펫시터 소개글</label>
+                            <input type="text" id="sitterContent" name="sitterContent" th:field="*{sitterContent}" class="form-control">
+                        </div>
+                        <!-- 파일 업로드 부분 -->
+                        <div class="box text-left">
+                            <label class="font22" th:for="files">사진 등록 (이미지 파일만)</label>
+                            <input type="file" id="file1" name="files" th:field="*{files}" class="form-control"
+                                   accept="image/png, image/jpeg, image/gif" multiple>
+                            <input type="file" id="file2" name="files" th:field="*{files}" class="form-control"
+                                   accept="image/png, image/jpeg, image/gif" multiple>
+                            <input type="file" id="file3" name="files" th:field="*{files}" class="form-control"
+                                   accept="image/png, image/jpeg, image/gif" multiple>
+                        </div>
+
+
+                    </div>
+                    <div class="mt-20" style="width:100%;text-center">
+                        <input type="submit" class="font18 btn" value="등록">
+                        <a th:href="@{/petsitter/list}" class="btn font18">취소</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script>
+        function validateFiles() {
+            const allowedTypes = ['image/png', 'image/jpeg', 'image/gif'];
+            const files = document.getElementById('files').files;
+
+            for (let i = 0; i < files.length; i++) {
+                if (!allowedTypes.includes(files[i].type)) {
+                    alert('이미지 파일만 업로드할 수 있습니다. (PNG, JPEG, GIF)');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    </script>
+
+    <!-- Kakao 우편번호 서비스 -->
+    <!-- https://postcode.map.daum.net/guide -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        window.onload = function() {
+            document.getElementById("address_kakao").addEventListener("click", function(){
+
+                new daum.Postcode({
+                    oncomplete: function(data) {
+                        document.getElementById("address_kakao").value = data.address;
+                    }
+                }).open();
+            });
+        }
+    </script>
+</th:block>
+</html>

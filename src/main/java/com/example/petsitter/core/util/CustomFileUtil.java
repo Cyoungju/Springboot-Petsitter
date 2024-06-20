@@ -1,4 +1,4 @@
-package com.example.petsitter.util;
+package com.example.petsitter.core.util;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
