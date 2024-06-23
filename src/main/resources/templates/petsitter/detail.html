@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<html
-        xmlns:th="http://www.thymeleaf.org"
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{/layout/layout}"
->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout}">
 <th:block layout:fragment="content">
     <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
     <section class="section register">
@@ -11,22 +9,22 @@
             <div class="tit">Pet Sitter</div>
             <div class="cont_box">
                 <ul class="petsitterList">
-                    <li class="brBox" style="display:block">
+                    <li class="brBox">
+                        <!-- Petsitter 정보 표시 -->
+                        <div th:text="${petsitter.id}"></div>
+                        <div th:text="${petsitter.sitterName}"></div>
+                        <div th:text="${petsitter.sitterContent}"></div>
+                        <div th:text="${petsitter.sitterType}"></div>
+                        <div th:text="${petsitter.sitterPrice}"></div>
+                        <div th:text="${petsitter.sitterWorkAdr}"></div>
+                        <div th:text="*{#temporals.format(petsitter.getCreateTime, 'yyyy-MM-dd HH')}"></div>
 
                     </li>
                 </ul>
-
-                <div th:text="${petsitter.id}"></div>
-                <div th:text="${petsitter.sitterName}"></div>
-                <div th:text="${petsitter.sitterType}"></div>
-                <div th:text="${petsitter.sitterPrice}"></div>
-                <div th:text="${petsitter.sitterWorkAdr}"></div>
-                <div th:text="${petsitter.createTime}"></div>
-                <div th:text="${petsitter.updateTime}"></div>
-
             </div>
         </div>
-    </section>
+        <a th:href="@{'/petsitter/reservation/' + ${petsitter.getId()}}">예약하기</a>
 
+    </section>
 </th:block>
 </html>
