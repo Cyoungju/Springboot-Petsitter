@@ -1,6 +1,7 @@
 package com.example.petsitter.petsitter.domain;
 
 import com.example.petsitter.member.domain.Member;
+import com.example.petsitter.member.domain.MemberReservation;
 import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
 import jakarta.persistence.*;
@@ -15,7 +16,6 @@ import java.util.List;
 
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Builder
 @Entity
@@ -39,11 +39,14 @@ public class Petsitter {
 
     private LocalDateTime updateTime;
 
-    private boolean status;
 
     @ElementCollection
     @Builder.Default
     private List<PetsitterImage> imageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "petsitter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<PetsitterReservation> reservations = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -66,7 +69,7 @@ public class Petsitter {
     }
 
     @Builder
-    public Petsitter(Long id, String sitterName, String sitterContent, boolean sitterType, Long sitterPrice, String sitterWorkAdr, LocalDateTime createTime, LocalDateTime updateTime, List<PetsitterImage> imageList, Member member) {
+    public Petsitter(Long id, String sitterName, String sitterContent, boolean sitterType, Long sitterPrice, String sitterWorkAdr, LocalDateTime createTime, LocalDateTime updateTime, List<PetsitterImage> imageList,List<PetsitterReservation> reservations, Member member) {
         this.id = id;
         this.sitterName = sitterName;
         this.sitterContent = sitterContent;
@@ -76,6 +79,7 @@ public class Petsitter {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.imageList = imageList;
+        this.reservations = reservations;
         this.member = member;
     }
 

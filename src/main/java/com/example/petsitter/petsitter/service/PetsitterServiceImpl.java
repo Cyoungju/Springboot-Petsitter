@@ -6,7 +6,9 @@ import com.example.petsitter.member.service.MemberService;
 import com.example.petsitter.pet.domain.Pet;
 import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.petsitter.domain.Petsitter;
+import com.example.petsitter.petsitter.domain.Reservation;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
+import com.example.petsitter.petsitter.dto.ReservationDto;
 import com.example.petsitter.petsitter.repository.PetsitterRepository;
 import com.example.petsitter.core.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
@@ -196,6 +198,12 @@ public class PetsitterServiceImpl implements PetsitterService {
 
         return petsitterDtos;
     }
+
+    @Override
+    public void delete(Long id) {
+        petsitterRepository.deleteById(id);
+    }
+
 
 
 }

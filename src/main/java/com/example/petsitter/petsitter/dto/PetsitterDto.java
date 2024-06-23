@@ -3,6 +3,7 @@ package com.example.petsitter.petsitter.dto;
 import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.petsitter.domain.Petsitter;
+import com.example.petsitter.petsitter.domain.Reservation;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -43,7 +44,6 @@ public class PetsitterDto {
 
     private LocalDateTime updateTime;
 
-    private boolean status;
 
     // 업로드시 사용
     @Builder.Default

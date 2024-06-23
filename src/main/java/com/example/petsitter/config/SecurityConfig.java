@@ -31,10 +31,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests((auth)-> auth
-                        .requestMatchers("/","/login","/loginProc","/join","/joinProc","/images/**","/css/**", "/idcheck","/api/**", "/api/kakao/**", "/petsitter/list", "/petsitter/list**","/about").permitAll()
+                        .requestMatchers("/","/login","/loginProc","/join","/joinProc","/images/**","/css/**", "/idcheck","/api/**", "/api/kakao/**", "/petsitter/**","/reservation/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/my/**", "/pet/**","/pet/view/**", "/pet/delete/**", "/pet/update/**", "/petsitter/view/**").hasAnyRole("ADMIN","USER","MANAGER") // ** 와일드카드
-                        .requestMatchers("/petsitter/sitterRole/**", "/my/myPetsitterList").hasAnyRole("MANAGER","ADMIN")
+                        .requestMatchers("/petsitter/sitterRole/create", "/my/myPetsitterList").hasAnyRole("MANAGER","ADMIN")
                         .anyRequest().authenticated() //나머지 로그인한 사용자만 접근
                 );
         http

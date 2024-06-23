@@ -44,6 +44,10 @@ public class Member {
     @Builder.Default
     private List<MemberImage> imageList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<MemberReservation> reservations = new ArrayList<>();
+
     public void addRole(MemberRole memberRole){
         memberRoleList.add(memberRole);
     }
@@ -70,7 +74,7 @@ public class Member {
     }
 
     @Builder
-    public Member(Long id, String email, String password, String nickname, String userTel, boolean social, String address, String detailAdr, List<MemberRole> memberRoleList,List<MemberImage> imageList) {
+    public Member(Long id, String email, String password, String nickname, String userTel, boolean social, String address, String detailAdr, List<MemberRole> memberRoleList,List<MemberImage> imageList, List<MemberReservation> reservations) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -81,6 +85,7 @@ public class Member {
         this.detailAdr = detailAdr;
         this.memberRoleList = memberRoleList;
         this.imageList = imageList;
+        this.reservations = reservations;
     }
 
     @Transient // 암호를 암호화로 저장하는 것이기 때문에

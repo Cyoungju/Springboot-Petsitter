@@ -34,7 +34,7 @@
                             </div>
                             <div class="list_tit font22 mb-5"><a th:href="@{'/petsitter/' + ${petsitter.getId()}|(page = ${petsitterList.number + 1})}" th:text="${petsitter.getSitterName()}"></a></div>
                             <div th:text="${petsitter.getSitterWorkAdr()}"></div>
-                            <div class="list_date" th:text="*{#temporals.format(petsitter.getCreateTime, 'yyyy-MM-dd HH:mm:ss')}"></div>
+                            <div class="list_date" th:text="*{#temporals.format(petsitter.getCreateTime, 'yyyy-MM-dd HH')}"></div>
                         </div>
                     </li>
                 </ul>

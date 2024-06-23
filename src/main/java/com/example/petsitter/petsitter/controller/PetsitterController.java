@@ -2,20 +2,30 @@ package com.example.petsitter.petsitter.controller;
 
 
 import com.example.petsitter.pet.dto.PetDto;
+import com.example.petsitter.petsitter.domain.Reservation;
+import com.example.petsitter.petsitter.domain.ReservationTime;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
+import com.example.petsitter.petsitter.dto.ReservationDto;
 import com.example.petsitter.petsitter.service.PetsitterService;
 import com.example.petsitter.core.util.CustomFileUtil;
+import com.example.petsitter.petsitter.service.ReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 
 @Controller
@@ -98,10 +108,31 @@ public class PetsitterController {
         return "redirect:/my/myPetsitterList";
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        petsitterService.delete(id);
+        return ResponseEntity.ok("SUCCESS");
+
+    }
+
     @GetMapping("/view/{fileName}")
     public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName){
         return fileUtil.getFile(fileName);
     }
 
 
+    // 에약하기 페이지
+    @GetMapping("/reservation/{id}")
+    public String reserv(@PathVariable Long id, Model model) {
+
+        // ReservationDto 객체를 생성하여 모델에 추가
+        ReservationDto reservationDto = new ReservationDto();
+        reservationDto.setPetsitterId(id);
+        model.addAttribute("reservationDto", reservationDto);
+
+        List<LocalTime> reservationTimeList = ReservationTime.getReservationTime();
+        model.addAttribute("reservationTimeList", reservationTimeList);
+
+        return "/petsitter/reservation";
+    }
 }

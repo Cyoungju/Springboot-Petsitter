@@ -43,6 +43,7 @@ public class MemberDto {
 
     private String detailAdr;
 
+    @Builder.Default
     private List<MemberRole> memberRoleList = new ArrayList<>();
 
     // 업로드시 사용

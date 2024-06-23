@@ -24,6 +24,7 @@ public class GlobalModelAttribute {
 
         if (username.equals("anonymousUser")) { //비회원
             model.addAttribute("isSocial", false);
+            model.addAttribute("role", "");
         }else {
             Member member = memberService.findByEmail(username);
             model.addAttribute("isSocial", member.isSocial());
