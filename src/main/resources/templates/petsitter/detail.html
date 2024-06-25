@@ -2,29 +2,95 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/layout}">
+
 <th:block layout:fragment="content">
     <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
     <section class="section register">
         <div class="container">
             <div class="tit">Pet Sitter</div>
             <div class="cont_box">
+                <a href="" class="btn font18 backList">목록</a>
                 <ul class="petsitterList">
-                    <li class="brBox">
-                        <!-- Petsitter 정보 표시 -->
-                        <div th:text="${petsitter.id}"></div>
-                        <div th:text="${petsitter.sitterName}"></div>
-                        <div th:text="${petsitter.sitterContent}"></div>
-                        <div th:text="${petsitter.sitterType}"></div>
-                        <div th:text="${petsitter.sitterPrice}"></div>
-                        <div th:text="${petsitter.sitterWorkAdr}"></div>
-                        <div th:text="*{#temporals.format(petsitter.getCreateTime, 'yyyy-MM-dd HH')}"></div>
+                    <li class="brBox" style="display:block">
+                        <div class="box text-left flex-wrap sitterDetail">
+                            <!-- Petsitter 정보 표시 -->
+                            <div class="list_icon">
+                                <div>
+                                    <div th:if="${member.social}">
+                                        <!-- 소셜 프로필 이미지 추가 -->
+                                        <div th:unless="${member.uploadedFileName != null && !member.uploadedFileName.isEmpty()}" class="list_icon">
+                                            <img th:src="@{/member/view/default.jpg}" alt="Pet Thumbnail">
+                                        </div>
+                                        <div th:if="${member.uploadedFileName != null && !member.uploadedFileName.isEmpty()}" class="list_icon">
+                                            <img th:src="${member.uploadedFileName[0]}" alt="Social Thumbnail">
+                                        </div>
 
+                                    </div>
+                                    <div th:unless="${member.social}">
+                                        <!-- 프로필 이미지 추가 -->
+                                        <div th:unless="${member.uploadedFileName != null && !member.uploadedFileName.isEmpty()}" class="list_icon">
+                                            <img th:src="@{/member/view/default.jpg}" alt="Pet Thumbnail">
+                                        </div>
+                                        <div th:if="${member.uploadedFileName != null && !member.uploadedFileName.isEmpty()}" class="list_icon">
+                                            <img th:src="@{'/member/view/s_' + ${member.uploadedFileName[0]}}" alt="Pet Thumbnail">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list_txt">
+                                <div class="marker mb-5">
+                                    <span class="dog" th:if="${petsitter.isSitterType() == false}">강아지 돌봄</span>
+                                    <span class="cat" th:if="${petsitter.isSitterType() == true}">고양이 돌봄</span>
+                                </div>
+                                <div class="list_tit font22 mb-5" th:text="${petsitter.sitterName}"></div>
+                                <div class="list_date" th:text="${petsitter.sitterWorkAdr}"></div>
+                            </div>
+                        </div>
+
+                        <div class="box text-left sitterDetail">
+                            <div class="list_tit font22 mb-5">소개글</div>
+                            <div th:text="${petsitter.sitterContent}"></div>
+                        </div>
+
+                        <div class="box text-left sitterDetail">
+                            <div class="list_tit font22 mb-5">돌봄 비용</div>
+                            <div th:text="${petsitter.sitterPrice}"></div>
+                        </div>
+
+                        <div class="box text-left sitterDetail">
+                            <div class="list_tit font22 mb-5">돌봄 이미지</div>
+                            <div class="img_slide swiper">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide" th:each="fileName : ${petsitter.uploadedFileName}">
+                                        <img th:src="@{'/petsitter/view/s_' + ${fileName}}" alt="Pet Thumbnail">
+                                    </div>
+                                </div>
+                                <!-- If we need navigation buttons -->
+                                <div class="swiper-button-prev"></div>
+                                <div class="swiper-button-next"></div>
+                            </div>
+                        </div>
+                        <a class="btn font18 mt-20" th:href="@{'/petsitter/reservation/' + ${petsitter.getId()}}">예약하기</a>
+                    </li>
+                    <li class="brBox">
+                        <div>
+                            <div class="list_tit font22 mb-5">돌봄 후기</div>
+                        </div>
                     </li>
                 </ul>
             </div>
         </div>
-        <a th:href="@{'/petsitter/reservation/' + ${petsitter.getId()}}">예약하기</a>
 
+
+        <script>
+            const swiper = new Swiper('.img_slide', {
+              loop: true,
+              navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              },
+            });
+        </script>
     </section>
 </th:block>
 </html>

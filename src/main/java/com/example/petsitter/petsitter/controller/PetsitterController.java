@@ -1,30 +1,30 @@
 package com.example.petsitter.petsitter.controller;
 
 
-import com.example.petsitter.pet.dto.PetDto;
-import com.example.petsitter.petsitter.domain.Reservation;
-import com.example.petsitter.petsitter.domain.ReservationTime;
+import com.example.petsitter.member.domain.Member;
+import com.example.petsitter.member.dto.CustomUserDetails;
+import com.example.petsitter.member.dto.MemberDto;
+import com.example.petsitter.member.service.MemberService;
+import com.example.petsitter.petsitter.domain.Petsitter;
+import com.example.petsitter.reservation.domain.ReservationTime;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
-import com.example.petsitter.petsitter.dto.ReservationDto;
+import com.example.petsitter.reservation.dto.ReservationDto;
 import com.example.petsitter.petsitter.service.PetsitterService;
 import com.example.petsitter.core.util.CustomFileUtil;
-import com.example.petsitter.petsitter.service.ReservationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -34,6 +34,7 @@ import java.util.List;
 public class PetsitterController {
 
     private final PetsitterService petsitterService;
+    private final MemberService memberService;
     private final CustomFileUtil fileUtil;
 
     @GetMapping("/sitterRole/create")
@@ -82,10 +83,14 @@ public class PetsitterController {
     //하나만 불러오게 - 상세페이지
     @GetMapping("/{id}")
     public String paging(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable){
+        // petsitter 정보
         PetsitterDto petsitterDto = petsitterService.findById(id);
+        // member 정보 
+        MemberDto member = petsitterService.findByMember(id);
 
         //모델에 데이터 추가
         model.addAttribute("petsitter", petsitterDto);
+        model.addAttribute("member", member);
         model.addAttribute("page", pageable.getPageNumber());
 
         return "/petsitter/detail";
@@ -123,11 +128,18 @@ public class PetsitterController {
 
     // 에약하기 페이지
     @GetMapping("/reservation/{id}")
-    public String reserv(@PathVariable Long id, Model model) {
+    public String reserv(@PathVariable Long id, Model model, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+
+        Member member = memberService.findByEmail(customUserDetails.getUsername());
+        PetsitterDto petsitterDto = petsitterService.findById(id);
+        // member 정보
+        MemberDto petsitterMember = petsitterService.findByMember(id);
 
         // ReservationDto 객체를 생성하여 모델에 추가
         ReservationDto reservationDto = new ReservationDto();
         reservationDto.setPetsitterId(id);
+        model.addAttribute("member", member);
+        model.addAttribute("petsitterDto", petsitterDto);
         model.addAttribute("reservationDto", reservationDto);
 
         List<LocalTime> reservationTimeList = ReservationTime.getReservationTime();

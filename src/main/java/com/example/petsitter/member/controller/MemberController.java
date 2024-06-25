@@ -1,6 +1,7 @@
 package com.example.petsitter.member.controller;
 
 import com.example.petsitter.api.kakao.KakaoService;
+import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.service.MemberService;
 import com.example.petsitter.core.util.CustomFileUtil;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -80,8 +82,8 @@ public class MemberController {
 
 
     @GetMapping("/update")
-    public String updateP(Model model){
-        String username = memberService.getAuthName();
+    public String updateP(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model){
+        String username = customUserDetails.getUsername();
         MemberDto memberDto = memberService.findByDtoEmail(username);
 
         log.info(memberDto.getMemberRoleList());

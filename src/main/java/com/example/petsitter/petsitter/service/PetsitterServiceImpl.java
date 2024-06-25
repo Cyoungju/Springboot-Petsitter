@@ -2,13 +2,10 @@ package com.example.petsitter.petsitter.service;
 
 
 import com.example.petsitter.member.domain.Member;
+import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.service.MemberService;
-import com.example.petsitter.pet.domain.Pet;
-import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.petsitter.domain.Petsitter;
-import com.example.petsitter.petsitter.domain.Reservation;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
-import com.example.petsitter.petsitter.dto.ReservationDto;
 import com.example.petsitter.petsitter.repository.PetsitterRepository;
 import com.example.petsitter.core.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,7 +40,7 @@ public class PetsitterServiceImpl implements PetsitterService {
         petsitterDto.setCreateTime(LocalDateTime.now());
         List<MultipartFile> files = petsitterDto.getFiles();
 
-        List<String> uploadedFileNames = fileUtil.saveFiles(files);
+        List<String> uploadedFileNames = fileUtil.saveSlideFiles(files);
         petsitterDto.setUploadedFileName(uploadedFileNames);
 
         //사용자 받아오기
@@ -136,7 +132,7 @@ public class PetsitterServiceImpl implements PetsitterService {
         System.out.println("새로 업로드할 파일들 - files : "+files);
 
         //새로 업로드 해야하는 파일들
-        List<String> currentUploadFileNames = fileUtil.saveFiles(files);
+        List<String> currentUploadFileNames = fileUtil.saveSlideFiles(files);
         System.out.println("새로 업로드 해야하는 파일들 - currentUploadFileNames : "+currentUploadFileNames);
 
         // 화면에서 변화 없이 유지 되어야할 파일들
@@ -204,6 +200,21 @@ public class PetsitterServiceImpl implements PetsitterService {
         petsitterRepository.deleteById(id);
     }
 
+    @Override
+    public MemberDto findByMember(Long id) {
+        Optional<Petsitter> boardOptional = petsitterRepository.findById(id);
+
+        // Optional.isPresent()를 사용하여 값이 있는지 확인
+        if (boardOptional.isPresent()) {
+            Petsitter petsitter = petsitterRepository.findById(id).get();
+            return MemberDto.tomemberDto(
+                    petsitter.getMember()
+            );
+        }else {
+            return null;
+
+        }
+    }
 
 
 }

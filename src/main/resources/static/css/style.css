@@ -84,6 +84,9 @@ select::-ms-expand{ display:none;}
 /* boxCout */
 [boxCount="2"]{ --count:2; }
 [boxCount="3"]{ --count:3; } 
+[boxCount="4"]{ --count:4; }
+[boxCount="5"]{ --count:5; }
+[boxCount="6"]{ --count:6; }
 
 .section{padding:40px 0 80px 0;text-align: center;}
 .container{max-width: var(--layoutwidth); margin: auto;}
@@ -100,7 +103,7 @@ select::-ms-expand{ display:none;}
 .btn:hover{background: var(--pointcolor2);}
 .icon{padding-top: 80px;}
 .brBox{border-radius: 40px;box-shadow: 3px 3px 20px rgba(0,0,0,0.1);padding: 20px 0;}
-
+.flex-wrap{display:flex;flex-wrap:wrap}
 .text-left{text-align: left;}
 
 
@@ -164,12 +167,37 @@ main{min-height: 800px;}
 .petsitterList li .marker span{background: var(--pointcolor);padding: 5px 10px;border-radius: 50px;color: #fff;font-size: 14px;font-weight: bold}
 .petsitterList li .marker span.dog{background: var(--pointcolor);}
 .petsitterList li .marker span.cat{background: var(--pointcolor2);}
+.petsitterList li .sitterDetail {justify-content:space-between}
+
 .searchBox .searchbtn {position: absolute;top: 50%;right: 15px;transform: translateY(-50%);margin-top:2px}
 .searchBox {max-width: 320px;margin-right: auto;margin-left: auto;position: relative;top: 0;left: 0;}
 .searchBox label {display: none;}
 .searchBox input[type="text"] {width: 100%;padding: 10px 15px;padding-right: 50px;display: block;border: 0;background: #efefef;border-radius: 50px;}
 .searchBox button[type="submit"] {color: #9999a1;}
 .searchBox button[type="submit"] span{ font-size:1.3em;}
+
+
+/* reservation */
+.totalPriceWrap {padding:10px 0;position: fixed;z-index: 9999;bottom: 0;width: 100%;left: 0;background: rgba(0, 0, 0, 0.8);color: #fff;}
+.totalPriceWrap .container{display:flex;align-items:center;justify-content: flex-end;}
+.totalPriceWrap input{background:none;border:0;color:#fff;margin-left:10px;}
+.reservation .brBox{text-align:left}
+.reservation .timeBox {display:flex;}
+.reservation .timeBox label span{display:block;width:100%;padding: 10px;border: 1px solid #ddd;border-radius: 5px;text-align: center;cursor:pointer;}
+.reservation .timeBox label input[type="checkbox"]{display:none}
+.reservation .timeBox label input[type="checkbox"]:checked+input+span{transition: .5s all ease;background: var(--pointcolor);color: #fff;font-weight: 600;}
+.reservation .timeBox .box{margin-top:0}
+.reservation .timeBox label input[type="checkbox"]:disabled+input+span, .reservation .timeBox label input[type="checkbox"]:checked:disabled+input+span {background:#fff;color:#ddd;}
+#datepicker-container {position: relative;top: 0;left: 0;}
+#datepicker-container span {position: absolute;top: 50%;right: 10px;transform: translateY(-50%);}
+#time-container{display:none}
+table.res_tb { width: 100%;}
+table.res_tb th {width: 120px;}
+table.res_tb td{width:calc(100% - 120px)}
+table.res_tb th, table.res_tb td {padding: 10px;border-bottom: 1px solid var(--grcolor);}
+
+.img_slide.swiper {width: 100%;aspect-ratio: 3/2;overflow: hidden;}
+.img_slide.swiper .swiper-slide img {width: 100%;height: 100%;object-fit: cover;}
 
 
 /* paging */

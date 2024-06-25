@@ -1,6 +1,4 @@
-package com.example.petsitter.petsitter.domain;
-
-import org.springframework.cglib.core.Local;
+package com.example.petsitter.reservation.domain;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
