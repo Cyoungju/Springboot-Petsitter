@@ -1,11 +1,8 @@
 package com.example.petsitter.petsitter.domain;
 
 import com.example.petsitter.member.domain.Member;
-import com.example.petsitter.member.domain.MemberReservation;
-import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

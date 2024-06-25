@@ -3,6 +3,7 @@ package com.example.petsitter.member.controller;
 
 import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.domain.MemberRole;
+import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.service.MemberService;
 import com.example.petsitter.pet.dto.PetDto;
@@ -17,6 +18,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,8 +42,8 @@ public class MyController {
     private final PetsitterService petsitterService;
 
     @GetMapping("/mypage")
-    public String mypageP(Model model){
-        String username = memberService.getAuthName();
+    public String mypageP(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model){
+        String username = customUserDetails.getUsername();
         MemberDto memberDto = memberService.findByDtoEmail(username);
 
         model.addAttribute("member", memberDto);

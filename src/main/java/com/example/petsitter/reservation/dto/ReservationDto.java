@@ -1,9 +1,6 @@
-package com.example.petsitter.petsitter.dto;
+package com.example.petsitter.reservation.dto;
 
 
-import com.example.petsitter.member.domain.Member;
-import com.example.petsitter.petsitter.domain.Petsitter;
-import com.example.petsitter.petsitter.domain.Reservation;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -30,8 +26,6 @@ public class ReservationDto {
     @NotNull(message = "시간을 선택해주세요.")
     @Builder.Default
     private List<LocalTime> times = new ArrayList<>();
-
-    private String status;
 
     private Long totalPrice;
 

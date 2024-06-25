@@ -4,10 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Reservation Page</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- jQuery UI -->
@@ -17,104 +13,199 @@
 
 <body>
 <main layout:fragment="content" class="container mt-5">
-    <form action="/reservation/" method="post" th:object="${reservationDto}">
-        <input type="hidden" id="petsitterId" th:value="${reservationDto.petsitterId}" th:field="*{petsitterId}" />
-            <label for="date">날짜:</label>
-            <div class="input-group date" id="datepicker-container">
-                <input type="text" class="form-control" id="date" name="date" th:field="*{date}" autocomplete="off" readonly required>
-                <div class="input-group-append">
-                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                </div>
+    <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
+    <section class="section register">
+        <div class="container">
+            <div class="tit">Reservation</div>
+            <div class="cont_box">
+                <ul class="petsitterList reservation">
+                    <li class="brBox" style="display:block">
+                        <div class="font22 mb-5">나의 정보</div>
+                        <div class="box text-left">
+                            <div class="font18 mb-5">주소</div>
+                            <div th:unless="${(member.address == null or member.address == '') and (member.detailAdr == null or member.detailAdr == '')}">
+                                <div th:text="${member.getAddress()}"></div>
+                                <div th:text="${member.getDetailAdr()}"></div>
+                                <a href="">수정</a>
+                            </div>
+                            <div th:if="${(member.address == null or member.address == '') and (member.detailAdr == null or member.detailAdr == '')}" class="list_date">
+                                주소를 등록해주세요
+                                <a href="" class="font16 btn">등록</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="brBox" style="display:block">
+                        <div class="font22 mb-5">예약</div>
+                        <form action="/reservation/" method="post" th:object="${reservationDto}">
+                            <input type="hidden" id="petsitterId" th:value="${reservationDto.petsitterId}" th:field="*{petsitterId}" />
+
+                            <div class="box text-left">
+                                <div class="font18 mb-5">펫시터정보</div>
+
+                                <table class="res_tb">
+                                    <tr>
+                                        <th>돌봄종류</th>
+                                        <td>
+                                            <div class="marker mb-5">
+                                                <span class="dog" th:if="${petsitterDto.isSitterType() == false}">강아지 돌봄</span>
+                                                <span class="cat" th:if="${petsitterDto.isSitterType() == true}">고양이 돌봄</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>돌봄이</th>
+                                        <td th:text="${petsitterDto.sitterName}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>돌봄비용</th>
+                                        <td th:text="${petsitterDto.sitterPrice}"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!--  날짜 -->
+                            <div class="box text-left">
+                                <label for="date" class="font18">날짜</label>
+                                <div class="input-group date" id="datepicker-container">
+                                    <input type="text" class="form-control" id="date" name="date" th:field="*{date}" autocomplete="off" placeholder="날짜를 선택해주세요." readonly required>
+                                    <span class="material-symbols-outlined">calendar_month</span>
+                                </div>
+                            </div>
+
+                            <div class="totalPriceWrap">
+                                <div class="container">
+                                    <div class="font22">총 가격</div>
+                                    <input value="" id="totalPrice" />
+                                </div>
+                            </div>
+
+                            <div class="box text-left" id="time-container">
+                                <div class="font18 mb-5">시간</div>
+                                <div class="timeBox flexList" boxCount="6" id="time-list">
+                                    <div class="box" th:each="time, iterStat : ${reservationTimeList}">
+                                        <label>
+                                            <input type="checkbox" th:field="*{times}" th:value="${time}" th:id="'time_' + ${iterStat.index}" data-time="${time}" onchange="fetchTotalPrice()">
+                                            <span th:text="${time}"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-20" style="width:100%;text-align:center">
+                                <button type="submit" class="btn font18 btn-primary mt-20">예약하기</button>
+                                <a href="/petsitter/list" class="btn font18">취소</a>
+                            </div>
+
+                        </form>
+                    </li>
+
+                </ul>
             </div>
         </div>
 
 
-        <input value="" id="totalPrice" />
+        <script>
+            $(function() {
 
-        <div id="time-container">
-            <div th:each="time : ${reservationTimeList}">
-                <label>
-                    <span th:text="${time}"></span>
-                    <input type="checkbox" th:field="*{times}" th:value="${time}" th:id="'time_' + ${time}" data-time="${time}" onchange="fetchTotalPrice(this)">
-                </label>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary mt-3">예약하기</button>
-    </form>
-    <script>
-        $(function() {
-            $("#date").datepicker({
-                dateFormat: 'yy-mm-dd',
-                onSelect: function(dateText) {
-                    var selectedDate = dateText;
-                    var petsitterId = $("#petsitterId").val();
-                    $.ajax({
-                        url: '/reservation/getReservationTimes',
-                        type: 'GET',
-                        data: {
-                            date: selectedDate,
-                            petsitterId: petsitterId
-                        },
-                        dataType: 'json',
-                        success: function(response) {
-                            console.log(response);
-                            var reservedTimes = response.map(function(time) {
-                                return time.toString();
-                            });
-                            $('#time-container input[type="checkbox"]').each(function() {
-                                var time = $(this).val();
+                //오늘 날짜 구하기
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); // 1월이 0으로 시작함에 주의
+                var yyyy = today.getFullYear();
 
-                                console.log(reservedTimes.includes(time));
-                                if (reservedTimes.includes(time)) {
-                                    $(this).prop('checked', false); // Uncheck the checkbox
-                                    $(this).prop('disabled', true); // Disable the checkbox
-                                } else {
-                                    $(this).prop('disabled', false); // Enable the checkbox
-                                }
-                            });
-                        },
-                        error: function(error) {
-                            console.error('Error fetching times:', error);
-                        }
-                    });
-                }
+                today = yyyy + '-' + mm + '-' + dd;
+
+                // 달력 초기화
+                $("#date").datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    minDate: today, // 오늘 이후부터 선택 가능
+                    maxDate: '+1M', // 오늘부터 한 달간 선택 가능
+                    onSelect: function(dateText) {
+                        $('#time-container').show();
+
+                        var selectedDate = dateText;
+                        var petsitterId = $("#petsitterId").val();
+
+                        // 모든 체크박스 해제 및 활성화
+                        $('#time-container input[type="checkbox"]').prop('checked', false).prop('disabled', false);
+
+                        // 가격 초기화
+                        $('#totalPrice').text('');
+                        $('#totalPrice').val('');
+
+                        $.ajax({
+                            url: '/reservation/getReservationTimes',
+                            type: 'GET',
+                            data: {
+                                date: selectedDate,
+                                petsitterId: petsitterId
+                            },
+                            dataType: 'json',
+                            success: function(response) {
+                                console.log(response);
+                                var reservedTimes = response.map(function(time) {
+                                    return time.toString();
+                                });
+                                $('#time-container input[type="checkbox"]').each(function() {
+                                    var time = $(this).val();
+
+                                    console.log(reservedTimes.includes(time));
+                                    if (reservedTimes.includes(time)) {
+                                        $(this).prop('checked', false); // Uncheck the checkbox
+                                        $(this).prop('disabled', true); // Disable the checkbox
+                                    } else {
+                                        $(this).prop('disabled', false); // Enable the checkbox
+                                    }
+                                });
+                            },
+                            error: function(error) {
+                                console.error('Error fetching times:', error);
+                            }
+                        });
+                    }
+                });
             });
-        });
 
-   function fetchTotalPrice() {
-        var selectedTimes = [];
-        $('#time-container input[type="checkbox"]:checked').each(function() {
-            selectedTimes.push($(this).val());
-        });
-
-        var petsitterId = $("#petsitterId").val();
-
-        if (selectedTimes.length > 0) {
-            $.ajax({
-                url: '/reservation/getTotalPriceByTime',
-                type: 'GET',
-                data: {
-                    petsitterId: petsitterId,
-                    time: selectedTimes
-                },
-                traditional: true, // This ensures the array is passed correctly to the server
-                dataType: 'json',
-                success: function(response) {
-                    $('#totalPrice').text('Total Price: ' + response);
-                    $('#totalPrice').val(response);
-                },
-                error: function(error) {
-                    console.error('Error fetching total price:', error);
-                }
+       function fetchTotalPrice() {
+            var selectedTimes = [];
+            $('#time-container input[type="checkbox"]:checked').each(function() {
+                selectedTimes.push($(this).val());
             });
-        } else {
-            $('#totalPrice').text('');
+
+            var petsitterId = $("#petsitterId").val();
+
+            if (selectedTimes.length > 0) {
+                $.ajax({
+                    url: '/reservation/getTotalPriceByTime',
+                    type: 'GET',
+                    data: {
+                        petsitterId: petsitterId,
+                        time: selectedTimes
+                    },
+                    traditional: true, // This ensures the array is passed correctly to the server
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#totalPrice').text('Total Price: ' + response);
+                        $('#totalPrice').val(response);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching total price:', error);
+                    }
+                });
+            } else {
+                $('#totalPrice').text('');
+                $('#totalPrice').val('');
+            }
         }
-    }
 
-    // Event listener for checkboxes
-    $('#time-container').on('change', 'input[type="checkbox"]', fetchTotalPrice);
-    </script>
+        // Event listener for checkboxes
+        $('#time-container').on('change', 'input[type="checkbox"]', fetchTotalPrice);
+        </script>
+    </section>
+
+
+
+
+
 </main>
 
 <!-- Bootstrap JS 및 필수 스크립트 추가 -->

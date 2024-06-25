@@ -1,9 +1,12 @@
 package com.example.petsitter.petsitter.domain;
 
+import com.example.petsitter.reservation.domain.Reservation;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
 @Getter
 @Entity
 @NoArgsConstructor

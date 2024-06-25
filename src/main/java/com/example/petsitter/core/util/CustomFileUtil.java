@@ -88,6 +88,48 @@ public class CustomFileUtil {
 
     }
 
+    public List<String> saveSlideFiles(List<MultipartFile> files) throws RuntimeException{
+        // 파일이 없을때
+        if(files == null || files.size() == 0){
+            return List.of();
+        }
+
+        //실제로 업로드 된 파일의 이름을 저장
+        List<String> uploadNames = new ArrayList<>();
+
+        for(MultipartFile file : files){
+            if (file.isEmpty()) {
+                continue; // 비어있는 파일은 무시
+            }
+
+            //UUID 32자리 + 원래 파일 이름 file.getOriginalFilename
+            String saveName = UUID.randomUUID().toString()+"_"+file.getOriginalFilename();
+
+            Path savePath = Paths.get(uploadPath, saveName);
+
+            try {
+                // 파일저장 - 예외 처리
+                Files.copy(file.getInputStream(), savePath); //원본파일 업로드
+
+                // 이미지인 경우에만 썸네일 만들기
+                String contentType = file.getContentType(); // Mine Type
+                if(contentType != null || contentType.startsWith("image")){
+                    // 썸네일 이미지
+                    Path thumbnailPath = Paths.get(uploadPath, "s_" + saveName);
+
+                    Thumbnails.of(savePath.toFile()).size(600,600).toFile(thumbnailPath.toFile());
+                }
+
+                uploadNames.add(saveName);
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } // end for
+
+        return uploadNames;
+
+    }
 
     public ResponseEntity<Resource> getFile(String fileName) {
 

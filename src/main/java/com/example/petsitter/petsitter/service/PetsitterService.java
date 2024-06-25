@@ -1,9 +1,7 @@
 package com.example.petsitter.petsitter.service;
 
-import com.example.petsitter.pet.dto.PetDto;
-import com.example.petsitter.petsitter.domain.Petsitter;
+import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
-import com.example.petsitter.petsitter.dto.ReservationDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,4 +24,5 @@ public interface PetsitterService {
 
     void delete(Long id);
 
+    MemberDto findByMember(Long id);
 }
