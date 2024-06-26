@@ -44,7 +44,7 @@ public class PetsitterController {
     }
 
     @PostMapping("/")
-    public String resister(@Valid PetsitterDto petsitterDto, BindingResult bindingResult){
+    public String register(@Valid PetsitterDto petsitterDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
             return "/petsitter/create";
         }

@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 @Builder
 @Entity
+@Table(name = "petsitter")
 public class Petsitter {
 
     @Id

@@ -2,6 +2,7 @@ package com.example.petsitter.pet.domain;
 
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Table;
 import lombok.*;
 
 @Embeddable
@@ -10,6 +11,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "petImage")
 public class PetImage {
 
     private String fileName;

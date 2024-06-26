@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(exclude = "memberRoleList")
 @Builder
+@Table(name = "member")
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

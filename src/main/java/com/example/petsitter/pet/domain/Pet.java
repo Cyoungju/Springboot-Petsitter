@@ -20,6 +20,7 @@ import java.util.List;
 @Entity
 @Builder
 @NoArgsConstructor
+@Table(name = "pet")
 @ToString(exclude = "imageList")
 public class Pet {
 
