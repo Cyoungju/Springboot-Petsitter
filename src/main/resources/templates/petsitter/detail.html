@@ -9,7 +9,7 @@
         <div class="container">
             <div class="tit">Pet Sitter</div>
             <div class="cont_box">
-                <a href="" class="btn font18 backList">목록</a>
+                <button onclick="listReq()" class="btn font18 backList">목록</button>
                 <ul class="petsitterList">
                     <li class="brBox" style="display:block">
                         <div class="box text-left flex-wrap sitterDetail">
@@ -83,6 +83,12 @@
 
 
         <script>
+            const listReq = () => {
+                console.log("목록 요청");
+                const page = [[${page}]];
+                location.href = "/petsitter/list?page="+page;
+            }
+
             const swiper = new Swiper('.img_slide', {
               loop: true,
               navigation: {

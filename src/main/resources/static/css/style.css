@@ -142,7 +142,7 @@ main{min-height: 800px;}
 }
 .register .box select{padding: 10px;width: 320px;border-radius: 5px;border: 1px solid var(--grcolor);}
 .register .box textarea{padding: 10px;width: 100%;border-radius: 5px;height: 100px;border: 1px solid var(--grcolor);}
-.register .brBox{max-width: 680px;padding: 150px 50px;margin-right: auto;margin-left: auto}
+.register .brBox{max-width:100%;padding: 150px 50px;margin-right: auto;margin-left: auto}
 
 .register .radioBox .box{margin-top: 0}
 .register .radioBox .box label{width: auto;display: inline-block;margin-left: 5px;}
@@ -154,6 +154,17 @@ main{min-height: 800px;}
 .board table td{border-bottom: 1px solid #ddd;padding: 10px 5px;}
 .board .paging{text-align: center;margin-top: 30px;display: flex;align-items: center;justify-content: center}
 .board .paging a {display: flex;align-items: center;justify-content: center;}
+.boardlist.list .td_date{width:200px}
+.boardlist.list .td_num{width:130px}
+.boardlist.list .td_tit{text-align:left}
+
+/* comment */
+#comment-list {padding-top: 50px;}
+#comment-list > div > div {border-bottom: 1px solid #ddd;padding-bottom: 10px;margin-bottom: 10px;}
+#comment-list .box{position:relative;top:0;left:0}
+#comment-list .comment-btn { position: absolute; top: 0; right: 0;}
+.comment-update-form{text-align:left;background: #eee;padding: 10px;margin-top: 10px;}
+.comment-update-form .inputBox input[type="text"]{border:none;border-bottom:1px solid #aaa;background:none;width:100%;padding:10px;margin-bottom:5px;}
 
 .petsitterList li {margin-top: 30px;display: flex;align-items: center;justify-content: space-between;width: 100%;flex-wrap: wrap;}
 .petsitterList li.brBox{border-radius: 25px;box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.1);padding: 40px;}

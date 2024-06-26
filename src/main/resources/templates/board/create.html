@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout/layout}"
+>
+<th:block layout:fragment="content">
+    <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
+    <section class="section register">
+        <div class="container">
+            <div class="tit">Board</div>
+            <div class="cont_box">
+                <form action="/board/" method="post" name="boardForm" th:object="${boardDto}" id="boardForm">
+                    <div class="box text-left">
+                        <div class="box text-left">
+                            <label class="font22" th:for="title">제목</label>
+                            <input type="text" id="title" name="title" th:field="*{title}" class="form-control" required>
+                        </div>
+
+                        <div class="box text-left">
+                            <label class="font22 mb-5" th:for="contents">문의 내용</label>
+                            <textarea type="text" id="contents" name="contents" th:field="*{contents}" style="height:200px" class="form-control" required></textarea>
+                        </div>
+
+                    </div>
+                    <div class="mt-20" style="width:100%;text-center">
+                        <input type="submit" class="font18 btn" value="등록">
+                        <a th:href="@{/board/list}" class="btn font18">취소</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</th:block>
+</html>
