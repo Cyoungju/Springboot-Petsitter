@@ -10,6 +10,10 @@ import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.pet.service.PetService;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
 import com.example.petsitter.petsitter.service.PetsitterService;
+import com.example.petsitter.reservation.domain.Reservation;
+import com.example.petsitter.reservation.dto.ReservationDto;
+import com.example.petsitter.reservation.item.Item;
+import com.example.petsitter.reservation.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -40,6 +44,7 @@ public class MyController {
     private final MemberService memberService;
     private final PetService petService;
     private final PetsitterService petsitterService;
+    private final ReservationService reservationService;
 
     @GetMapping("/mypage")
     public String mypageP(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model){
@@ -65,11 +70,28 @@ public class MyController {
     }
 
     @GetMapping("/myPetsitterResList")
-    public String PetsitterResListP(Model model){
-        List<PetsitterDto> petsitterDtoList = petsitterService.getList();
-        model.addAttribute("list", petsitterDtoList);
-        return "/my/myPetsitterResList";
+    public String PetsitterResListP(Model model,@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        String username = customUserDetails.getUsername();
+        Member member = memberService.findByEmail(username);
+
+        List<Item> item = reservationService.findAllItemsByMember(member);
+
+        model.addAttribute("list", item);
+        return "/my/petsitterResList";
     }
+
+    @GetMapping("/myPetsitterItemResList")
+    public String myPetsitterItemResListP(Model model,@AuthenticationPrincipal CustomUserDetails customUserDetails){
+        String username = customUserDetails.getUsername();
+        Member member = memberService.findByEmail(username);
+
+        List<Item> item = reservationService.findPetsitterReservation(member);
+
+
+        model.addAttribute("list", item);
+        return "/my/myPetsitterItemResList";
+    }
+
 
     @PostMapping("/sitterRole")
     public ResponseEntity<String> sitterRole(@Valid @RequestBody MemberDto memberDto){

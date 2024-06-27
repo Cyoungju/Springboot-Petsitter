@@ -29,13 +29,14 @@ public class ReservationDto {
 
     private Long totalPrice;
 
+    private String status;
+
     private Long petsitterId;
 
-    private List<Long> petsitterIds; // Petsitter ID 리스트
+    private List<Long> petsitterIds;
 
     private Long memberId;
 
-    private List<Long> memberIds; // Member ID 리스트
 
 
 }

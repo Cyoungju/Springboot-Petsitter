@@ -16,6 +16,7 @@
                         <li><a th:href="@{/my/myWishList}">찜 리스트</a></li>
                         <li><a th:href="@{/my/myPetlist}">반려 동물 정보</a></li>
                         <li><a th:href="@{/my/myPetsitterResList}">예약 상품 목록</a></li>
+                        <li th:if="${#lists.size(role) > 1}"><a th:href="@{/my/myPetsitterItemResList}">나의 펫시터 예약현황</a></li>
                         <li th:if="${#lists.size(role) > 1}"><a th:href="@{/my/myPetsitterList}">나의 펫시터</a></li>
                     </ul>
                 </li>
@@ -28,7 +29,7 @@
                 logout
             </a>
         </div>
-        <script>
+        <script th:if="${#lists.size(role) > 1}">
             const menuItem = document.querySelector('.menu .has-submenu');
             const submenu = menuItem.querySelector('.depth2');
 

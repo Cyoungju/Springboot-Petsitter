@@ -22,4 +22,6 @@ public interface MemberService {
     void clearRole();
 
     void refreshAuthentication(String username);
+
+    Member saveAddress(String address, String detailAdr, Long id);
 }

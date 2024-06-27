@@ -23,14 +23,18 @@ public class Petsitter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 50)
     private String sitterName;
 
     private String sitterContent;
 
+    @Column(nullable = false)
     private boolean sitterType;
 
+    @Column(nullable = false)
     private Long sitterPrice;
 
+    @Column(nullable = false)
     private String sitterWorkAdr;
 
     private LocalDateTime createTime;
