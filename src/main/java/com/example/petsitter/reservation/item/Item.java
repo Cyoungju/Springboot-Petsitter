@@ -1,5 +1,8 @@
 package com.example.petsitter.reservation.item;
 
+import com.example.petsitter.board.domain.Comment;
+import com.example.petsitter.petsitter.domain.Petsitter;
+import com.example.petsitter.petsitter.domain.PetsitterReservation;
 import com.example.petsitter.reservation.domain.Reservation;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -13,23 +16,21 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "item",
-        indexes = {
-                @Index(name = "item_reservation_id_idx", columnList = "reservation_id")
-        }
-)
+@Table(name = "item")
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private Reservation reservation;
 
     private List<String> times = new ArrayList<>();
 
-    private String status;
+    @OneToOne
+    @JoinColumn(name = "petsitterReservation_id")
+    private PetsitterReservation petsitter;
 
     @Column(nullable = false)
     private Long timeCount;
@@ -39,11 +40,11 @@ public class Item {
 
 
     @Builder
-    public Item(Long id, Reservation reservation,List<String> times,String status, Long timeCount, Long price) {
+    public Item(Long id, Reservation reservation,List<String> times, PetsitterReservation petsitter, Long timeCount, Long price) {
         this.id = id;
         this.reservation = reservation;
         this.times = times;
-        this.status = status;
+        this.petsitter = petsitter;
         this.timeCount = timeCount;
         this.price = price;
     }

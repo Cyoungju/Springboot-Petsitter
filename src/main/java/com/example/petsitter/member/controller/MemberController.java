@@ -1,6 +1,7 @@
 package com.example.petsitter.member.controller;
 
 import com.example.petsitter.api.kakao.KakaoService;
+import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.service.MemberService;
@@ -95,5 +96,12 @@ public class MemberController {
     public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName){
         return fileUtil.getFile(fileName);
     }
+
+    @PostMapping("/addAddress")
+    public ResponseEntity<String> addAddress(@RequestParam String address, @RequestParam String detailAdr, @RequestParam Long id) {
+        memberService.saveAddress(address, detailAdr, id);
+        return ResponseEntity.ok("success");
+    }
+
 
 }

@@ -19,7 +19,7 @@
                             <th>예약 시간</th>
                             <th>가격</th>
                             <th>상태</th>
-                            <th>취소요청</th>
+                            <th>상태 관리</th>
                         </tr>
 
                         </thead>
@@ -32,10 +32,12 @@
                                 <td th:text="${items.getReservation().getTimes()}"></td>
                                 <td th:text="${items.getPrice() * items.getTimeCount()}"></td>
                                 <td th:text="${items.getReservation().getStatus()}"></td>
-                                <td>
-                                    <input type="text" id="reservationId" th:value="${items.getReservation().getId()}" hidden/>
-                                    <select class="statusSelect" th:unless="${items.getReservation().getStatus().equals('취소')}">
+                                <td >
+                                    <input type="text" class="reservationId" th:value="${items.getReservation().getId()}" hidden/>
+                                    <select class="statusSelect" th:if="${!items.getReservation().getStatus().equals('취소')}">
                                         <option value="">선택</option>
+                                        <option value="대기" th:selected="${items.getReservation().getStatus() == '대기'}">대기</option>
+                                        <option value="확정">확정</option>
                                         <option value="취소">취소</option>
                                     </select>
                                 </td>
@@ -49,7 +51,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('.statusSelect').change(function() {
-                var itemId = $("#reservationId").val();
+                var itemId = $(this).siblings(".reservationId").val();
                 var newStatus = $(this).val();
 
                 // AJAX request to update server

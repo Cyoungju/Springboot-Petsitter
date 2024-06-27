@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -179,5 +180,21 @@ public class MemberServiceImpl implements MemberService{
                 userDetails.getAuthorities()
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    @Override
+    public Member saveAddress(String address, String detailAdr, Long id) {
+        Optional<Member> memberOptional = memberRepository.findById(id);
+
+        if (memberOptional.isPresent()) {
+            Member member = memberOptional.get();
+            member.updateAddressDTO(address, detailAdr);
+
+            memberRepository.save(member);
+            return member;
+        } else {
+            return null;
+        }
+
     }
 }

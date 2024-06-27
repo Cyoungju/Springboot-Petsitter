@@ -57,7 +57,7 @@
                             <div th:text="${petsitter.sitterPrice}"></div>
                         </div>
 
-                        <div class="box text-left sitterDetail">
+                        <div class="box text-left sitterDetail" th:if="${petsitter.uploadedFileName != null && !petsitter.uploadedFileName.isEmpty()}">
                             <div class="list_tit font22 mb-5">돌봄 이미지</div>
                             <div class="img_slide swiper">
                                 <div class="swiper-wrapper">
