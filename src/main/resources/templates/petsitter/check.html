@@ -10,15 +10,9 @@
             <div class="tit">Pet Sitter</div>
             <div class="cont_box">
                 <ul class="petsitterList">
-                    <li class="brBox">
-<!--                        <div>-->
-<!--                            <div class="list_tit font22 mb-5">예약확인</div>-->
-
-<!--                            <div class="box text-left sitterDetail">-->
-<!--                                <div class="list_tit font22 mb-5">소개글</div>-->
-<!--                                <div th:text="${petsitter.sitterContent}"></div>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                    <li class="brBox" style="display:block">
+                        <div class="font22">예약이 완료 되었습니다!</div>
+                        <a th:href="@{/my/myPetsitterResList}" class="btn font18 mt-10">나의 예약 확인하기</a>
                     </li>
                 </ul>
             </div>

@@ -8,7 +8,7 @@
     <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
     <section class="section">
         <div class="container">
-            <div class="tit">MyPetSitterList</div>
+            <div class="tit">MyPetsitter Reservation List</div>
             <div class="cont_box">
                 <div class="board list">
                     <table>
@@ -17,7 +17,8 @@
                             <th>펫시터 이름</th>
                             <th>예약 날짜</th>
                             <th>예약 시간</th>
-                            <th>가격</th>
+                            <th>총 가격</th>
+                            <th>돌봄 타입</th>
                             <th>상태</th>
                             <th>상태 관리</th>
                         </tr>
@@ -26,17 +27,26 @@
                         <tbody>
                             <tr th:each="items: ${list}">
                                 <td class="td_tit">
-                                    <a th:href="@{/petsitter/{id}(id=${items.getPetsitter().getPetsitter().getId()})}" th:text="${items.getPetsitter().getPetsitter().getSitterName()}"></a>
+                                    <div th:text="${items.getSitterName()}"></div>
+                                    <a href="#" class="petInfoLink btn font16" th:data-reservation-id="${items.getReservation().getId()}">예약자 정보</a>
                                 </td>
                                 <td th:text="${items.getReservation().getDate()}"></td>
                                 <td th:text="${items.getReservation().getTimes()}"></td>
                                 <td th:text="${items.getPrice() * items.getTimeCount()}"></td>
-                                <td th:text="${items.getReservation().getStatus()}"></td>
-                                <td >
-                                    <input type="text" class="reservationId" th:value="${items.getReservation().getId()}" hidden/>
-                                    <select class="statusSelect" th:if="${!items.getReservation().getStatus().equals('취소')}">
+                                <td>
+                                    <div class="marker mb-5">
+                                        <span class="dog" th:if="${items.isSitterType() == false}">강아지 돌봄</span>
+                                        <span class="cat" th:if="${items.isSitterType() == true}">고양이 돌봄</span>
+                                    </div>
+                                </td>
+                                <td th:text="${items.getReservation().getStatus().name()}"
+                                    th:classappend="(${items.getReservation().getStatus().name() == '취소'} ? 'text-red' : (${items.getReservation().getStatus().name() == '대기'} ? 'text-gray' : ''))">
+                                </td>
+                                <td>
+                                    <input type="text" th:if="${items.getReservation().getStatus().name() == '대기'}" class="reservationId" th:value="${items.getReservation().getId()}" hidden/>
+                                    <select class="statusSelect" th:if="${items.getReservation().getStatus().name() == '대기'}">
                                         <option value="">선택</option>
-                                        <option value="대기" th:selected="${items.getReservation().getStatus() == '대기'}">대기</option>
+                                        <option value="대기">대기</option>
                                         <option value="확정">확정</option>
                                         <option value="취소">취소</option>
                                     </select>
@@ -48,6 +58,19 @@
             </div>
         </div>
     </section>
+
+
+    <div class="myPetPopup">
+        <div class="container">
+            <div class="font22">반려동물 정보</div>
+                <ul class="petsitterList">
+
+                </ul>
+                <button class="myPetPopupClosed mt-30 btn font18">확인</button>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('.statusSelect').change(function() {
@@ -71,6 +94,60 @@
                         console.error('Error updating status:', error);
                     }
                 });
+            });
+
+            $('.myPetPopup').fadeOut();
+            $('.myPetPopupClosed').click(function(e) {
+                $('.myPetPopup').fadeOut();
+            });
+
+            $('.petInfoLink').click(function(e) {
+                console.log("클릭");
+                var reservationId = $(this).data('reservation-id');
+
+                // AJAX request to fetch pet information
+                $.ajax({
+                    type: 'GET',
+                    url: '/my/petReservation/info',
+                    data: {
+                        reservationId: reservationId
+                    },
+                    success: function(response) {
+
+                        $('.petsitterList').empty();
+                        $(".myPetPopup").css("display","block");
+                        $.each(response, function(index, pet) {
+                            var petTypeClass = pet.petType ? 'dog' : 'cat';
+                            var petType = pet.petType ? '강아지' : '고양이';
+                            var neuteredStatus = pet.petNeutering ? 'O' : 'X';
+                            var petInfoHtml = `
+                                <li class="brBox">
+                                    <div class="list_icon">
+                                        <img src="/pet/view/s_${pet.uploadedFileName}" alt="Pet Thumbnail">
+                                    </div>
+                                    <div class="list_txt">
+                                        <div class="marker mb-5">
+                                            <span class="${petTypeClass}">${petType}</span>
+                                        </div>
+                                        <div class="list_tit font22 mb-5">${pet.petName}</div>
+                                        <div class="list_option">
+                                            <span><b>${pet.petGender ? '여아' : '남아'}</b></span>
+                                            <span> / <b>${pet.petBirth}</b></span>
+                                            <span> / 중성화 여부 <b>${neuteredStatus}</b></span>
+                                            <span> / <b>${pet.petWeight}</b> kg</span>
+                                        </div>
+                                    </div>
+                                </li>
+                            `;
+                            $('.petsitterList').append(petInfoHtml);
+                        });
+                        $('.myPetPopup').fadeIn();
+                    },
+                    error: function(error) {
+                        console.error('Error fetching pet information:', error);
+                    }
+                });
+                return false;
             });
         });
     </script>

@@ -6,12 +6,15 @@ import com.example.petsitter.pet.domain.Pet;
 import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.pet.repository.PetRepository;
 import com.example.petsitter.core.util.CustomFileUtil;
+import com.example.petsitter.reservation.domain.Reservation;
+import com.example.petsitter.reservation.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +31,7 @@ public class PetServiceImpl implements PetService{
     private final PetRepository petRepository;
 
     private final MemberService memberService;
+    private final ReservationRepository reservationRepository;
 
     @Override
     public void save(PetDto petDto) {
@@ -141,10 +145,10 @@ public class PetServiceImpl implements PetService{
     @Override
     public PetDto findById(Long id) {
         //Optional존재유무 확인
-        Optional<Pet> boardOptional = petRepository.findById(id);
+        Optional<Pet> petOptional = petRepository.findById(id);
 
         // Optional.isPresent()를 사용하여 값이 있는지 확인
-        if (boardOptional.isPresent()) {
+        if (petOptional.isPresent()) {
             Pet pet = petRepository.findById(id).get();
 
             //toEntity에서 DTO로 데이터를 변환
@@ -164,6 +168,41 @@ public class PetServiceImpl implements PetService{
         }else {
             return null;
         }
+    }
+
+    @Override
+    public List<PetDto> findPetsByReservationId(Long reservationId) {
+        Optional<Reservation> reservationOption = reservationRepository.findById(reservationId);
+        if(reservationOption.isPresent()){
+            Reservation reservation = reservationOption.get();
+            Long member = reservation.getMember().getId();
+            List<Pet> pets = petRepository.findByMemberId(member);
+
+
+            // Convert pets to DTOs
+            List<PetDto> petDtos = pets.stream().map(pet -> {
+                String firstImage = pet.getImageList().isEmpty() ? null : pet.getImageList().get(0).getFileName();
+                return PetDto.builder()
+                        .id(pet.getId())
+                        .petName(pet.getPetName())
+                        .petType(pet.isPetType())
+                        .petGender(pet.isPetGender())
+                        .petBirth(pet.getPetBirth())
+                        .petNeutering(pet.isPetNeutering())
+                        .petWeight(pet.getPetWeight())
+                        .uploadedFileName(pet.getImageList().stream().map(
+                                image -> image.getFileName()
+                        ).collect(Collectors.toList()))
+                        .build();
+            }).collect(Collectors.toList());
+
+            return petDtos;
+        }else {
+            return null;
+        }
+
+
+
     }
 
 

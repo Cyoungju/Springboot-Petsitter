@@ -1,6 +1,7 @@
 package com.example.petsitter.pet.service;
 
 
+import com.example.petsitter.pet.domain.Pet;
 import com.example.petsitter.pet.dto.PetDto;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,4 +19,6 @@ public interface PetService {
     void delete(Long id);
 
     PetDto findById(Long id);
+
+    List<PetDto> findPetsByReservationId(Long reservationId);
 }

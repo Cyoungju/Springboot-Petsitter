@@ -1,8 +1,11 @@
 package com.example.petsitter.reservation.domain;
 
 
+import com.example.petsitter.board.domain.Comment;
 import com.example.petsitter.member.domain.Member;
+import com.example.petsitter.pet.domain.Pet;
 import com.example.petsitter.petsitter.domain.PetsitterReservation;
+import com.example.petsitter.wish.Wish;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,23 +31,27 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private LocalDate date;
 
     @ElementCollection
     @CollectionTable(name = "reservation_times", joinColumns = @JoinColumn(name = "reservation_id"))
-    @Column(name = "reservation_time")
+    @Column(name = "reservation_time", nullable = false)
     private List<LocalTime> times = new ArrayList<>();
 
+    @Column(nullable = false)
     private Long totalPrice;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    @OneToMany(mappedBy = "reservation")
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY)
     private List<PetsitterReservation> petsitters = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
+
+
 
     @Builder
     public Reservation(Long id, LocalDate date, List<LocalTime> times, Long totalPrice, ReservationStatus status, List<PetsitterReservation> petsitters, Member member) {

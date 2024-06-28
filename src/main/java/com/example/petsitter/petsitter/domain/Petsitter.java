@@ -2,6 +2,7 @@ package com.example.petsitter.petsitter.domain;
 
 import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
+import com.example.petsitter.wish.Wish;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,16 +42,15 @@ public class Petsitter {
 
     private LocalDateTime updateTime;
 
-
     @ElementCollection
     @Builder.Default
     private List<PetsitterImage> imageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "petsitter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "petsitter", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<PetsitterReservation> reservations = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
