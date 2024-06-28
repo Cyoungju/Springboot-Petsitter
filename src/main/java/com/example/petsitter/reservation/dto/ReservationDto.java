@@ -31,12 +31,6 @@ public class ReservationDto {
 
     private String status;
 
-    private Long petsitterId;
-
-    private List<Long> petsitterIds;
-
-    private Long memberId;
-
-
+    private Long petsitterId; 
 
 }

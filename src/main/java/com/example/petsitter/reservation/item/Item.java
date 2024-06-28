@@ -1,7 +1,6 @@
 package com.example.petsitter.reservation.item;
 
-import com.example.petsitter.board.domain.Comment;
-import com.example.petsitter.petsitter.domain.Petsitter;
+import com.example.petsitter.pet.domain.Pet;
 import com.example.petsitter.petsitter.domain.PetsitterReservation;
 import com.example.petsitter.reservation.domain.Reservation;
 import jakarta.persistence.*;
@@ -9,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,14 +36,20 @@ public class Item {
     @Column(nullable = false)
     private Long price;
 
+    private String sitterName;
+
+    private boolean sitterType;
+
 
     @Builder
-    public Item(Long id, Reservation reservation,List<String> times, PetsitterReservation petsitter, Long timeCount, Long price) {
+    public Item(Long id, Reservation reservation,List<String> times, PetsitterReservation petsitter, Long timeCount, Long price, String sitterName,boolean sitterType) {
         this.id = id;
         this.reservation = reservation;
         this.times = times;
         this.petsitter = petsitter;
         this.timeCount = timeCount;
         this.price = price;
+        this.sitterName = sitterName;
+        this.sitterType = sitterType;
     }
 }

@@ -112,7 +112,7 @@ select::-ms-expand{ display:none;}
 #header .menu{margin-left: auto;margin-right: 20px;}
 #header .menu a{display: block;padding: 15px;}
 #header .menu a:hover{color: var(--pointcolor);}
-#header .menu .depth2 {display:none;position: absolute;top: 100%;left: 0;width: 150px;background: rgba(255,255,255,0.5);box-shadow: 0 0 10px 5px rgba(0,0,0,0.1);z-index:9999}
+#header .menu .depth2 {display:none;position: absolute;top: 100%;left: 0;width: 150px;background: #fff;box-shadow: 0 0 10px 5px rgba(0,0,0,0.1);z-index:9999}
 #header .menu.depth1 li {position: relative;top: 0;left: 0;}
 #header .menu.depth1 a{padding:10px 15px;}
 
@@ -219,6 +219,15 @@ table.res_tb th, table.res_tb td {padding: 10px;border-bottom: 1px solid var(--g
 #addressModal label{display:block}
 .modal-btn{margin-top:10px;display:none;}
 
+/* myPetPopup */
+.myPetPopup {display:none;position: fixed;z-index: 9999;width: 100%;background: rgba(0, 0, 0, 0.8);top: 0;left: 0;height: 100%;text-align:center}
+.myPetPopup .container{width:768px;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius: 40px;padding:50px;overflow-y: scroll;max-height: 600px;}
+.text-red {color: red;}
+.text-gray {color: gray;}
+
+.brBox{position:relative;top:0;left:0}
+#addToWishlistBtn span {font-size: 30px;}
+#addToWishlistBtn {position: absolute;top: 50px;right: 50px;}
 /* paging */
 .paging {display: flex;align-items: center;justify-content: center;}
 .paging > a {display: flex;align-items: center;}

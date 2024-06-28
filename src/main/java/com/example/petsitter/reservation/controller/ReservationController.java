@@ -29,11 +29,8 @@ public class ReservationController {
     // 예약 상세 내역
     @GetMapping("/check")
     public String reservationCheck(){
-
         return "/petsitter/check";
     }
-
-
 
     @PostMapping("/")
     public String submitReservation(@Valid @ModelAttribute("reservationDto") ReservationDto reservationDto,

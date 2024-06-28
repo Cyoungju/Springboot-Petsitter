@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{/layout/layout}"
+>
+<th:block layout:fragment="content">
+    <div class="icon"><img th:src="@{/images/icon.png}" alt=""></div>
+    <section class="section register">
+        <div class="container">
+            <div class="tit">Wish List</div>
+            <div class="cont_box">
+
+                <ul class="petsitterList mb-50">
+                    <li th:each="petsitter: ${list}" class="brBox">
+                        <div class="list_icon">
+                            <span class="dog" th:if="${!petsitter.petsitter.sitterType}"><img th:src="@{/images/dog.png}"></span>
+                            <span class="cat" th:if="${petsitter.petsitter.sitterType}"><img th:src="@{/images/cat.png}"></span>
+                        </div>
+                        <div class="list_txt">
+                            <div class="marker mb-5">
+                                <span class="dog" th:if="${!petsitter.petsitter.sitterType}">강아지</span>
+                                <span class="cat" th:if="${petsitter.petsitter.sitterType}">고양이</span>
+                            </div>
+                            <div class="list_tit font22 mb-5">
+                                <a th:href="@{'/petsitter/' + ${petsitter.petsitter.id}}" th:text="${petsitter.petsitter.sitterName}"></a>
+                            </div>
+                            <div th:text="${petsitter.petsitter.sitterWorkAdr}"></div>
+                            <div class="list_date" th:text="${#temporals.format(petsitter.petsitter.createTime, 'yyyy-MM-dd HH:mm')}"></div>
+                            <button type="button" class="btn font16 mt-10" th:attr="onclick=|deletePet('${petsitter.id}')|">삭제</button>
+
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="paging" th:if="${list.totalPages > 0}">
+                    <a th:href="@{/my/myWishList(page=1)}"><span class="material-symbols-outlined">keyboard_double_arrow_left</span></a><!-- 처음 -->
+                    <a th:href="${list.first} ? '#' : @{/my/myWishList(page=${list.number})}"><span class="material-symbols-outlined">chevron_left</span></a><!-- 이전 -->
+
+                    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+                        <!-- 현재페이지는 링크 없이 숫자만 -->
+                        <span th:if="${page == list.number + 1}" th:text="${page}"></span>
+                        <!-- 현재페이지 번호가 아닌 다른 페이지번호에는 링크를 보여줌 -->
+                        <span th:unless="${page == list.number + 1}">
+                            <a th:href="@{/my/myWishList(page=${page})}" th:text="${page}"></a>
+                        </span>
+                    </span>
+
+                    <!-- 다음 링크 활성화 비활성화
+                        사용자: 2페이지, getNumber: 1, 3페이지-->
+                    <a th:href="${list.last} ? '#' : @{/my/myWishList(page=${list.number + 2})}"><span class="material-symbols-outlined">chevron_right</span></a><!-- 다음 -->
+                    <!-- 마지막 페이지로 이동 -->
+                    <a th:href="@{/my/myWishList(page=${list.totalPages})}"><span class="material-symbols-outlined">keyboard_double_arrow_right</span></a><!-- 마지막 -->
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        function deletePet(id) {
+            if (!confirm('정말 삭제하시겠습니까?')) {
+                return;
+            }
+
+            fetch(`/wish/delete/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('삭제되었습니다.');
+                    window.location.reload(); // 또는 다른 처리를 할 수 있음
+                } else {
+                    alert('삭제에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('삭제 중 오류가 발생했습니다.');
+            });
+        }
+    </script>
+</th:block>
+</html>

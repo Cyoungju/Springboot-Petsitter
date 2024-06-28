@@ -5,6 +5,9 @@ import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.service.MemberService;
+import com.example.petsitter.pet.domain.Pet;
+import com.example.petsitter.pet.dto.PetDto;
+import com.example.petsitter.pet.service.PetService;
 import com.example.petsitter.petsitter.domain.Petsitter;
 import com.example.petsitter.reservation.domain.ReservationTime;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
@@ -35,6 +38,7 @@ public class PetsitterController {
 
     private final PetsitterService petsitterService;
     private final MemberService memberService;
+    private final PetService petService;
     private final CustomFileUtil fileUtil;
 
     @GetMapping("/sitterRole/create")
@@ -88,8 +92,13 @@ public class PetsitterController {
         // member 정보 
         MemberDto member = petsitterService.findByMember(id);
 
+        //pet정보
+        List<PetDto> petDto = petService.getList();
+        int petId = petDto.size();
+
         //모델에 데이터 추가
         model.addAttribute("petsitter", petsitterDto);
+        model.addAttribute("pet", petId);
         model.addAttribute("member", member);
         model.addAttribute("page", pageable.getPageNumber());
 
@@ -134,6 +143,8 @@ public class PetsitterController {
         PetsitterDto petsitterDto = petsitterService.findById(id);
         // member 정보
         MemberDto petsitterMember = petsitterService.findByMember(id);
+
+
 
         // ReservationDto 객체를 생성하여 모델에 추가
         ReservationDto reservationDto = new ReservationDto();

@@ -1,8 +1,10 @@
 package com.example.petsitter.pet.domain;
 
 
+import com.example.petsitter.board.domain.Board;
 import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.pet.dto.PetDto;
+import com.example.petsitter.reservation.domain.Reservation;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,9 +51,10 @@ public class Pet {
     @Builder.Default
     private List<PetImage> imageList = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
 
     public void addImage(PetImage image) {
         image.setOrd(this.imageList.size());

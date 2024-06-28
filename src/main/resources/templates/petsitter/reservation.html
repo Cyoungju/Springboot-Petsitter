@@ -43,6 +43,7 @@
                         <div class="AddressPop" id="addressModal" th:object="${member}">
                             <div>
                                 <label class="font22" for="address_kakao">주소를 수정해주세요</label>
+                                <p clas="grfont mt-10">저장 버튼을 눌러 주소 저장을 확정해주세요!</p>
                                 <input type="text" class="form-control" id="address_kakao" name="address"
                                        placeholder="주소(지번 또는 도로명)를 입력하세요. ex) 서울특별시 성북구 종암로 10길" th:field="*{address}" readonly>
 
@@ -70,12 +71,15 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>돌봄이</th>
+                                        <th>펫시터 이름</th>
                                         <td th:text="${petsitterDto.sitterName}"></td>
                                     </tr>
                                     <tr>
-                                        <th>돌봄비용</th>
-                                        <td th:text="${petsitterDto.sitterPrice}"></td>
+                                        <th>돌봄비용<br><small>(단위: 한시간)</small></th>
+                                        <td>
+                                            <span th:text="${petsitterDto.sitterPrice}"></span><br>
+                                            <small class="grfont mt-10">하단에 총가격을 확인해주세요!</small>
+                                        </td>
                                     </tr>
                                 </table>
                             </div>

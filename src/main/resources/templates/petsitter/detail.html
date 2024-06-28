@@ -12,6 +12,8 @@
                 <button onclick="listReq()" class="btn font18 backList">목록</button>
                 <ul class="petsitterList">
                     <li class="brBox" style="display:block">
+                        <button id="addToWishlistBtn" th:value="${petsitter.getId()}"></button>
+
                         <div class="box text-left flex-wrap sitterDetail">
                             <!-- Petsitter 정보 표시 -->
                             <div class="list_icon">
@@ -70,13 +72,9 @@
                                 <div class="swiper-button-next"></div>
                             </div>
                         </div>
-                        <a class="btn font18 mt-20" th:href="@{'/petsitter/reservation/' + ${petsitter.getId()}}">예약하기</a>
+                        <a style="cursor:pointer" id="reservationButton" class="btn font18 mt-20" th:data-petsitter-id="${petsitter.getId()}">예약하기</a>
                     </li>
-                    <li class="brBox">
-                        <div>
-                            <div class="list_tit font22 mb-5">돌봄 후기</div>
-                        </div>
-                    </li>
+
                 </ul>
             </div>
         </div>
@@ -89,6 +87,18 @@
                 location.href = "/petsitter/list?page="+page;
             }
 
+            const reservationButton = document.getElementById('reservationButton');
+            reservationButton.addEventListener('click', function () {
+                const pet = [[${pet}]];
+                if (pet === 0) {
+                    alert('반려동물 정보를 입력해주세요!');
+                    location.href = '/my/myPetlist';
+                } else {
+                    const petsitterId = this.getAttribute('data-petsitter-id');
+                    location.href = `/petsitter/reservation/${petsitterId}`;
+                }
+            });
+
             const swiper = new Swiper('.img_slide', {
               loop: true,
               navigation: {
@@ -96,6 +106,58 @@
                 prevEl: '.swiper-button-prev',
               },
             });
+
+
+            $(document).ready(function () {
+                const petsitterId = $('#addToWishlistBtn').val();
+                checkWishlist(petsitterId);
+
+                $('#addToWishlistBtn').click(function () {
+                    if (!$(this).prop('disabled')) {
+                        addToWishlist(petsitterId);
+                    }
+                });
+            });
+
+            function checkWishlist(petsitterId) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/wish/exists',
+                    data: { petsitterId: petsitterId },
+                    success: function (exists) {
+
+                        if (exists) {
+                            $('#addToWishlistBtn').prop('disabled', true);
+                            $('#addToWishlistBtn').html('<img src="/images/starFull.png">');
+                        } else {
+                            $('#addToWishlistBtn').prop('disabled', false);
+                            $('#addToWishlistBtn').html('<img src="/images/star.png">');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error checking Wishlist:', error);
+                    }
+                });
+            }
+
+            function addToWishlist(petsitterId) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/wish/',
+                    data: {
+                        petsitterId: petsitterId
+                    },
+                    success: function(response) {
+                        alert('찜!');
+                        console.log(response);
+                        window.location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error adding to Wishlist:', error);
+                        alert('찜 실패!.');
+                    }
+                });
+            }
         </script>
     </section>
 </th:block>

@@ -3,8 +3,11 @@ package com.example.petsitter.reservation.service;
 
 import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.repository.MemberRepository;
+import com.example.petsitter.pet.domain.Pet;
+import com.example.petsitter.pet.repository.PetRepository;
 import com.example.petsitter.petsitter.domain.Petsitter;
 import com.example.petsitter.petsitter.domain.PetsitterReservation;
+import com.example.petsitter.petsitter.dto.PetsitterDto;
 import com.example.petsitter.reservation.domain.Reservation;
 import com.example.petsitter.reservation.domain.ReservationStatus;
 import com.example.petsitter.reservation.domain.ReservationTime;
@@ -16,6 +19,7 @@ import com.example.petsitter.reservation.item.ItemRepository;
 import com.example.petsitter.reservation.repository.ReservationRepository;
 import com.example.petsitter.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +32,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 
+@Log4j2
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -38,6 +43,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final PetsitterRepository petsitterRepository;
     private final PetsitterReservationRepository petsitterReservationRepository;
     private final ItemRepository itemRepository;
+    private final PetRepository petRepository;
 
     @Override
     public List<LocalTime> getTimesByDateAndPetsitter(LocalDate date, Long petsitterId) {
@@ -88,6 +94,8 @@ public class ReservationServiceImpl implements ReservationService {
                 .petsitter(petsitterReservation)
                 .timeCount(reservation.getTimes().stream().count())
                 .price(reservation.getTotalPrice() / reservation.getTimes().stream().count())
+                .sitterName(petsitter.getSitterName())
+                .sitterType(petsitter.isSitterType())
                 .build();
 
         itemRepository.save(item);
@@ -113,6 +121,21 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Item> findPetsitterReservation(Member member) {
 
         return itemRepository.findAllByReservation_Petsitters_Petsitter_Member(member);
+    }
+
+
+    public PetsitterDto findById(Long id) {
+        //Optional존재유무 확인
+        Optional<Petsitter> boardOptional = petsitterRepository.findById(id);
+
+        // Optional.isPresent()를 사용하여 값이 있는지 확인
+        if (boardOptional.isPresent()) {
+            Petsitter petsitter = petsitterRepository.findById(id).get();
+            //toEntity에서 DTO로 데이터를 변환
+            return PetsitterDto.topetsitterDTO(petsitter);
+        }else {
+            return null;
+        }
     }
 
     @Override
