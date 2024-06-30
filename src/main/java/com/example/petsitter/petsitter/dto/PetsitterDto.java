@@ -42,6 +42,8 @@ public class PetsitterDto {
 
     private LocalDateTime updateTime;
 
+    private boolean delFlag;
+
     private Long memberId;
 
 
@@ -53,7 +55,7 @@ public class PetsitterDto {
     @Builder.Default
     private List<String> uploadedFileName = new ArrayList<>();
 
-    public PetsitterDto(Long id, String sitterName, String sitterContent, boolean sitterType, Long sitterPrice, String sitterWorkAdr, LocalDateTime createTime, LocalDateTime updateTime, List<String> uploadedFileName) {
+    public PetsitterDto(Long id, String sitterName, String sitterContent, boolean sitterType, Long sitterPrice, String sitterWorkAdr, LocalDateTime createTime, LocalDateTime updateTime, boolean delFlag, List<String> uploadedFileName) {
         this.id = id;
         this.sitterName = sitterName;
         this.sitterContent = sitterContent;
@@ -62,6 +64,7 @@ public class PetsitterDto {
         this.sitterWorkAdr = sitterWorkAdr;
         this.createTime = createTime;
         this.updateTime = updateTime;
+        this.delFlag = delFlag;
         this.uploadedFileName = uploadedFileName;
     }
 
@@ -75,6 +78,7 @@ public class PetsitterDto {
                 petsitter.getSitterWorkAdr(),
                 petsitter.getCreateTime(),
                 petsitter.getUpdateTime(),
+                petsitter.isDelFlag(),
                 petsitter.getImageList().stream().map(
                         images-> images.getFileName()
                 ).collect(Collectors.toList())
@@ -91,6 +95,7 @@ public class PetsitterDto {
                 .sitterPrice(sitterPrice)
                 .sitterWorkAdr(sitterWorkAdr)
                 .createTime(createTime)
+                .delFlag(false)
                 .updateTime(LocalDateTime.now())
                 .member(member)
                 .build();

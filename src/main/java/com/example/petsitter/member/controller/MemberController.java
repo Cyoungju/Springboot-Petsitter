@@ -1,7 +1,6 @@
 package com.example.petsitter.member.controller;
 
 import com.example.petsitter.api.kakao.KakaoService;
-import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.service.MemberService;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 @Log4j2
 @RequiredArgsConstructor

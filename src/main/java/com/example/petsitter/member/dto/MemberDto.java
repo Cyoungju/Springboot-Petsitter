@@ -1,7 +1,6 @@
 package com.example.petsitter.member.dto;
 
 import com.example.petsitter.member.domain.Member;
-import com.example.petsitter.member.domain.MemberImage;
 import com.example.petsitter.member.domain.MemberRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

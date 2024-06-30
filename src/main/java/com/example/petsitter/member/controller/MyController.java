@@ -2,7 +2,6 @@ package com.example.petsitter.member.controller;
 
 
 import com.example.petsitter.member.domain.Member;
-import com.example.petsitter.member.domain.MemberRole;
 import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.service.MemberService;
@@ -10,14 +9,10 @@ import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.pet.service.PetService;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
 import com.example.petsitter.petsitter.service.PetsitterService;
-import com.example.petsitter.reservation.domain.Reservation;
-import com.example.petsitter.reservation.dto.ReservationDto;
 import com.example.petsitter.reservation.item.Item;
 import com.example.petsitter.reservation.service.ReservationService;
-import com.example.petsitter.wish.WishDto;
-import com.example.petsitter.wish.WishService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import com.example.petsitter.wish.dto.WishDto;
+import com.example.petsitter.wish.service.WishService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,16 +20,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Log4j2

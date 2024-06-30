@@ -1,20 +1,16 @@
 package com.example.petsitter.pet.domain;
 
 
-import com.example.petsitter.board.domain.Board;
 import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.pet.dto.PetDto;
-import com.example.petsitter.reservation.domain.Reservation;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 

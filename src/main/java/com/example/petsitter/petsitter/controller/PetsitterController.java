@@ -5,10 +5,8 @@ import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.service.MemberService;
-import com.example.petsitter.pet.domain.Pet;
 import com.example.petsitter.pet.dto.PetDto;
 import com.example.petsitter.pet.service.PetService;
-import com.example.petsitter.petsitter.domain.Petsitter;
 import com.example.petsitter.reservation.domain.ReservationTime;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
 import com.example.petsitter.reservation.dto.ReservationDto;
@@ -89,27 +87,34 @@ public class PetsitterController {
     public String paging(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable){
         // petsitter 정보
         PetsitterDto petsitterDto = petsitterService.findById(id);
-        // member 정보 
+        // member 정보
         MemberDto member = petsitterService.findByMember(id);
-
         //pet정보
         List<PetDto> petDto = petService.getList();
         int petId = petDto.size();
 
-        //모델에 데이터 추가
-        model.addAttribute("petsitter", petsitterDto);
-        model.addAttribute("pet", petId);
-        model.addAttribute("member", member);
-        model.addAttribute("page", pageable.getPageNumber());
+        if(petsitterDto.isDelFlag()){ //삭제된 게시물일경우
+            return "redirect:/";
+        }else {
+            //모델에 데이터 추가
+            model.addAttribute("petsitter", petsitterDto);
+            model.addAttribute("pet", petId);
+            model.addAttribute("member", member);
+            model.addAttribute("page", pageable.getPageNumber());
 
-        return "/petsitter/detail";
+            return "/petsitter/detail";
+        }
     }
 
     @GetMapping("/update/{id}")
     public String update(@PathVariable Long id, Model model){
         PetsitterDto petsitterDto = petsitterService.findById(id);
-        model.addAttribute("petsitterDto", petsitterDto);
-        return "/petsitter/update";
+        if(petsitterDto.isDelFlag()){
+            return "redirect:/";
+        }else {
+            model.addAttribute("petsitterDto", petsitterDto);
+            return "/petsitter/update";
+        }
     }
 
     @PostMapping("/update")
@@ -122,7 +127,7 @@ public class PetsitterController {
         return "redirect:/my/myPetsitterList";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id){
         petsitterService.delete(id);
         return ResponseEntity.ok("SUCCESS");
@@ -144,18 +149,20 @@ public class PetsitterController {
         // member 정보
         MemberDto petsitterMember = petsitterService.findByMember(id);
 
+        if(petsitterDto.isDelFlag()){ //삭제된 게시물일경우
+            return "redirect:/";
+        }else {
+            // ReservationDto 객체를 생성하여 모델에 추가
+            ReservationDto reservationDto = new ReservationDto();
+            reservationDto.setPetsitterId(id);
+            model.addAttribute("member", member);
+            model.addAttribute("petsitterDto", petsitterDto);
+            model.addAttribute("reservationDto", reservationDto);
 
+            List<LocalTime> reservationTimeList = ReservationTime.getReservationTime();
+            model.addAttribute("reservationTimeList", reservationTimeList);
 
-        // ReservationDto 객체를 생성하여 모델에 추가
-        ReservationDto reservationDto = new ReservationDto();
-        reservationDto.setPetsitterId(id);
-        model.addAttribute("member", member);
-        model.addAttribute("petsitterDto", petsitterDto);
-        model.addAttribute("reservationDto", reservationDto);
-
-        List<LocalTime> reservationTimeList = ReservationTime.getReservationTime();
-        model.addAttribute("reservationTimeList", reservationTimeList);
-
-        return "/petsitter/reservation";
+            return "/petsitter/reservation";
+        }
     }
 }

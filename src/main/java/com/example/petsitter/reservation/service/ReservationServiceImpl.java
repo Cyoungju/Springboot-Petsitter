@@ -3,21 +3,17 @@ package com.example.petsitter.reservation.service;
 
 import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.repository.MemberRepository;
-import com.example.petsitter.pet.domain.Pet;
-import com.example.petsitter.pet.repository.PetRepository;
 import com.example.petsitter.petsitter.domain.Petsitter;
 import com.example.petsitter.petsitter.domain.PetsitterReservation;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
 import com.example.petsitter.reservation.domain.Reservation;
 import com.example.petsitter.reservation.domain.ReservationStatus;
-import com.example.petsitter.reservation.domain.ReservationTime;
 import com.example.petsitter.reservation.dto.ReservationDto;
 import com.example.petsitter.petsitter.repository.PetsitterRepository;
 import com.example.petsitter.petsitter.repository.PetsitterReservationRepository;
 import com.example.petsitter.reservation.item.Item;
 import com.example.petsitter.reservation.item.ItemRepository;
 import com.example.petsitter.reservation.repository.ReservationRepository;
-import com.example.petsitter.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -26,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,7 +38,6 @@ public class ReservationServiceImpl implements ReservationService {
     private final PetsitterRepository petsitterRepository;
     private final PetsitterReservationRepository petsitterReservationRepository;
     private final ItemRepository itemRepository;
-    private final PetRepository petRepository;
 
     @Override
     public List<LocalTime> getTimesByDateAndPetsitter(LocalDate date, Long petsitterId) {

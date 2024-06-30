@@ -1,4 +1,4 @@
-package com.example.petsitter.wish;
+package com.example.petsitter.wish.domain;
 
 import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.petsitter.domain.Petsitter;
@@ -10,7 +10,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "wish")
+@Table(name = "wish",
+        uniqueConstraints = {
+        @UniqueConstraint(name = "UK_wish_petsitter_member", columnNames = {"petsitter_id", "member_id"})
+})
 public class Wish {
 
     @Id
@@ -21,7 +24,8 @@ public class Wish {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "petsitter_id")
     private Petsitter petsitter;
 
 

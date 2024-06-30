@@ -29,14 +29,24 @@
                                     <span class="marker cat" th:if="${petsitter.isSitterType() == true}">고양이</span>
                                 </td>
                                 <td class="td_tit">
-                                    <a th:href="@{|/petsitter/${petsitter.getId()}|}" th:text="${petsitter.getSitterName()}"></a>
+                                    <div th:if="${petsitter.isDelFlag() == true}">
+                                        <span th:text="${petsitter.getSitterName()}" style="color:gray"></span>
+                                    </div>
+                                    <div th:if="${petsitter.isDelFlag() == false}">
+                                        <a th:href="@{|/petsitter/${petsitter.getId()}|}" th:text="${petsitter.getSitterName()}"></a>
+                                    </div>
                                 </td>
                                 <td th:text="${petsitter.getSitterWorkAdr()}"></td>
                                 <td class="td_date" th:text="*{#temporals.format(petsitter.getCreateTime, 'yyyy-MM-dd')}"></td>
 
                                 <td>
-                                    <a th:href="@{/petsitter/update/{id}(id=${petsitter.id})}" class="btn">수정</a>
-                                    <button type="button" class="btn font16" th:attr="onclick=|deletePet('${petsitter.id}')|">삭제</button>
+                                    <div th:if="${petsitter.isDelFlag() == true}">
+                                        삭제된 상품입니다.
+                                    </div>
+                                    <div th:if="${petsitter.isDelFlag() == false}">
+                                        <a th:href="@{/petsitter/update/{id}(id=${petsitter.id})}" class="btn">수정</a>
+                                        <button type="button" class="btn font16" th:attr="onclick=|deletePet('${petsitter.id}')|">삭제</button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -52,7 +62,7 @@
             }
 
             fetch(`/petsitter/delete/${id}`, {
-                method: 'DELETE'
+                method: 'POST'
             })
             .then(response => {
                 if (response.ok) {
