@@ -1,7 +1,6 @@
 package com.example.petsitter.pet.service;
 
 
-import com.example.petsitter.pet.domain.Pet;
 import com.example.petsitter.pet.dto.PetDto;
 import org.springframework.transaction.annotation.Transactional;
 

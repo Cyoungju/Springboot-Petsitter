@@ -1,8 +1,8 @@
-package com.example.petsitter.wish;
+package com.example.petsitter.wish.dto;
 
 import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.petsitter.domain.Petsitter;
-import com.example.petsitter.petsitter.dto.PetsitterDto;
+import com.example.petsitter.wish.domain.Wish;
 import lombok.*;
 
 

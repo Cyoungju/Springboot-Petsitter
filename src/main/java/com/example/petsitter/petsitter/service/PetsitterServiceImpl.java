@@ -8,6 +8,11 @@ import com.example.petsitter.petsitter.domain.Petsitter;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
 import com.example.petsitter.petsitter.repository.PetsitterRepository;
 import com.example.petsitter.core.util.CustomFileUtil;
+import com.example.petsitter.reservation.domain.Reservation;
+import com.example.petsitter.reservation.repository.ReservationRepository;
+import com.example.petsitter.wish.domain.Wish;
+import com.example.petsitter.wish.repository.WishRepository;
+import com.example.petsitter.wish.service.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +39,10 @@ public class PetsitterServiceImpl implements PetsitterService {
 
     private final PetsitterRepository petsitterRepository;
 
+    private final ReservationRepository reservationRepository;
+
+    private final WishRepository wishRepository;
+
     @Override
     public void save(PetsitterDto petsitterDto) {
         //게시물 현재시간 저장
@@ -55,7 +64,7 @@ public class PetsitterServiceImpl implements PetsitterService {
         int page = pageable.getPageNumber() -1;
         int size = 5;
 
-        Page<Petsitter> petsitterDtos = petsitterRepository.findAll(
+        Page<Petsitter> petsitterDtos = petsitterRepository.findAllByDelFlagFalse(
                 PageRequest.of(page,size, Sort.by("id").descending())
         );
 
@@ -80,12 +89,13 @@ public class PetsitterServiceImpl implements PetsitterService {
         int page = pageable.getPageNumber() - 1;
         int size = 5;
 
-        Page<Petsitter> petsitterDtos = petsitterRepository.findBySitterWorkAdrContainingIgnoreCase(
+        Page<Petsitter> petsitterDtos = petsitterRepository.findBySitterWorkAdrContainingIgnoreCaseAndDelFlagFalse(
                 searchKeyword, PageRequest.of(page,size, Sort.by("id").descending())
         );
         return petsitterDtos.map(
                 petsitter -> {
                     return PetsitterDto.builder()
+                            .id(petsitter.getId())
                             .sitterName(petsitter.getSitterName())
                             .sitterContent(petsitter.getSitterContent())
                             .sitterType(petsitter.isSitterType())
@@ -188,6 +198,7 @@ public class PetsitterServiceImpl implements PetsitterService {
                             .sitterName(petsitter.getSitterName())
                             .sitterWorkAdr(petsitter.getSitterWorkAdr())
                             .createTime(petsitter.getCreateTime())
+                            .delFlag(petsitter.isDelFlag())
                             .build();
                 }
         ).collect(Collectors.toList());
@@ -197,7 +208,31 @@ public class PetsitterServiceImpl implements PetsitterService {
 
     @Override
     public void delete(Long id) {
-        petsitterRepository.deleteById(id);
+
+        Optional<Petsitter> petsitterOptional = petsitterRepository.findById(id);
+        if(petsitterOptional.isPresent()){
+            Petsitter petsitter = petsitterOptional.get();
+
+            PetsitterDto petsitterDto = PetsitterDto.topetsitterDTO(petsitter);
+
+            petsitterDto.setDelFlag(true);
+
+            petsitter.delflagFromDTO(petsitterDto);
+
+            petsitterRepository.save(petsitter);
+
+            //삭제하려고 하는 petsitter에 예약되어있는 상태 취소로 바꾸기
+            List<Reservation> reservations = reservationRepository.findByPetsitters_PetsitterId(id);
+
+            for (Reservation reservation : reservations) {
+                reservation.updateStatusDTO("취소");
+                reservationRepository.save(reservation);
+            }
+
+            // 찜 삭제
+            List<Wish> wishes = wishRepository.findByPetsitterId(petsitter.getId());
+            wishRepository.deleteAll(wishes);
+        }
     }
 
     @Override

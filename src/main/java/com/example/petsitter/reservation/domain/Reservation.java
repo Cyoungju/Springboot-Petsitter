@@ -1,11 +1,9 @@
 package com.example.petsitter.reservation.domain;
 
 
-import com.example.petsitter.board.domain.Comment;
+
 import com.example.petsitter.member.domain.Member;
-import com.example.petsitter.pet.domain.Pet;
 import com.example.petsitter.petsitter.domain.PetsitterReservation;
-import com.example.petsitter.wish.Wish;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

@@ -28,7 +28,7 @@
                             <tr th:each="items: ${list}">
                                 <td class="td_tit">
                                     <div th:text="${items.getSitterName()}"></div>
-                                    <a href="#" class="petInfoLink btn font16" th:data-reservation-id="${items.getReservation().getId()}">예약자 정보</a>
+                                    <a href="#" class="petInfoLink btn font16" th:data-reservation-id="${items.getReservation().getId()}">반려동물 정보</a>
                                 </td>
                                 <td th:text="${items.getReservation().getDate()}"></td>
                                 <td th:text="${items.getReservation().getTimes()}"></td>
@@ -74,6 +74,9 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('.statusSelect').change(function() {
+                if (!confirm('정말 변경 하시겠습니까?')) {
+                    return;
+                }
                 var itemId = $(this).siblings(".reservationId").val();
                 var newStatus = $(this).val();
 

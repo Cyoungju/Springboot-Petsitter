@@ -21,10 +21,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.ArrayList;
+
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Log4j2

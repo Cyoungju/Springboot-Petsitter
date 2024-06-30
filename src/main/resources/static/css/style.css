@@ -168,7 +168,7 @@ main{min-height: 800px;}
 
 .petsitterList li {margin-top: 30px;display: flex;align-items: center;justify-content: space-between;width: 100%;flex-wrap: wrap;}
 .petsitterList li.brBox{border-radius: 25px;box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.1);padding: 40px;}
-.petsitterList li .list_icon{width:130px;aspect-ratio:1/1}
+.petsitterList li .list_icon{width:130px;aspect-ratio:1/1;}
 .petsitterList li .list_icon span{display: block;aspect-ratio: 1/1;padding: 20px;border-radius: 50%;box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);}
 .petsitterList li .list_icon span.dog{background: #f2fbff;}
 .petsitterList li .list_icon span.cat{background: #fffcf1;}
@@ -209,6 +209,9 @@ table.res_tb th, table.res_tb td {padding: 10px;border-bottom: 1px solid var(--g
 
 .img_slide.swiper {width: 100%;aspect-ratio: 3/2;overflow: hidden;}
 .img_slide.swiper .swiper-slide img {width: 100%;height: 100%;object-fit: cover;}
+.img_slide .swiper-button-next, .img_slide
+.img_slide .swiper-button-next, .img_slide .swiper-button-prev {width: 40px;height: 40px;border-radius: 50%;background: var(--pointcolor);display: flex;align-items: center;justify-content: center;color: #fff;box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.1);}
+.img_slide .swiper-button-next:after, .img_slide .swiper-button-prev:after {content: "";}
 .cancelled {color: red;font-weight: bold;}
 .waiting {color: #ddd;font-weight: bold;}
 
@@ -228,6 +231,7 @@ table.res_tb th, table.res_tb td {padding: 10px;border-bottom: 1px solid var(--g
 .brBox{position:relative;top:0;left:0}
 #addToWishlistBtn span {font-size: 30px;}
 #addToWishlistBtn {position: absolute;top: 50px;right: 50px;}
+
 /* paging */
 .paging {display: flex;align-items: center;justify-content: center;}
 .paging > a {display: flex;align-items: center;}

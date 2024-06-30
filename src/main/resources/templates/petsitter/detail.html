@@ -14,7 +14,7 @@
                     <li class="brBox" style="display:block">
                         <button id="addToWishlistBtn" th:value="${petsitter.getId()}"></button>
 
-                        <div class="box text-left flex-wrap sitterDetail">
+                        <div class="box text-left flex-wrap sitterDetail" style="margin-top:0">
                             <!-- Petsitter 정보 표시 -->
                             <div class="list_icon">
                                 <div>
@@ -45,8 +45,12 @@
                                     <span class="cat" th:if="${petsitter.isSitterType() == true}">고양이 돌봄</span>
                                 </div>
                                 <div class="list_tit font22 mb-5" th:text="${petsitter.sitterName}"></div>
-                                <div class="list_date" th:text="${petsitter.sitterWorkAdr}"></div>
+                                <div class="" th:text="${petsitter.sitterWorkAdr}"></div>
                             </div>
+                        </div>
+                        <div class="box sitterDetail">
+                            <div id="map" style="width:100%;height:350px;"></div>
+                            <p class="grfont mt-10">대략적인 위치를 확인하세요!</p>
                         </div>
 
                         <div class="box text-left sitterDetail">
@@ -56,7 +60,7 @@
 
                         <div class="box text-left sitterDetail">
                             <div class="list_tit font22 mb-5">돌봄 비용</div>
-                            <div th:text="${petsitter.sitterPrice}"></div>
+                            <div><span th:text="${petsitter.sitterPrice}"></span> 원</div>
                         </div>
 
                         <div class="box text-left sitterDetail" th:if="${petsitter.uploadedFileName != null && !petsitter.uploadedFileName.isEmpty()}">
@@ -68,8 +72,12 @@
                                     </div>
                                 </div>
                                 <!-- If we need navigation buttons -->
-                                <div class="swiper-button-prev"></div>
-                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev">
+                                    <span class="material-symbols-outlined">chevron_left</span>
+                                </div>
+                                <div class="swiper-button-next">
+                                    <span class="material-symbols-outlined">chevron_right</span>
+                                </div>
                             </div>
                         </div>
                         <a style="cursor:pointer" id="reservationButton" class="btn font18 mt-20" th:data-petsitter-id="${petsitter.getId()}">예약하기</a>
@@ -78,6 +86,7 @@
                 </ul>
             </div>
         </div>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7ff0d9d9dca080fa584289620111a087&libraries=services"></script>
 
 
         <script>
@@ -158,6 +167,55 @@
                     }
                 });
             }
+
+
+            // Kakao 지도 초기화
+            const address = "[[${petsitter.sitterWorkAdr}]]"; // 서버에서 받아온 주소
+            const sitterName = "[[${petsitter.sitterName}]]"; // 서버에서 받아온 주소
+
+            const mapContainer = document.getElementById('map'); // 지도를 표시할 div
+
+            // 주소 - 좌표 변환 객체를 생성
+            const geocoder = new kakao.maps.services.Geocoder();
+
+            
+
+            // 주소로 좌표를 검색
+            geocoder.addressSearch(address, function (result, status) {
+                // 정상적으로 검색이 완료됐으면
+                if (status === kakao.maps.services.Status.OK) {
+                    const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    const mapOption = {
+                        center: coords, // 주소 좌표를 중심으로 설정
+                        level: 5
+                    };
+                    const map = new kakao.maps.Map(mapContainer, mapOption);
+
+                     // 스크롤 줌 비활성화
+                     map.setZoomable(false);
+
+                    // 지도를 클릭하면 스크롤 줌 활성화
+                    kakao.maps.event.addListener(map, 'click', function () {
+                        map.setZoomable(true);
+                    });
+
+                    // 주소 좌표에 원 추가
+                    const circle = new kakao.maps.Circle({
+                        center: coords,  // 원의 중심좌표
+                        radius: 1000, // 미터 단위의 원의 반지름
+                        strokeWeight: 0, // 선의 두께
+                        strokeColor: '#FF0000', // 선의 색깔
+                        strokeOpacity: 1, // 선의 불투명도 (1에서 0 사이의 값이며 0에 가까울수록 투명)
+                        strokeStyle: 'solid', // 선의 스타일
+                        fillColor: '#FF0000', // 채우기 색깔
+                        fillOpacity: 0.3  // 채우기 불투명도
+                    });
+                    circle.setMap(map);
+
+                }
+            });
+
         </script>
     </section>
 </th:block>

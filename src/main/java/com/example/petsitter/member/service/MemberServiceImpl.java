@@ -2,7 +2,6 @@ package com.example.petsitter.member.service;
 
 import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.domain.MemberRole;
-import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.dto.MemberDto;
 import com.example.petsitter.member.repository.MemberRepository;
 import com.example.petsitter.core.util.CustomFileUtil;

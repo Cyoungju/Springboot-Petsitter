@@ -1,7 +1,6 @@
 package com.example.petsitter.member.domain;
 
 import com.example.petsitter.member.dto.MemberDto;
-import com.example.petsitter.pet.domain.PetImage;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

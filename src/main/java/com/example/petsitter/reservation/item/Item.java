@@ -1,6 +1,5 @@
 package com.example.petsitter.reservation.item;
 
-import com.example.petsitter.pet.domain.Pet;
 import com.example.petsitter.petsitter.domain.PetsitterReservation;
 import com.example.petsitter.reservation.domain.Reservation;
 import jakarta.persistence.*;

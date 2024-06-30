@@ -1,11 +1,11 @@
-package com.example.petsitter.wish;
+package com.example.petsitter.wish.controller;
 
 
 import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.member.dto.CustomUserDetails;
 import com.example.petsitter.member.service.MemberService;
+import com.example.petsitter.wish.service.WishService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

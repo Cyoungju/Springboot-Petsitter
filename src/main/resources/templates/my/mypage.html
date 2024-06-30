@@ -13,9 +13,11 @@
                 <div th:if="${#lists.size(role) == 1}">
                     <button type="button" th:attr="onclick=|RoleChange()|" class="btn mb-20 font18">펫시터 모드 전환</button>
                 </div>
+                <!--
                 <div th:if="${#lists.size(role) > 1}">
                     <button type="button" th:attr="onclick=|RoleClear()|" class="btn mb-20 font18">사용자 모드 전환</button>
                 </div>
+                -->
 
                 <ul class="petsitterList">
                     <li class="brBox">
