@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class KakaoController {
 
     private final KakaoService kakaoService;
+
 
     @GetMapping("/api/kakao/callback")
     public RedirectView redirect(@RequestParam(name = "code", required = false) String code , HttpServletRequest request){

@@ -7,7 +7,8 @@
 <main layout:fragment="content">
     <div class="mainslide">
         <div class="img">
-            <img th:src="@{/images/mainslide.jpg}" alt="">
+            <img th:src="@{/images/mainslide.jpg}" alt="" class="hidden-xs">
+            <img th:src="@{/images/mainslide_m.jpg}" alt="" class="visible-xs">
         </div>
         <div class="txt">
             <p class="tit">Welcome My Pet Sitter!</p>
@@ -24,7 +25,7 @@
             <div class="tit">How To Pet Sitter</div>
             <div class="font18 grfont">펫시터를 이용해보세요!</div>
 
-            <div class="cont_box flexList" boxCount="3">
+            <div class="cont_box flexList xs-wrap1" boxCount="3">
                 <a th:href="@{/petsitter/list}" class="iconBox box">
                     <div class="img brBox">
                         <img th:src="@{/images/icon01.png}" alt="">

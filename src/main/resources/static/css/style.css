@@ -73,13 +73,13 @@ select::-ms-expand{ display:none;}
 .flexList[layoutStyle="fullbox"] > .box{  width:calc(100% / var(--count)) }
 
 
-.mb-5{margin-bottom: 5px;}
-.mt-10{margin-top: 10px;}
-.mt-20{margin-top: 20px;}
-.mt-30{margin-top: 30px;}
-.mt-50{margin-top: 50px;}
-.mb-30{margin-bottom: 30px;}
-.mb-50{margin-bottom: 50px;}
+.mb-5{margin-bottom: 0.5rem;}
+.mt-10{margin-top: 1.0rem;}
+.mt-20{margin-top: 2.0rem;}
+.mt-30{margin-top: 3.0rem;}
+.mt-50{margin-top: 5.0rem;}
+.mb-30{margin-bottom: 3.0rem;}
+.mb-50{margin-bottom: 5.0rem;}
 
 /* boxCout */
 [boxCount="2"]{ --count:2; }
@@ -88,15 +88,20 @@ select::-ms-expand{ display:none;}
 [boxCount="5"]{ --count:5; }
 [boxCount="6"]{ --count:6; }
 
-.section{padding:40px 0 80px 0;text-align: center;}
+/* ===== Basic ===== */
+html,body{font-size: 62.5%;}
+@media (max-width:990px){html, body {font-size: 8px;}}
+@media (max-width:550px){html, body {font-size: 6px;}}
+
+.section{padding:4.0rem 0 8.0rem 0;text-align: center;}
 .container{max-width: var(--layoutwidth); margin: auto;}
 .cont_box{margin-top: 60px;}
-.tit{font-size: 48px;font-weight: 700;font-family: "Montserrat", sans-serif;}
-.font16{font-size: 16px;}
-.font18{font-size: 18px;}
-.font22{font-size: 22px;font-weight: 600;}
-.font28{font-size: 28px;font-weight: 600;}
-.font30{font-size: 30px;font-weight: 600;}
+.tit{font-size: 4.8rem;font-weight: 700;font-family: "Montserrat", sans-serif;}
+.font16{font-size: 1.6rem;}
+.font18{font-size: 1.8rem;}
+.font22{font-size: 2.2rem;font-weight: 600;}
+.font28{font-size: 2.8rem;font-weight: 600;}
+.font30{font-size: 3.0rem;font-weight: 600;}
 .grfont{color:var(--grcolor)}
 .wtfont{color: var(--wtcolor);}
 .btn{line-height: 1.5em;transition: .5s all ease;padding: 10px 30px;display: inline-block;border-radius: 50px;background: var(--pointcolor);color: #fff;font-weight: 600;}
@@ -107,7 +112,8 @@ select::-ms-expand{ display:none;}
 .text-left{text-align: left;}
 
 
-/* header */ 
+/* header */
+#header, main, #footer, section, .myPetPopup{font-size:1.6rem}
 #header {padding: 15px 0;box-shadow: 0 0 5px 1px rgba(0,0,0,0.1);}
 #header .menu{margin-left: auto;margin-right: 20px;}
 #header .menu a{display: block;padding: 15px;}
@@ -115,6 +121,7 @@ select::-ms-expand{ display:none;}
 #header .menu .depth2 {display:none;position: absolute;top: 100%;left: 0;width: 150px;background: #fff;box-shadow: 0 0 10px 5px rgba(0,0,0,0.1);z-index:9999}
 #header .menu.depth1 li {position: relative;top: 0;left: 0;}
 #header .menu.depth1 a{padding:10px 15px;}
+#header .m_btn{display:none;}
 
 /* footer */
 #footer{background: #000;padding: 10px 0;text-align: center;}
@@ -137,9 +144,7 @@ main{min-height: 800px;}
 
 .register .box:first-child{margin-top: 0;}
 .register .box > label{width: 100%;display: block}
-.register .box input[type="email"], .register .box input[type="text"],.register .box input[type="file"], .register .box input[type="password"]{
-    padding: 10px;border: 0;border-bottom: 1px solid var(--grcolor);width: 100%;margin-top: 5px;
-}
+.register .box input[type="email"], .register .box input[type="text"],.register .box input[type="file"], .register .box input[type="password"]{padding: 10px;border: 0;border-bottom: 1px solid var(--grcolor);width: 100%;margin-top: 5px;}
 .register .box select{padding: 10px;width: 320px;border-radius: 5px;border: 1px solid var(--grcolor);}
 .register .box textarea{padding: 10px;width: 100%;border-radius: 5px;height: 100px;border: 1px solid var(--grcolor);}
 .register .brBox{max-width:100%;padding: 150px 50px;margin-right: auto;margin-left: auto}
@@ -175,7 +180,7 @@ main{min-height: 800px;}
 .petsitterList li .list_icon img {width: 100%;height: 100%;object-fit: cover;}
 .petsitterList li .list_txt {width: calc(100% - 160px);text-align: left}
 .petsitterList li .list_txt .list_date{color: var(--grcolor)}
-.petsitterList li .marker span{background: var(--pointcolor);padding: 5px 10px;border-radius: 50px;color: #fff;font-size: 14px;font-weight: bold}
+.petsitterList li .marker span{background: var(--pointcolor);padding: 5px 10px;border-radius: 50px;color: #fff;font-size: 1.4rem;font-weight: bold}
 .petsitterList li .marker span.dog{background: var(--pointcolor);}
 .petsitterList li .marker span.cat{background: var(--pointcolor2);}
 .petsitterList li .sitterDetail {justify-content:space-between}
@@ -229,9 +234,54 @@ table.res_tb th, table.res_tb td {padding: 10px;border-bottom: 1px solid var(--g
 .text-gray {color: gray;}
 
 .brBox{position:relative;top:0;left:0}
-#addToWishlistBtn span {font-size: 30px;}
+#addToWishlistBtn span {font-size: 3.0rem;}
 #addToWishlistBtn {position: absolute;top: 50px;right: 50px;}
 
 /* paging */
 .paging {display: flex;align-items: center;justify-content: center;}
 .paging > a {display: flex;align-items: center;}
+
+.visible-lg, .visible-md, .visible-sm, .visible-xs,.visible-xxs {display:none !important}
+@media (max-width:768px)  { .hidden-xs {display:none!important} .visible-xs {display:block!important}}
+@media (max-width:500px)  { .hidden-xxs{display:none!important} .visible-xxs{display:block!important}}
+
+
+@media (max-width:1240px) {
+    .container{width:90%;margin:auto}
+}
+
+
+@media (max-width:768px) {
+
+    .xs-direction{flex-direction: column;}
+    .xs-w100{width:100%}
+    .xs-w90{width:90%}
+    .xs-w80{width:80%}
+    .xs-order{order: 1}
+    .lg-cont_box,.md-cont_box,.sm-cont_box,.xs-cont_box {margin-top: 3.5rem;}
+
+    .xs-wrap3{--count:3}
+    .xs-wrap2{--count:2}
+    .xs-wrap1{--count:1}
+
+    #header, main, #footer, section, .myPetPopup{font-size:1.8rem}
+    .iconBox .img img{height:100px}
+    .brBox{border-radius:20px;}
+
+    #header .menu {margin-right:0;position: fixed;top: 0;right: -100%;width: 100%;height: 100%;z-index: 9999;background: #fff;display: block;padding: 50px 0; }
+    #header .container {justify-content: space-between;}
+    #header .menu li {display: block;width: 100%;font-size: 2.0rem;}
+    #header .m_btn{display:block;cursor:pointer}
+    #header .m_btn.m_btn_closed{position:absolute;top:30px;right:30px}
+    #header .menu_box{display:flex;align-items:center}
+    #header .menu_box .m_btn.m_btn_open{margin-left:10px}
+
+    #header .menu.depth1 a {padding: 10px 30px;}
+    #header .menu .depth2 {display: block!important;position: relative;top: 0;left: 0;width: 100%;box-shadow: none;}
+    #header .menu .depth2 a {padding: 10px 40px;}
+    #header .logo img{header:28px}
+    #map {height: 200px !important;}
+
+    .myPetPopup .container {width: 80%;padding: 30px 15px;}
+    .petsitterList li.brBox{padding:20px}
+}

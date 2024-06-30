@@ -1,85 +1,130 @@
 package com.example.petsitter.member.controller;
 
+import com.example.petsitter.api.kakao.KakaoService;
 import com.example.petsitter.member.dto.MemberDto;
-import com.example.petsitter.member.repository.MemberRepository;
 import com.example.petsitter.member.service.MemberService;
+import com.example.petsitter.core.util.CustomFileUtil;
+import com.example.petsitter.member.dto.CustomUserDetails;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class MemberControllerTest {
 
-    @Autowired
+    @Mock
     private MemberService memberService;
 
-    @Autowired
-    private MemberRepository memberRepository;
+    @Mock
+    private KakaoService kakaoService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    @Mock
+    private CustomFileUtil fileUtil;
 
+    @InjectMocks
+    private MemberController memberController;
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @Test
-    public void testJoin(){
-        MemberDto memberDto = new MemberDto();
-
-        memberDto.setEmail("test@admin.com");
-        memberDto.setPassword("pass1234@");
-        memberDto.setNickname("테스트");
-
-        memberService.joinProcess(memberDto);
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(memberController).build();
     }
 
     @Test
-    public void testLoginWithRegisteredUser() throws Exception {
-        //testJoin();
-
-        // 로그인 테스트 코드 추가
-        mockMvc.perform(post("/loginProc")
-                        .param("username", "test@admin.com")
-                        .param("password", "pass1234@")
-                )
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
+    void testMainPage() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("index"));
     }
 
     @Test
-    public void testLoginPageLoads() throws Exception {
+    void testLoginPage() throws Exception {
         mockMvc.perform(get("/login"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("login"));
+                .andExpect(view().name("login"))
+                .andExpect(model().attributeExists("kakaoLoginLink"));
     }
 
     @Test
-    @WithMockUser(username = "user", roles = {"USER"})
-    public void testLoginWithValidUser() throws Exception {
-        mockMvc.perform(formLogin("/loginProc").user("validUsername").password("validPassword"))
-                .andExpect(authenticated());
+    void testJoinPage() throws Exception {
+        mockMvc.perform(get("/join"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("join"))
+                .andExpect(model().attributeExists("memberDto"))
+                .andExpect(model().attributeExists("check"))
+                .andExpect(model().attribute("check", false));
     }
 
     @Test
-    public void testLoginWithInvalidUser() throws Exception {
-        mockMvc.perform(formLogin("/loginProc").user("invalidUsername").password("invalidPassword"))
-                .andExpect(unauthenticated())
+    void testJoinProcess_validMemberDto() throws Exception {
+        MemberDto memberDto = new MemberDto();
+        memberDto.setEmail("test@example.com");
+        memberDto.setPassword("password123");
+
+        mockMvc.perform(post("/joinProc")
+                        .param("email", memberDto.getEmail())
+                        .param("password", memberDto.getPassword()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login?error"));
+                .andExpect(redirectedUrl("/login"));
+
+        verify(memberService, times(1)).joinProcess(any(MemberDto.class));
     }
+
+    @Test
+    void testJoinProcess_invalidMemberDto() throws Exception {
+        MemberDto memberDto = new MemberDto();
+        memberDto.setEmail("test@example.com"); // Email is missing password
+
+        mockMvc.perform(post("/joinProc")
+                        .param("email", memberDto.getEmail()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("join"));
+
+        verify(memberService, never()).joinProcess(any(MemberDto.class));
+    }
+
+    @Test
+    void testIdCheck_existingEmail() throws Exception {
+        String existingEmail = "existing@example.com";
+        when(memberService.idCheck(existingEmail)).thenReturn("이미 사용중인 아이디 입니다!");
+
+        mockMvc.perform(get("/idcheck")
+                        .param("email", existingEmail))
+                .andExpect(status().isOk())
+                .andExpect(content().string("이미 사용중인 아이디 입니다!"));
+
+        verify(memberService, times(1)).idCheck(existingEmail);
+    }
+
+    @Test
+    void testIdCheck_nonExistingEmail() throws Exception {
+        String nonExistingEmail = "new@example.com";
+        when(memberService.idCheck(nonExistingEmail)).thenReturn("사용 가능합니다!");
+
+        mockMvc.perform(get("/idcheck")
+                        .param("email", nonExistingEmail))
+                .andExpect(status().isOk())
+                .andExpect(content().string("사용 가능합니다!"));
+
+        verify(memberService, times(1)).idCheck(nonExistingEmail);
+    }
+
 
 }

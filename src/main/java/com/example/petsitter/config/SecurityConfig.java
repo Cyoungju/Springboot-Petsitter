@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests((auth)-> auth
-                        .requestMatchers("/","/login","/loginProc","/join","/joinProc","/images/**","/css/**", "/idcheck","/api/**", "/api/kakao/**").permitAll()
+                        .requestMatchers("/","/login","/loginProc","/join","/joinProc","/images/**","/css/**","/js/**", "/idcheck","/api/**", "/api/kakao/**").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/my/**", "/pet/**","/pet/view/**", "/pet/delete/**", "/pet/update/**", "/petsitter/view/**", "/petsitter/**","/reservation/**","/addAddress", "/wish/**").hasAnyRole("ADMIN","USER","MANAGER") // ** 와일드카드
                         .requestMatchers("/petsitter/sitterRole/create", "/my/myPetsitterList").hasAnyRole("MANAGER","ADMIN")

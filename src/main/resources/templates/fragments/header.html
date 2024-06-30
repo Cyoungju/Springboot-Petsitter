@@ -6,6 +6,7 @@
                 <img th:src="@{/images/logo.png}" alt="">
             </a>
             <ul class="menu flex depth1">
+                <div class="m_btn m_btn_closed" onclick="toggleMenu()"><span class="material-symbols-outlined">close</span></div>
                 <li><a th:href="@{/petsitter/list}">펫시터 둘러보기</a></li>
                 <li><a th:href="@{/board/list}">문의하기</a></li>
                 <li th:if="${username != 'anonymousUser'}" class="has-submenu">
@@ -25,13 +26,16 @@
                     </ul>
                 </li>
             </ul>
-            <a th:if="${username == 'anonymousUser'}" th:href="@{/login}" class="login font18 btn">Login</a>
-            <a th:if="${username != 'anonymousUser'}" th:unless="${isSocial}" th:href="@{/logout}" class="login font18 btn">logout</a>
+            <div class="menu_box">
+                <a th:if="${username == 'anonymousUser'}" th:href="@{/login}" class="login font18 btn">Login</a>
+                <a th:if="${username != 'anonymousUser'}" th:unless="${isSocial}" th:href="@{/logout}" class="login font18 btn">logout</a>
 
-            <a th:if="${isSocial}" th:href="@{/api/kakao/logout}" class="login font18 btn">
-                <!-- 소셜로그아웃 -->
-                logout
-            </a>
+                <a th:if="${isSocial}" th:href="@{/api/kakao/logout}" class="login font18 btn">
+                    <!-- 소셜로그아웃 -->
+                    logout
+                </a>
+                <div class="m_btn m_btn_open" onclick="toggleMenu()"><span class="material-symbols-outlined">menu</span></div>
+            </div>
         </div>
         <script th:if="${username != 'anonymousUser'}">
             document.addEventListener('DOMContentLoaded', function() {
@@ -50,6 +54,22 @@
                     });
                 });
             });
+        </script>
+        <script>
+            // 메뉴
+            function toggleMenu() {
+                const menuBtnOpen = document.querySelector('.m_btn_open');
+                const menuBtnClose = document.querySelector('.m_btn_closed');
+
+                const mainMenu = document.querySelector('.menu');
+
+                if (mainMenu.style.right === '-100%') {
+                    // Close menu
+                    mainMenu.style.right = '0';
+                } else {
+                    mainMenu.style.right = '-100%';
+                }
+            }
         </script>
     </header>
 </html>

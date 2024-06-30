@@ -86,7 +86,6 @@
                 </ul>
             </div>
         </div>
-        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7ff0d9d9dca080fa584289620111a087&libraries=services"></script>
 
 
         <script>
@@ -167,18 +166,23 @@
                     }
                 });
             }
+        </script>
 
+    </section>
+
+    <script src="/js/kakaoApiKey.js"></script>
+    <script type="text/javascript" th:src="'//dapi.kakao.com/v2/maps/sdk.js?appkey=' + ${kakaoApiKey} + '&libraries=services'"></script>
+    <script>
+        window.onload = function () {
 
             // Kakao 지도 초기화
-            const address = "[[${petsitter.sitterWorkAdr}]]"; // 서버에서 받아온 주소
-            const sitterName = "[[${petsitter.sitterName}]]"; // 서버에서 받아온 주소
-
+            const address = "[[${petsitter.sitterWorkAdr}]]";
             const mapContainer = document.getElementById('map'); // 지도를 표시할 div
 
             // 주소 - 좌표 변환 객체를 생성
             const geocoder = new kakao.maps.services.Geocoder();
 
-            
+
 
             // 주소로 좌표를 검색
             geocoder.addressSearch(address, function (result, status) {
@@ -215,8 +219,7 @@
 
                 }
             });
-
-        </script>
-    </section>
+        }
+    </script>
 </th:block>
 </html>
