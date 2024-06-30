@@ -14,16 +14,22 @@ import com.example.petsitter.petsitter.service.PetsitterService;
 import com.example.petsitter.core.util.CustomFileUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -32,12 +38,17 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/petsitter")
+@Log4j2
 public class PetsitterController {
 
     private final PetsitterService petsitterService;
     private final MemberService memberService;
     private final PetService petService;
     private final CustomFileUtil fileUtil;
+
+    @Value("${kakao.javascript.api.key}")
+    private String kakaoApiKey;
+
 
     @GetMapping("/sitterRole/create")
     public String create(Model model){
@@ -101,10 +112,13 @@ public class PetsitterController {
             model.addAttribute("pet", petId);
             model.addAttribute("member", member);
             model.addAttribute("page", pageable.getPageNumber());
+            model.addAttribute("kakaoApiKey", kakaoApiKey);
+
 
             return "/petsitter/detail";
         }
     }
+
 
     @GetMapping("/update/{id}")
     public String update(@PathVariable Long id, Model model){

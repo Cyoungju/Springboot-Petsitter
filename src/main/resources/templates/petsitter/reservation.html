@@ -102,7 +102,7 @@
 
                             <div class="box text-left" id="time-container">
                                 <div class="font18 mb-5">시간</div>
-                                <div class="timeBox flexList" boxCount="6" id="time-list">
+                                <div class="timeBox flexList xs-wrap3" boxCount="6" id="time-list">
                                     <div class="box" th:each="time, iterStat : ${reservationTimeList}">
                                         <label>
                                             <input type="checkbox" th:field="*{times}" th:value="${time}" th:id="'time_' + ${iterStat.index}" data-time="${time}" onchange="fetchTotalPrice()">
