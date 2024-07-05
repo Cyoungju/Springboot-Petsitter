@@ -5,6 +5,7 @@ import com.example.petsitter.member.domain.Member;
 import com.example.petsitter.petsitter.dto.PetsitterDto;
 import com.example.petsitter.wish.domain.Wish;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Entity
@@ -45,9 +49,11 @@ public class Petsitter {
     private boolean delFlag;
 
     @ElementCollection
+    @Builder.Default
     private List<PetsitterImage> imageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "petsitter", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<PetsitterReservation> reservations = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -55,6 +61,7 @@ public class Petsitter {
     private Member member;
 
     @OneToMany(mappedBy = "petsitter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Wish> wishes = new ArrayList<>();
 
     public void addImage(PetsitterImage image) {
