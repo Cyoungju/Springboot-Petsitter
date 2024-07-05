@@ -40,5 +40,7 @@ out/
 ### add ###
 img/
 img/**
+upload/
+upload/**
 application.properties
 /js/kakaoApiKey.js
