@@ -19,9 +19,9 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "reservation",
-        indexes = {
+    indexes = {
         @Index(name = "reservation_member_id_idx", columnList = "member_id")
-}
+    }
 )
 public class Reservation {
 

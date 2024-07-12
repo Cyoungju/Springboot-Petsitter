@@ -237,6 +237,8 @@ table.res_tb th, table.res_tb td {padding: 10px;border-bottom: 1px solid var(--g
 #addToWishlistBtn span {font-size: 3.0rem;}
 #addToWishlistBtn {position: absolute;top: 50px;right: 50px;}
 
+.ui-datepicker {width: 230px;font-size: 1.3rem;}
+
 /* paging */
 .paging {display: flex;align-items: center;justify-content: center;}
 .paging > a {display: flex;align-items: center;}

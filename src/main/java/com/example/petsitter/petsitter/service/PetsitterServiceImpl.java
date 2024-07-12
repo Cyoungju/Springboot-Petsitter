@@ -135,19 +135,15 @@ public class PetsitterServiceImpl implements PetsitterService {
 
         //기존의 파일들 (데이터베이스에 존재하는 파일들)
         List<String> oldFileNames = oldPetsitterDto.getUploadedFileName();
-        System.out.println("기존의 파일들 - oldFileNames : "+oldFileNames);
 
         //새로 업로드할 파일들
         List<MultipartFile> files = petsitterDto.getFiles();
-        System.out.println("새로 업로드할 파일들 - files : "+files);
 
         //새로 업로드 해야하는 파일들
         List<String> currentUploadFileNames = fileUtil.saveSlideFiles(files);
-        System.out.println("새로 업로드 해야하는 파일들 - currentUploadFileNames : "+currentUploadFileNames);
 
         // 화면에서 변화 없이 유지 되어야할 파일들
         List<String> uploadedFileNames = petsitterDto.getUploadedFileName();
-        System.out.println("화면에서 변화 없이 유지 되어야할 파일들 - uploadedFileNames : "+uploadedFileNames);
 
         //유지되는 파일들  + 새로 업로드된 파일 이름들이 저장해야 하는 파일 목록이 됨
         if(currentUploadFileNames != null && currentUploadFileNames.size() > 0) {

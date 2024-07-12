@@ -117,6 +117,17 @@ public class ReservationServiceImpl implements ReservationService {
         return itemRepository.findAllByReservation_Petsitters_Petsitter_Member(member);
     }
 
+    @Override
+    public void updateStatus(String status, Long id) {
+        Optional<Reservation> reservationOptional = reservationRepository.findById(id);
+
+        if (reservationOptional.isPresent()) {
+            Reservation reservation = reservationOptional.get();
+            reservation.updateStatusDTO(status);
+
+            reservationRepository.save(reservation);
+        }
+    }
 
     public PetsitterDto findById(Long id) {
         //Optional존재유무 확인
@@ -129,20 +140,6 @@ public class ReservationServiceImpl implements ReservationService {
             return PetsitterDto.topetsitterDTO(petsitter);
         }else {
             return null;
-        }
-    }
-
-    @Override
-    public void updateStatus(String status, Long id) {
-        Optional<Reservation> reservationOptional = reservationRepository.findById(id);
-
-        if (reservationOptional.isPresent()) {
-            Reservation reservation = reservationOptional.get();
-            reservation.updateStatusDTO(status);
-
-            System.out.println(status);
-
-            reservationRepository.save(reservation);
         }
     }
 

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"member", "memberEmail", "contents"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardDto {

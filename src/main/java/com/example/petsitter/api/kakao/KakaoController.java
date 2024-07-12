@@ -27,7 +27,6 @@ public class KakaoController {
     public RedirectView redirect(@RequestParam(name = "code", required = false) String code , HttpServletRequest request){
         if (code != null) {
             // Handle the code parameter
-            System.out.println("Received code: " + code);
             String accessToken = kakaoService.getAccessToken(code);
             MemberDto user = kakaoService.getKakaoMember(accessToken);
             kakaoService.authenticateUser(user);
@@ -37,12 +36,10 @@ public class KakaoController {
             HttpSession session = request.getSession(true);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
 
-            log.info(accessToken);
+            //log.info(accessToken);
 
             // 토큰 세션에 저장
             session.setAttribute("accessToken", accessToken);
-
-            System.out.println("로그인 accessToken" + session.getAttribute("accessToken"));
 
             // 로그인 처리가 완료된 후 홈 페이지로 리디렉션
             return new RedirectView("/");

@@ -69,11 +69,11 @@ public class KakaoService {
         ResponseEntity<LinkedHashMap> response
                 = restTemplate.exchange(uriBuilder.toUri(), HttpMethod.POST, entity, LinkedHashMap.class);
 
-        log.info(response);
+        //log.info(response);
 
         LinkedHashMap<String, LinkedHashMap> bodyMap = response.getBody();
 
-        log.info(bodyMap.get("access_token"));
+        //log.info(bodyMap.get("access_token"));
 
         String accessToken = String.valueOf(bodyMap.get("access_token"));
 
@@ -93,12 +93,12 @@ public class KakaoService {
 
         ResponseEntity<LinkedHashMap> response
                 = restTemplate.exchange(uriBuilder.toUri(), HttpMethod.GET, entity, LinkedHashMap.class);
-        log.info(response);
+        //log.info(response);
 
         LinkedHashMap<String, LinkedHashMap> bodyMap = response.getBody();
 
         LinkedHashMap<String , LinkedHashMap> kakaoAcount = bodyMap.get("kakao_account");
-        log.info("kakao_account"+ kakaoAcount);
+        //log.info("kakao_account"+ kakaoAcount);
         return kakaoAcount;
     }
 
@@ -114,16 +114,16 @@ public class KakaoService {
         String nickname = String.valueOf(profileMap.get("nickname"));
         String thumbUrl = String.valueOf(profileMap.get("thumbnail_image_url"));
 
-        log.info("nickname"+nickname);
-        log.info("email"+email);
-        log.info("thumbUrl" + thumbUrl);
+        //log.info("nickname"+nickname);
+        //log.info("email"+email);
+        //log.info("thumbUrl" + thumbUrl);
 
         // 현재 데이터에서 확인후 처리
         Member result = memberRepository.findByEmail(email);
 
         if(result != null){ // 회원일 경우
             MemberDto user = entityToDTO(result);
-            log.info("existed........" + user);
+            //log.info("existed........" + user);
 
             return user;
         }
@@ -153,14 +153,14 @@ public class KakaoService {
         ResponseEntity<LinkedHashMap> response
                 = restTemplate.exchange(uriBuilder.toUri(), HttpMethod.POST, entity, LinkedHashMap.class);
 
-        log.info("logout" + response);
+        //log.info("logout" + response);
     }
 
 
     // 사용자 정보 만들기
     private Member makeSocialUser(String email, String nickname, String thumbUrl){
         String tempPassword = makeSocialPassword();
-        log.info("tempPassword"+ tempPassword);
+        //log.info("tempPassword"+ tempPassword);
         //List<MemberRole> memberRoleList = new ArrayList<>();
 
         Member member = Member.builder()
@@ -212,7 +212,7 @@ public class KakaoService {
 
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        log.info("======= username,로그인진행중 =======" + username);
+        //log.info("======= username,로그인진행중 =======" + username);
     }
 
 }
