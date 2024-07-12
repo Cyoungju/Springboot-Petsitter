@@ -119,7 +119,6 @@ public class MemberServiceImpl implements MemberService{
                     .stream()
                     .filter(fileNeme -> uploadedFileNames.indexOf(fileNeme) == -1).collect(Collectors.toList());
 
-
                 // 실제 파일 삭제
                 fileUtil.deleteFiles(removeFiles);
             }

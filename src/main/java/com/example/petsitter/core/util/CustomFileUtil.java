@@ -39,8 +39,7 @@ public class CustomFileUtil {
         }
 
         uploadPath = tempFolder.getAbsolutePath();
-        log.info("--------------------------------");
-        log.info(uploadPath);
+        //log.info(uploadPath);
 
     }
 

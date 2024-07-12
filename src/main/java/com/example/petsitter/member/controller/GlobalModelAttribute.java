@@ -29,7 +29,7 @@ public class GlobalModelAttribute {
             Member member = memberService.findByEmail(username);
             model.addAttribute("isSocial", member.isSocial());
 
-            // System.out.print("권한 : ");
+
             List<String> roles = member.getMemberRoleList().stream()
                     .map(role -> role.name())
                     .collect(Collectors.toList());

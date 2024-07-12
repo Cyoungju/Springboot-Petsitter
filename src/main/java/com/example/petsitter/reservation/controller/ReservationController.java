@@ -66,7 +66,6 @@ public class ReservationController {
 
     @PostMapping("/updateStatus")
     public ResponseEntity<String> updateStatus(@RequestParam String status, @RequestParam Long id) {
-        System.out.println(status);
         reservationService.updateStatus(status, id);
         return ResponseEntity.ok("SUCCESS");
     }

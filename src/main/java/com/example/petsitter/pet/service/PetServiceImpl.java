@@ -35,12 +35,12 @@ public class PetServiceImpl implements PetService{
     @Override
     public void save(PetDto petDto) {
         //파일 저장
-        log.info("register : "+ petDto);
+        //log.info("register : "+ petDto);
         List<MultipartFile> files = petDto.getFiles();
 
         List<String> uploadedFileNames = fileUtil.saveFiles(files);
         petDto.setUploadedFileName(uploadedFileNames);
-        log.info("uploadedFileNames : "+uploadedFileNames);
+        //log.info("uploadedFileNames : "+uploadedFileNames);
 
         String username = memberService.getAuthName();
         Member member = memberService.findByEmail(username);
@@ -85,19 +85,15 @@ public class PetServiceImpl implements PetService{
 
         //기존의 파일들 (데이터베이스에 존재하는 파일들)
         List<String> oldFileNames = oldPetDto.getUploadedFileName();
-        System.out.println("기존의 파일들 - oldFileNames : "+oldFileNames);
 
         //새로 업로드할 파일들
         List<MultipartFile> files = petDto.getFiles();
-        System.out.println("새로 업로드할 파일들 - files : "+files);
 
         //새로 업로드 해야하는 파일들
         List<String> currentUploadFileNames = fileUtil.saveFiles(files);
-        System.out.println("새로 업로드 해야하는 파일들 - currentUploadFileNames : "+currentUploadFileNames);
 
         // 화면에서 변화 없이 유지 되어야할 파일들
         List<String> uploadedFileNames = petDto.getUploadedFileName();
-        System.out.println("화면에서 변화 없이 유지 되어야할 파일들 - uploadedFileNames : "+uploadedFileNames);
 
         //유지되는 파일들  + 새로 업로드된 파일 이름들이 저장해야 하는 파일 목록이 됨
         if(currentUploadFileNames != null && currentUploadFileNames.size() > 0) {

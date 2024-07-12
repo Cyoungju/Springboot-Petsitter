@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"memberEmail", "contents"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentDto {

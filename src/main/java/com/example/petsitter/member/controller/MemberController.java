@@ -40,7 +40,7 @@ public class MemberController {
     public String loginP(Model model){
         String kakaoLoginLink = kakaoService.getKakaoLoginLink();
         model.addAttribute("kakaoLoginLink", kakaoLoginLink);
-        log.info(kakaoLoginLink);
+        //log.info(kakaoLoginLink);
         return "login";
     }
 
@@ -90,7 +90,7 @@ public class MemberController {
         String username = customUserDetails.getUsername();
         MemberDto memberDto = memberService.findByDtoEmail(username);
 
-        log.info(memberDto.getMemberRoleList());
+        //log.info(memberDto.getMemberRoleList());
         model.addAttribute("memberDto", memberDto);
         return "update";
     }
