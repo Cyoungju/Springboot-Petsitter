@@ -53,13 +53,13 @@ public class PetsitterController {
     @GetMapping("/sitterRole/create")
     public String create(Model model){
         model.addAttribute("petsitterDto", new PetsitterDto());
-        return "/petsitter/create";
+        return "petsitter/create";
     }
 
     @PostMapping("/")
     public String register(@Valid PetsitterDto petsitterDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
-            return "/petsitter/create";
+            return "petsitter/create";
         }
 
         petsitterService.save(petsitterDto);
@@ -90,7 +90,7 @@ public class PetsitterController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        return "/petsitter/list";
+        return "petsitter/list";
     }
 
     //하나만 불러오게 - 상세페이지
@@ -115,7 +115,7 @@ public class PetsitterController {
             model.addAttribute("kakaoApiKey", kakaoApiKey);
 
 
-            return "/petsitter/detail";
+            return "petsitter/detail";
         }
     }
 
@@ -127,14 +127,14 @@ public class PetsitterController {
             return "redirect:/";
         }else {
             model.addAttribute("petsitterDto", petsitterDto);
-            return "/petsitter/update";
+            return "petsitter/update";
         }
     }
 
     @PostMapping("/update")
     public String update(@ModelAttribute("petsitterDto") PetsitterDto petsitterDto, BindingResult result) {
         if (result.hasErrors()) {
-            return "/petsitter/update/"+ petsitterDto.getId();
+            return "petsitter/update/"+ petsitterDto.getId();
         }
         petsitterService.update(petsitterDto);
         // 회원 정보 업데이트 로직
@@ -176,7 +176,7 @@ public class PetsitterController {
             List<LocalTime> reservationTimeList = ReservationTime.getReservationTime();
             model.addAttribute("reservationTimeList", reservationTimeList);
 
-            return "/petsitter/reservation";
+            return "petsitter/reservation";
         }
     }
 }

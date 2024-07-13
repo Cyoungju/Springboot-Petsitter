@@ -27,7 +27,7 @@ public class PetController {
     @PostMapping("/")
     public String resister(@Valid PetDto petDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
-            return "/pet/create";
+            return "pet/create";
         }
 
         petService.save(petDto);
@@ -37,7 +37,7 @@ public class PetController {
     @GetMapping("/create")
     public String create(Model model){
         model.addAttribute("petDto", new PetDto());
-        return "/pet/create";
+        return "pet/create";
     }
 
 
@@ -51,7 +51,7 @@ public class PetController {
     public String update(@PathVariable Long id, Model model){
         PetDto petDto = petService.findById(id);
         model.addAttribute("petDto", petDto);
-        return "/pet/update";
+        return "pet/update";
     }
 
     @PostMapping("/update")

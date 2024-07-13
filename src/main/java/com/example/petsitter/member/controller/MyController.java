@@ -46,7 +46,7 @@ public class MyController {
         MemberDto memberDto = memberService.findByDtoEmail(username);
 
         model.addAttribute("member", memberDto);
-        return "/my/mypage";
+        return "my/mypage";
     }
 
     @GetMapping("/myWishList")
@@ -66,21 +66,21 @@ public class MyController {
         model.addAttribute("list", wishDtoPage);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-        return "/my/myWishList";
+        return "my/myWishList";
     }
 
     @GetMapping("/myPetlist")
     public String petlistP(Model model){
         List<PetDto> petDtoList = petService.getList();
         model.addAttribute("list", petDtoList);
-        return "/my/myPetlist";
+        return "my/myPetlist";
     }
 
     @GetMapping("/myPetsitterList")
     public String petsitterP(Model model){
         List<PetsitterDto> petsitterDtoList = petsitterService.getList();
         model.addAttribute("list", petsitterDtoList);
-        return "/my/myPetsitterList";
+        return "my/myPetsitterList";
     }
 
     @GetMapping("/myPetsitterResList")
@@ -91,7 +91,7 @@ public class MyController {
         List<Item> item = reservationService.findAllItemsByMember(member);
 
         model.addAttribute("list", item);
-        return "/my/myPetsitterResList";
+        return "my/myPetsitterResList";
     }
 
     @GetMapping("/myPetsitterItemResList")
@@ -106,7 +106,7 @@ public class MyController {
 
         model.addAttribute("list", item);
         model.addAttribute("pet", petDto);
-        return "/my/myPetsitterItemResList";
+        return "my/myPetsitterItemResList";
     }
 
 
