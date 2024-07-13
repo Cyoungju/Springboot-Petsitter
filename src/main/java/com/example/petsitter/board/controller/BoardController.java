@@ -33,13 +33,13 @@ public class BoardController {
     @GetMapping("/create")
     public String create(Model model){
         model.addAttribute("boardDto", new BoardDto());
-        return "/board/create";
+        return "board/create";
     }
 
     @PostMapping("/")
     public String register(@AuthenticationPrincipal CustomUserDetails customUserDetails, @Valid BoardDto boardDto, BindingResult bindingResult){
         if (bindingResult.hasErrors()) {
-            return "/board/create";
+            return "board/create";
         }
         Member member = memberService.findByEmail(customUserDetails.getUsername());
         boardService.save(boardDto, member);
@@ -60,7 +60,7 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        return "/board/list";
+        return "board/list";
     }
 
 
@@ -69,7 +69,7 @@ public class BoardController {
         BoardDto boardDto = boardService.findById(id);
         model.addAttribute("boardDto", boardDto);
 
-        return "/board/update";
+        return "board/update";
     }
 
     @PostMapping("/update")
@@ -94,7 +94,7 @@ public class BoardController {
         model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("commentList", commentList);
 
-        return "/board/detail";
+        return "board/detail";
     }
 
     @GetMapping("/delete/{id}")
