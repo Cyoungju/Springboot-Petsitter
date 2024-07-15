@@ -60,7 +60,7 @@ public class Petsitter {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "petsitter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "petsitter", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     private List<Wish> wishes = new ArrayList<>();
 

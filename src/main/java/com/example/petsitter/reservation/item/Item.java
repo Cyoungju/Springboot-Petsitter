@@ -25,7 +25,7 @@ public class Item {
 
     private List<String> times = new ArrayList<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "petsitterReservation_id")
     private PetsitterReservation petsitter;
 
