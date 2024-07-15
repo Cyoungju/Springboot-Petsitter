@@ -9,9 +9,10 @@
 - Spring Boot ： 3.3.0
 - Gradle: 7.3.2
 - 데이터베이스: MySQL
-- 외부 서비스/API: Kakao API
+- 외부 서비스/API: Kakao API(OAuth 2.0)
 - 보안 프레임워크: Spring Security
 - 프레임워크 및 라이브러리: Lombok, Spring Web, Spring Data JPA, Thymeleaf
+- AWS : EC2, RDS, Route 53
 <br/>
 
 
