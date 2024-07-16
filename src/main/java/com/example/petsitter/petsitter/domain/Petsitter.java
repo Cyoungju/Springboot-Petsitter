@@ -21,7 +21,8 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "petsitter")
+@Table(name = "petsitter",
+        indexes = {@Index(name = "idx_sitter_work_adr", columnList = "sitterWorkAdr")})
 public class Petsitter {
 
     @Id
