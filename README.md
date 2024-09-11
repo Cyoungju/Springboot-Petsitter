@@ -4,7 +4,13 @@
   
 - 개발 기간 : 2024.06.07 ~ 2024.07.06
 - **프로젝트 블로그** [(바로가기)](https://jjuya.tistory.com/category/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/Springboot-Petsitter)
-<br/>
+- 프로젝트 서비스 [(바로가기)](http://petsitterbooking.store/)  
+  <details>
+  <summary>
+  테스트 계정
+  </summary>
+  test@gmail.com / 12345678
+  </details><br/>
 
 ## 목차
 - [🛠️프로젝트 아키텍처](#️프로젝트-아키텍처)
@@ -12,10 +18,12 @@
 - [💻주요기능](#주요기능)
 - [📈트러블슈팅](#트러블슈팅) 
 - [📌버전](#버전)
+<br/>
 
 ## 🛠️프로젝트 아키텍처
 ### 서비스 아키텍처
 <img src="./images/Architecture.drawio.png">
+AWS EC2와 RDS를 통한 확장성, Spring Security와 OAuth 2.0으로 강화된 보안, Spring Boot와 JPA로 간소화된 유지 보수성을 제공하는 클라우드 기반 아키텍처 설계
 
 ### ERD
 <img src="./images/petsitter erd.png">
