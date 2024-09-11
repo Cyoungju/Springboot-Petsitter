@@ -1,31 +1,48 @@
 # 🐈 Petsitter
-반려동물 돌봄 예약 서비스 입니다!<br>
+반려동물 돌봄 예약 서비스  
 주소를 기반으로 원하는 펫시터의 날짜와 시간을 예약해 펫시팅을 이용할수 있습니다.
-<br/><br/>
-
-## 개발환경
-- IDE: IntelliJ IDEA Community
-- Java: JDK 17
-- Spring Boot ： 3.3.0
-- Gradle: 7.3.2
-- 데이터베이스: MySQL
-- 외부 서비스/API: Kakao API(OAuth 2.0)
-- 보안 프레임워크: Spring Security
-- 프레임워크 및 라이브러리: Lombok, Spring Web, Spring Data JPA, Thymeleaf
-- AWS : EC2, RDS, Route 53
+  
+- 개발 기간 : 2024.06.07 ~ 2024.07.06
+- **프로젝트 블로그** [(바로가기)](https://jjuya.tistory.com/category/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/Springboot-Petsitter)
 <br/>
 
+## 목차
+- [🛠️프로젝트 아키텍처](#️프로젝트-아키텍처)
+- [🚀사용기술](#사용기술)
+- [💻주요기능](#주요기능)
+- [📈트러블슈팅](#트러블슈팅) 
+- [📌버전](#버전)
 
-## 아키텍처
+## 🛠️프로젝트 아키텍처
+### 서비스 아키텍처
 <img src="./images/Architecture.drawio.png">
-<br/>
 
-## ERD
+### ERD
 <img src="./images/petsitter erd.png">
+<br/> 
+
+## 🚀사용기술
+### IDE
+<img src="http://img.shields.io/badge/intellijidea-000000?style=for-the-badge&logo=Python&logoColor=white">  
+
+### 언어 / 프레임워크
+<img src="http://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"><img src="http://img.shields.io/badge/jdk 17-000000?style=for-the-badge"> <img src="http://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=SPRINGBOOT&logoColor=white"><img src="http://img.shields.io/badge/3.3.0-000000?style=for-the-badge">   <img src="http://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
+
+### 인증/인가
+<img src="http://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=SpringSecurity&logoColor=white">  
+
+### 데이터베이스
+<img src="http://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">  
+
+### 라이브러리
+<img src="http://img.shields.io/badge/kakao api-FFCD00?style=for-the-badge&logo=kakao&logoColor=black"><img src="http://img.shields.io/badge/OAuth 2.0-000000?style=for-the-badge"> <img src="http://img.shields.io/badge/thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white">
+
+### AWS
+<img src="http://img.shields.io/badge/EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="http://img.shields.io/badge/RDS-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white"> <img src="http://img.shields.io/badge/Route 53-8C4FFF?style=for-the-badge&logo=amazonroute53&logoColor=white"> 
+
 <br/>
 
-
-## 주요기능
+## 💻주요기능
 | 권한 | 기능     | 설명     |
 |:------------- | :------------- | :------------- |
 |비회원|회원 관리 서비스|이메일을 통해 로그인할 수 있으며, 회원가입 시 이메일을 중복 검사합니다.<br>로그인 작업 후에 모든 서비스 이용 가능합니다.<br>회원정보 페이지에서 정보 수정 가능하며, 회원 권한(Role)을 변경하여 펫시터 모드로도 사용할 수 있습니다.|
@@ -41,7 +58,27 @@
 |회원|문의 게시판|게시판 글을 등록, 수정, 삭제, 조회할 수 있습니다.<br>게시글에 댓글을 달 수 있습니다.|
 <br/>
 
-## 버전
+## 📈트러블슈팅
+### **자주 조회 되는 데이터 성능 최적화**  
+- 특정 멤버의 예약을 조회 시, [펫시터 지역 조회시 @Index 어노테이션](https://jjuya.tistory.com/96)을 사용하여 성능 개선
+- @ManyToOne(fetch = FetchType.LAZY)을 이용하여 리스트 조회 시 조회 속도 향상
+- 연관 데이터 조회 시 Fetch Join을 이용하여 N+1 문제 해결
+- 날짜 클릭할때 마다 조회되는 예약시간 데이터 @Cacheable사용
+- 펫시터 상품, 예약리스트 조회 등 대용량 데이터 조회시 페이지 네이션으로 부하 감소 및 응답 속도 향상  
+
+### **이미지 용량 감소로 로딩 속도 개선**  
+- thumbnailator 라이브러리로 이미지 용량 감소
+- application.properties 이미지 용량 제한 15mb 제한 설정  
+ 
+### **회원 권한 부여**  
+- 펫시터 회원권한 부여 시 기본 사용자에게는 보이지 않는 펫시터 상품 등록, 예약 상품 리스트 상태 관리 **기능**과 내가 등록한 펫시터 상품 확인, 예약된 상품 확인 **정보 제공**
+
+### **코드 재 사용성, 확장성 향상**  
+- Utill 클래스를 사용해서 코드 재 사용성, 확장성 향상
+<br/>
+
+
+## 📌버전
 
 ### v8.8.5
 - [수정] 코드 리팩토링
