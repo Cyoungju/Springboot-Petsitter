@@ -23,7 +23,7 @@
 ## 🛠️프로젝트 아키텍처
 ### 서비스 아키텍처
 <img src="./images/Architecture.drawio.png">
-AWS EC2와 RDS를 통한 확장성, Spring Security와 OAuth 2.0으로 강화된 보안, Spring Boot와 JPA로 간소화된 유지 보수성을 제공하는 클라우드 기반 아키텍처 설계
+AWS EC2와 RDS를 통한 확장성, Spring Security와 OAuth 2.0으로 강화된 보안, Spring Boot와 JPA를 활용해 간소화된 유지 보수성을 제공하는 클라우드 기반의 Spring MVC 아키텍처 설계이며, GitHub Actions를 활용한 CI/CD 파이프라인으로 자동 배포를 구현했습니다.
 
 ### ERD
 <img src="./images/petsitter erd.png">
