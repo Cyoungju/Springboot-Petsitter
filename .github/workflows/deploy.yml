@@ -41,6 +41,14 @@ jobs:
           source: project.jar
           target: /home/ubuntu/Springboot-Petsitter/tobe
 
+      - name: EC2 디렉토리 확인
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: ls -l /home/ubuntu/Springboot-Petsitter/tobe
+
       - name: SSH(원격 접속)로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -49,7 +57,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script:
-            rm rf /home/ubuntu/Springboot-Petsitter/current
+            rm -rf /home/ubuntu/Springboot-Petsitter/current
             mkdir /home/ubuntu/Springboot-Petsitter/current
             mv /home/ubuntu/Springboot-Petsitter/tobe/project.jar /home/ubuntu/Springboot-Petsitter/current/project.jar
             cd /home/ubuntu/Springboot-Petsitter/current
