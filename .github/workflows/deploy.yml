@@ -39,15 +39,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: project.jar
-          target: /home/ubuntu/Springboot-Petsitter/tobe
-
-      - name: EC2 디렉토리 확인
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script: ls -l /home/ubuntu/Springboot-Petsitter/tobe
+          target: /home/ubuntu/petsitter/tobe
 
       - name: SSH(원격 접속)로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.0.3
@@ -56,11 +48,11 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
-          script:
-            rm -rf /home/ubuntu/Springboot-Petsitter/current
-            mkdir /home/ubuntu/Springboot-Petsitter/current
-            mv /home/ubuntu/Springboot-Petsitter/tobe/project.jar /home/ubuntu/Springboot-Petsitter/current/project.jar
-            cd /home/ubuntu/Springboot-Petsitter/current
+          script: |
+            rm -rf /home/ubuntu/petsitter/current
+            mkdir /home/ubuntu/petsitter/current
+            mv /home/ubuntu/petsitter/tobe/project.jar /home/ubuntu/petsitter/current/project.jar
+            cd /home/ubuntu/petsitter/current
             sudo fuser -k -n tcp 8080 || true
-            nohup java -jar project.jar > ./output.log 2>&1 &
-            rm -rf /home/ubuntu/Springboot-Petsitter/tobe
+            nohup java -jar project.jar > ./output.log 2>&1 & 
+            rm -rf /home/ubuntu/petsitter/tobe
