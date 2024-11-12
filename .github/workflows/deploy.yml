@@ -18,7 +18,7 @@ jobs:
           java-version: 17
 
       - name: application.properties 파일 만들기
-        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" ? ./src/main/resources/application.properties
+        run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
 
       - name: 테스트 및 빌드하기
         run: ./gradlew clean build
@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: project.jar
-          target: /home/ubuntu/petsitter/tobe
+          target: /home/ubuntu/Springboot-Petsitter/tobe
 
       - name: SSH(원격 접속)로 EC2에 접속하기
         uses: appleboy/ssh-action@v1.0.3
@@ -43,10 +43,10 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script:
-            rm rf /home/ubuntu/petsitter/current
-            mkdir /home/ubuntu/petsitter/current
-            mv /home/ubuntu/petsitter/tobe/project.jar /home/ubuntu/petsitter/current/project.jar
-            cd /home/ubuntu/petsitter/current
+            rm rf /home/ubuntu/Springboot-Petsitter/current
+            mkdir /home/ubuntu/Springboot-Petsitter/current
+            mv /home/ubuntu/Springboot-Petsitter/tobe/project.jar /home/ubuntu/Springboot-Petsitter/current/project.jar
+            cd /home/ubuntu/Springboot-Petsitter/current
             sudo fuser -k -n tcp 8080 || true
             nohup java -jar project.jar > ./output.log 2>&1 &
-            rm -rf /home/ubuntu/petsitter/tobe
+            rm -rf /home/ubuntu/Springboot-Petsitter/tobe
