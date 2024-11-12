@@ -1,8 +1,8 @@
 name: Deploy
 on:
-  push:
-    branches:
-      - master
+#  push:
+#    branches:
+#      - master
   pull_request:
     branches:
       - master
@@ -19,6 +19,9 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+
+      - name: gradlew에 실행 권한 추가
+        run: chmod +x ./gradlew
 
       - name: application.properties 파일 만들기
         run: echo "${{ secrets.APPLICATION_PROPERTIES }}" > ./src/main/resources/application.properties
