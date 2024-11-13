@@ -37,10 +37,7 @@ public class CustomFileUtil {
             tempFolder.mkdir();
             //폴더 만들어주기
         }
-
         uploadPath = tempFolder.getAbsolutePath();
-        //log.info(uploadPath);
-
     }
 
     //파일 업로드
